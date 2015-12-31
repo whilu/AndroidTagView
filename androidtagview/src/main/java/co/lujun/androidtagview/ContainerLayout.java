@@ -2,9 +2,15 @@ package co.lujun.androidtagview;
 
 import android.content.Context;
 import android.content.res.TypedArray;
+import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.Paint;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
+
+import java.util.List;
 
 /**
  * Author: lujun
@@ -13,13 +19,28 @@ import android.view.ViewGroup;
 public class ContainerLayout extends ViewGroup {
 
     /** Vertical interval, default 5(dp)*/
-    private int mVerticalInterval;
+    private float mVerticalInterval;
 
     /** Horizontal interval, default 5(dp)*/
-    private int mHorizontalInterval;
+    private float mHorizontalInterval;
+
+    private float mBorderWidth = 1;// default 1dp
+
+    private float mBorderRadius = 10.0f;// default 10dp
 
     /** Tag view average height*/
     private int mChildHeight;
+
+    private int mBorderColor = Color.parseColor("#00ff00");
+
+    private int mBackgroundColor = Color.parseColor("#ff0000");
+
+    /** Tags*/
+    private List<String> mTags;
+
+    private AttributeSet mAttrs;
+
+    private Paint mPaint;
 
     /** Default interval(dp)*/
     private static final float DEFAULT_INTERVAL = 5;
@@ -38,10 +59,19 @@ public class ContainerLayout extends ViewGroup {
     }
 
     private void init(Context context, AttributeSet attrs, int defStyleAttr){
+        mAttrs = attrs;
         TypedArray attributes = context.obtainStyledAttributes(attrs, R.styleable.AndroidTagView, defStyleAttr, 0);
-        mVerticalInterval = (int) attributes.getDimension(R.styleable.AndroidTagView_vertical_interval, dp2px(DEFAULT_INTERVAL));
-        mHorizontalInterval = (int) attributes.getDimension(R.styleable.AndroidTagView_horizontal_interval, dp2px(DEFAULT_INTERVAL));
+        mVerticalInterval = attributes.getDimension(R.styleable.AndroidTagView_vertical_interval, Utils.dp2px(context, DEFAULT_INTERVAL));
+        mHorizontalInterval = attributes.getDimension(R.styleable.AndroidTagView_horizontal_interval, Utils.dp2px(context, DEFAULT_INTERVAL));
+
+        mBorderWidth = attributes.getDimension(R.styleable.AndroidTagView_container_border_width, Utils.dp2px(context, mBorderWidth));
+        mBorderRadius = attributes.getDimension(R.styleable.AndroidTagView_container_corner_radius, Utils.dp2px(context, mBorderRadius));
+        mBorderColor = attributes.getColor(R.styleable.AndroidTagView_container_border_color, mBorderColor);
+        mBackgroundColor = attributes.getColor(R.styleable.AndroidTagView_container_background_color, mBackgroundColor);
+
         attributes.recycle();
+
+        mPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
     }
 
     @Override
@@ -49,6 +79,8 @@ public class ContainerLayout extends ViewGroup {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
 
         measureChildren(widthMeasureSpec, heightMeasureSpec);
+        Log.d("debugss", getChildAt(0).getHeight() + ","
+                + getChildAt(0).getPaddingBottom() + ", " + getChildAt(0).getPaddingRight());
         final int childCount = getChildCount();
         int lines = childCount == 0 ? 0 : getChildLines(childCount);
         int widthSpecSize = MeasureSpec.getSize(widthMeasureSpec);
@@ -60,8 +92,8 @@ public class ContainerLayout extends ViewGroup {
             setMeasuredDimension(0, 0);
         }else if (heightSpecMode == MeasureSpec.AT_MOST) {
             int childHeight = getChildAt(0).getMeasuredHeight();
-            setMeasuredDimension(widthSpecSize, (mVerticalInterval + childHeight) * lines
-                    - mVerticalInterval + getPaddingTop() + getPaddingBottom());
+            setMeasuredDimension(widthSpecSize, (int)((mVerticalInterval + childHeight) * lines
+                    - mVerticalInterval + getPaddingTop() + getPaddingBottom()));
         }else {
             setMeasuredDimension(widthSpecSize, heightSpecSize);
         }
@@ -86,11 +118,20 @@ public class ContainerLayout extends ViewGroup {
         }
     }
 
+    @Override
+    protected void onDraw(Canvas canvas) {
+        super.onDraw(canvas);
+        Log.d("debugss", "in");
+        canvas.drawColor(mBackgroundColor);
+//        mPaint.setColor(mBorderColor);
+//        mPaint.setStyle(Paint.Style.STROKE);
+    }
+
     private int getChildLines(int childCount){
         int lines = 1;
         for (int i = 0, curLineW = 0; i < childCount; i++) {
             View childView = getChildAt(i);
-            int dis = childView.getMeasuredWidth() + mHorizontalInterval;
+            int dis = childView.getMeasuredWidth() + (int) mHorizontalInterval;
             int height = childView.getMeasuredHeight();
             mChildHeight = i == 0 ? height : Math.min(mChildHeight, height);
             curLineW += dis;
@@ -102,29 +143,36 @@ public class ContainerLayout extends ViewGroup {
         return lines;
     }
 
-    private int sp2px(float spValue) {
-        final float fontScale = getContext().getResources().getDisplayMetrics().scaledDensity;
-        return (int) (spValue * fontScale + 0.5f);
-    }
-
-    private int dp2px(float dp) {
-        final float scale = getContext().getResources().getDisplayMetrics().density;
-        return (int) (dp * scale + 0.5f);
+    private void onSetTag(){
+        if (mTags == null || mTags.size() == 0){
+            return;
+        }
+        for (String text : mTags) {
+            TagView tagView = new TagView(getContext(), mAttrs, 0);
+//            tagView.setText(text);
+            addView(tagView);
+        }
+        postInvalidate();
     }
 
     public void setVerticalInterval(float interval){
-        mVerticalInterval = dp2px(interval);
+        mVerticalInterval = Utils.dp2px(getContext(), interval);
     }
 
     public void setHorizontalInterval(float interval){
-        mHorizontalInterval = dp2px(interval);
+        mHorizontalInterval = Utils.dp2px(getContext(), interval);
     }
 
-    public int getVerticalInterval(){
+    public float getVerticalInterval(){
         return mVerticalInterval;
     }
 
-    public int getHorizontalInterval(){
+    public float getHorizontalInterval(){
         return mHorizontalInterval;
+    }
+
+    public void setTags(List<String> tags){
+        mTags = tags;
+        onSetTag();
     }
 }
