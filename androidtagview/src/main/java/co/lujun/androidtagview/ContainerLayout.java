@@ -1,12 +1,10 @@
 package co.lujun.androidtagview;
 
 import android.content.Context;
+import android.content.res.TypedArray;
 import android.util.AttributeSet;
-import android.util.DisplayMetrics;
-import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowManager;
 
 /**
  * Author: lujun
@@ -14,12 +12,17 @@ import android.view.WindowManager;
  */
 public class ContainerLayout extends ViewGroup {
 
-    private int mVerticalInterval = 10;
+    /** Vertical interval, default 5(dp)*/
+    private int mVerticalInterval;
 
-    private int mHorizontalInterval = 10;
-    private int mScreenWidth;
+    /** Horizontal interval, default 5(dp)*/
+    private int mHorizontalInterval;
 
-    private static final String TAG = "ContainerLayout";
+    /** Tag view average height*/
+    private int mChildHeight;
+
+    /** Default interval(dp)*/
+    private static final float DEFAULT_INTERVAL = 5;
 
     public ContainerLayout(Context context){
         this(context, null);
@@ -29,16 +32,16 @@ public class ContainerLayout extends ViewGroup {
         this(context, attrs, 0);
     }
 
-    public ContainerLayout(Context context, AttributeSet attrs, int defStyle){
-        super(context, attrs, defStyle);
-        init(context);
+    public ContainerLayout(Context context, AttributeSet attrs, int defStyleAttr){
+        super(context, attrs, defStyleAttr);
+        init(context, attrs, defStyleAttr);
     }
 
-    private void init(Context context){
-        WindowManager wm = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
-        DisplayMetrics metrics = new DisplayMetrics();
-        wm.getDefaultDisplay().getMetrics(metrics);
-        mScreenWidth = metrics.widthPixels;
+    private void init(Context context, AttributeSet attrs, int defStyleAttr){
+        TypedArray attributes = context.obtainStyledAttributes(attrs, R.styleable.AndroidTagView, defStyleAttr, 0);
+        mVerticalInterval = (int) attributes.getDimension(R.styleable.AndroidTagView_vertical_interval, dp2px(DEFAULT_INTERVAL));
+        mHorizontalInterval = (int) attributes.getDimension(R.styleable.AndroidTagView_horizontal_interval, dp2px(DEFAULT_INTERVAL));
+        attributes.recycle();
     }
 
     @Override
@@ -56,8 +59,9 @@ public class ContainerLayout extends ViewGroup {
         if (childCount == 0){
             setMeasuredDimension(0, 0);
         }else if (heightSpecMode == MeasureSpec.AT_MOST) {
-            setMeasuredDimension(widthSpecSize,
-                    (mVerticalInterval + getChildAt(0).getMeasuredHeight()) * lines);
+            int childHeight = getChildAt(0).getMeasuredHeight();
+            setMeasuredDimension(widthSpecSize, (mVerticalInterval + childHeight) * lines
+                    - mVerticalInterval + getPaddingTop() + getPaddingBottom());
         }else {
             setMeasuredDimension(widthSpecSize, heightSpecSize);
         }
@@ -66,18 +70,17 @@ public class ContainerLayout extends ViewGroup {
     @Override
     protected void onLayout(boolean changed, int l, int t, int r, int b) {
         int childCount = getChildCount();
-        int curLeft = l, curTop = t;
+        int curLeft = getPaddingLeft(), curTop = getPaddingTop();
         for (int i = 0; i < childCount; i++) {
             final View childView = getChildAt(i);
             if (childView.getVisibility() != GONE) {
-                final int width = childView.getMeasuredWidth();
-                final int height = childView.getMeasuredHeight();
-                if (curLeft + width + mHorizontalInterval > mScreenWidth){
-                    curLeft = l;
-                    curTop += height + mVerticalInterval;
+                int width = childView.getMeasuredWidth();
+                if (curLeft + width + mHorizontalInterval
+                        > getMeasuredWidth() - getPaddingLeft() - getPaddingRight()){
+                    curLeft = getPaddingLeft();
+                    curTop += mChildHeight + mVerticalInterval;
                 }
-                Log.d(TAG, getTop() + "," + curTop);
-                childView.layout(curLeft, curTop, curLeft + width, curTop + height);
+                childView.layout(curLeft, curTop, curLeft + width, curTop + mChildHeight);
                 curLeft += width + mHorizontalInterval;
             }
         }
@@ -86,10 +89,14 @@ public class ContainerLayout extends ViewGroup {
     private int getChildLines(int childCount){
         int lines = 1;
         for (int i = 0, curLineW = 0; i < childCount; i++) {
-            curLineW += getChildAt(i).getMeasuredWidth() + mHorizontalInterval;
-            if (curLineW > mScreenWidth){
+            View childView = getChildAt(i);
+            int dis = childView.getMeasuredWidth() + mHorizontalInterval;
+            int height = childView.getMeasuredHeight();
+            mChildHeight = i == 0 ? height : Math.min(mChildHeight, height);
+            curLineW += dis;
+            if (curLineW > getMeasuredWidth() - getPaddingLeft() - getPaddingRight()){
                 lines++;
-                curLineW = 0;
+                curLineW = dis;
             }
         }
         return lines;
@@ -103,5 +110,21 @@ public class ContainerLayout extends ViewGroup {
     private int dp2px(float dp) {
         final float scale = getContext().getResources().getDisplayMetrics().density;
         return (int) (dp * scale + 0.5f);
+    }
+
+    public void setVerticalInterval(float interval){
+        mVerticalInterval = dp2px(interval);
+    }
+
+    public void setHorizontalInterval(float interval){
+        mHorizontalInterval = dp2px(interval);
+    }
+
+    public int getVerticalInterval(){
+        return mVerticalInterval;
+    }
+
+    public int getHorizontalInterval(){
+        return mHorizontalInterval;
     }
 }

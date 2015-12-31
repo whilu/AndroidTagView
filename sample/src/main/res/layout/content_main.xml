@@ -15,23 +15,93 @@
     <co.lujun.androidtagview.ContainerLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="#ff0000">
+        android:layout_margin="0dp"
+        android:background="#ff0000"
+        android:padding="10dp"
+        app:horizontal_interval="10dp"
+        app:vertical_interval="10dp">
 
         <TextView
             android:layout_width="wrap_content"
-            android:layout_height="30dp"
+            android:layout_height="wrap_content"
             android:background="#00ff00"
             android:text="Hello World!" />
 
         <TextView
             android:layout_width="wrap_content"
-            android:layout_height="30dp"
+            android:layout_height="wrap_content"
             android:background="#00ff00"
             android:text="Hello World!" />
 
         <TextView
             android:layout_width="200dp"
-            android:layout_height="30dp"
+            android:layout_height="wrap_content"
+            android:background="#00ff00"
+            android:text="Hello World!" />
+
+        <TextView
+            android:layout_width="20dp"
+            android:layout_height="wrap_content"
+            android:background="#00ff00"
+            android:text="Hello World!" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="#00ff00"
+            android:text="Hello World!" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="#00ff00"
+            android:text="Hello World!" />
+
+        <TextView
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:background="#00ff00"
+            android:text="Hello World!" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="#00ff00"
+            android:text="Hello World!" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="#00ff00"
+            android:text="Hello World!" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="#00ff00"
+            android:text="Hello World!" />
+
+        <TextView
+            android:layout_width="20dp"
+            android:layout_height="wrap_content"
+            android:background="#00ff00"
+            android:text="Hello World!" />
+
+        <TextView
+            android:layout_width="20dp"
+            android:layout_height="wrap_content"
+            android:background="#00ff00"
+            android:text="Hello World!" />
+
+        <TextView
+            android:layout_width="20dp"
+            android:layout_height="wrap_content"
+            android:background="#00ff00"
+            android:text="Hello World!" />
+
+        <TextView
+            android:layout_width="20dp"
+            android:layout_height="wrap_content"
             android:background="#00ff00"
             android:text="Hello World!" />
     </co.lujun.androidtagview.ContainerLayout>

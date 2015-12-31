@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="AndroidTagView">
+        <attr name="vertical_interval" format="dimension" />
+        <attr name="horizontal_interval" format="dimension" />
+        <attr name="tag_text_size" format="dimension" />
+        <attr name="tag_corner_radius" format="dimension" />
+        <attr name="tag_text_color" format="color" />
+        <attr name="tag_background_color" format="color" />
+        <attr name="tag_border_color" format="color" />
+    </declare-styleable>
+</resources>
