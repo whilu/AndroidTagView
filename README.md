@@ -1,0 +1,1 @@
+# AndroidTagView [![Build Status](https://travis-ci.org/whilu/AndroidTagView.svg)](https://travis-ci.org/whilu/AndroidTagView)
