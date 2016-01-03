@@ -5,8 +5,8 @@ import android.content.res.TypedArray;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.RectF;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -24,32 +24,42 @@ public class ContainerLayout extends ViewGroup {
     /** Horizontal interval, default 5(dp)*/
     private float mHorizontalInterval;
 
-    private float mBorderWidth = 1;// default 1dp
+    /** ContainerLayout border width(default 0.5dp)*/
+    private float mBorderWidth = 0.5f;
 
-    private float mBorderRadius = 10.0f;// default 10dp
+    /** ContainerLayout border radius(default 10.0dp)*/
+    private float mBorderRadius = 10.0f;
 
     /** Tag view average height*/
     private int mChildHeight;
 
-    private int mBorderColor = Color.parseColor("#00ff00");
+    /** ContainerLayout border color(default #22FF0000)*/
+    private int mBorderColor = Color.parseColor("#22FF0000");
 
-    private int mBackgroundColor = Color.parseColor("#ff0000");
+    /** ContainerLayout background color(default #11FF0000)*/
+    private int mBackgroundColor = Color.parseColor("#11FF0000");
 
     /** Tags*/
     private List<String> mTags;
 
+    /** AttributeSet for child view*/
     private AttributeSet mAttrs;
 
     private Paint mPaint;
 
+    private RectF mRectF;
+
+    /** OnTagClickListener for child view*/
+    private TagView.OnTagClickListener mOnTagClickListener;
+
     /** Default interval(dp)*/
     private static final float DEFAULT_INTERVAL = 5;
 
-    public ContainerLayout(Context context){
+    public ContainerLayout(Context context) {
         this(context, null);
     }
 
-    public ContainerLayout(Context context, AttributeSet attrs){
+    public ContainerLayout(Context context, AttributeSet attrs) {
         this(context, attrs, 0);
     }
 
@@ -60,18 +70,26 @@ public class ContainerLayout extends ViewGroup {
 
     private void init(Context context, AttributeSet attrs, int defStyleAttr){
         mAttrs = attrs;
-        TypedArray attributes = context.obtainStyledAttributes(attrs, R.styleable.AndroidTagView, defStyleAttr, 0);
-        mVerticalInterval = attributes.getDimension(R.styleable.AndroidTagView_vertical_interval, Utils.dp2px(context, DEFAULT_INTERVAL));
-        mHorizontalInterval = attributes.getDimension(R.styleable.AndroidTagView_horizontal_interval, Utils.dp2px(context, DEFAULT_INTERVAL));
-
-        mBorderWidth = attributes.getDimension(R.styleable.AndroidTagView_container_border_width, Utils.dp2px(context, mBorderWidth));
-        mBorderRadius = attributes.getDimension(R.styleable.AndroidTagView_container_corner_radius, Utils.dp2px(context, mBorderRadius));
-        mBorderColor = attributes.getColor(R.styleable.AndroidTagView_container_border_color, mBorderColor);
-        mBackgroundColor = attributes.getColor(R.styleable.AndroidTagView_container_background_color, mBackgroundColor);
+        TypedArray attributes = context.obtainStyledAttributes(attrs, R.styleable.AndroidTagView,
+                defStyleAttr, 0);
+        mVerticalInterval = attributes.getDimension(R.styleable.AndroidTagView_vertical_interval,
+                Utils.dp2px(context, DEFAULT_INTERVAL));
+        mHorizontalInterval = attributes.getDimension(R.styleable.AndroidTagView_horizontal_interval,
+                Utils.dp2px(context, DEFAULT_INTERVAL));
+        mBorderWidth = attributes.getDimension(R.styleable.AndroidTagView_container_border_width,
+                Utils.dp2px(context, mBorderWidth));
+        mBorderRadius = attributes.getDimension(R.styleable.AndroidTagView_container_corner_radius,
+                Utils.dp2px(context, mBorderRadius));
+        mBorderColor = attributes.getColor(R.styleable.AndroidTagView_container_border_color,
+                mBorderColor);
+        mBackgroundColor = attributes.getColor(R.styleable.AndroidTagView_container_background_color,
+                mBackgroundColor);
 
         attributes.recycle();
 
         mPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+        mRectF = new RectF();
+        setWillNotDraw(false);
     }
 
     @Override
@@ -79,8 +97,6 @@ public class ContainerLayout extends ViewGroup {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
 
         measureChildren(widthMeasureSpec, heightMeasureSpec);
-        Log.d("debugss", getChildAt(0).getHeight() + ","
-                + getChildAt(0).getPaddingBottom() + ", " + getChildAt(0).getPaddingRight());
         final int childCount = getChildCount();
         int lines = childCount == 0 ? 0 : getChildLines(childCount);
         int widthSpecSize = MeasureSpec.getSize(widthMeasureSpec);
@@ -121,10 +137,17 @@ public class ContainerLayout extends ViewGroup {
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
-        Log.d("debugss", "in");
-        canvas.drawColor(mBackgroundColor);
-//        mPaint.setColor(mBorderColor);
-//        mPaint.setStyle(Paint.Style.STROKE);
+        mRectF.set(canvas.getClipBounds().left, canvas.getClipBounds().top,
+                canvas.getClipBounds().right, canvas.getClipBounds().bottom);
+
+        mPaint.setStyle(Paint.Style.FILL);
+        mPaint.setColor(mBackgroundColor);
+        canvas.drawRoundRect(mRectF, mBorderRadius, mBorderRadius, mPaint);
+
+        mPaint.setStyle(Paint.Style.STROKE);
+        mPaint.setStrokeWidth(mBorderWidth);
+        mPaint.setColor(mBorderColor);
+        canvas.drawRoundRect(mRectF, mBorderRadius, mBorderRadius, mPaint);
     }
 
     private int getChildLines(int childCount){
@@ -148,8 +171,9 @@ public class ContainerLayout extends ViewGroup {
             return;
         }
         for (String text : mTags) {
-            TagView tagView = new TagView(getContext(), mAttrs, 0);
-//            tagView.setText(text);
+            TagView tagView = new TagView(getContext(), mAttrs, 0, text);
+            tagView.setTag(mTags.indexOf(text));
+            tagView.setOnTagClickListener(mOnTagClickListener);
             addView(tagView);
         }
         postInvalidate();
@@ -174,5 +198,9 @@ public class ContainerLayout extends ViewGroup {
     public void setTags(List<String> tags){
         mTags = tags;
         onSetTag();
+    }
+
+    public void setOnTagClickListener(TagView.OnTagClickListener listener){
+        mOnTagClickListener = listener;
     }
 }

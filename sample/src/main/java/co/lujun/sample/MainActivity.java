@@ -1,18 +1,15 @@
 package co.lujun.sample;
 
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.view.View;
-import android.view.Menu;
-import android.view.MenuItem;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import co.lujun.androidtagview.ContainerLayout;
+import co.lujun.androidtagview.TagView;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -26,16 +23,25 @@ public class MainActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         mContainerLayout = (ContainerLayout) findViewById(R.id.containerLayout);
-        List<String> list = new ArrayList<String>();
-        for (int i = 0; i < 10; i++) {
-            if (i % 2 == 0) {
-                list.add("hello, " + i);
-            }else if (i % 3 == 0){
-                list.add("test, " + i);
-            }else {
-                list.add("wojuede" + i);
+        mContainerLayout.setOnTagClickListener(new TagView.OnTagClickListener() {
+            @Override
+            public void onTagClick(int position, String text) {
+                Toast.makeText(MainActivity.this, "position:" + position + ", text:" + text,
+                        Toast.LENGTH_SHORT).show();
             }
-        }
+        });
+        List<String> list = new ArrayList<String>();
+        list.add("Java");
+        list.add("C/C++");
+        list.add("Python");
+        list.add("Swift");
+        list.add("你好，这是一个TAG示例。你好，这是一个TAG示例。你好，这是一个TAG示例。你好，这是一个TAG示例。");
+        list.add("PHP");
+        list.add("Python");
+        list.add("JavaScript");
+        list.add("Html");
+        list.add("Hello, this is a TAG example.");
+        list.add("Welcome to use AndroidTagView!");
         mContainerLayout.setTags(list);
     }
 }
