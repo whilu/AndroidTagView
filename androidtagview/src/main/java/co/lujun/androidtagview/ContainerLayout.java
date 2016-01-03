@@ -117,14 +117,14 @@ public class ContainerLayout extends ViewGroup {
 
     @Override
     protected void onLayout(boolean changed, int l, int t, int r, int b) {
+        int availableW = getMeasuredWidth() - getPaddingLeft() - getPaddingRight();
         int childCount = getChildCount();
         int curLeft = getPaddingLeft(), curTop = getPaddingTop();
         for (int i = 0; i < childCount; i++) {
             final View childView = getChildAt(i);
             if (childView.getVisibility() != GONE) {
                 int width = childView.getMeasuredWidth();
-                if (curLeft + width + mHorizontalInterval
-                        > getMeasuredWidth() - getPaddingLeft() - getPaddingRight()){
+                if (curLeft + width + mHorizontalInterval - getPaddingLeft() > availableW){
                     curLeft = getPaddingLeft();
                     curTop += mChildHeight + mVerticalInterval;
                 }
@@ -151,6 +151,7 @@ public class ContainerLayout extends ViewGroup {
     }
 
     private int getChildLines(int childCount){
+        int availableW = getMeasuredWidth() - getPaddingLeft() - getPaddingRight();
         int lines = 1;
         for (int i = 0, curLineW = 0; i < childCount; i++) {
             View childView = getChildAt(i);
@@ -158,7 +159,7 @@ public class ContainerLayout extends ViewGroup {
             int height = childView.getMeasuredHeight();
             mChildHeight = i == 0 ? height : Math.min(mChildHeight, height);
             curLineW += dis;
-            if (curLineW > getMeasuredWidth() - getPaddingLeft() - getPaddingRight()){
+            if (curLineW > availableW){
                 lines++;
                 curLineW = dis;
             }
@@ -181,10 +182,12 @@ public class ContainerLayout extends ViewGroup {
 
     public void setVerticalInterval(float interval){
         mVerticalInterval = Utils.dp2px(getContext(), interval);
+        postInvalidate();
     }
 
     public void setHorizontalInterval(float interval){
         mHorizontalInterval = Utils.dp2px(getContext(), interval);
+        postInvalidate();
     }
 
     public float getVerticalInterval(){
