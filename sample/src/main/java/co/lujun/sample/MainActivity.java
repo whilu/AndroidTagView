@@ -44,6 +44,7 @@ public class MainActivity extends AppCompatActivity {
         list.add("Html");
         list.add("Hello, this is a TAG example.");
         list.add("Welcome to use AndroidTagView!");
+//        mContainerLayout.setTagMaxLength(4);
         mContainerLayout.setTags(list);
 
         Button btnAddTag = (Button) findViewById(R.id.btn_add_tag);
@@ -52,6 +53,13 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 mContainerLayout.addTag("This is a TAG u added!");
 //                mContainerLayout.addTag("This is a TAG u added!", 4);
+            }
+        });
+        Button btnRemoveTag = (Button) findViewById(R.id.btn_remove_tag);
+        btnRemoveTag.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mContainerLayout.removeTag(5);
             }
         });
     }

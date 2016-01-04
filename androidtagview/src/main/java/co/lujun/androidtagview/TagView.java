@@ -46,7 +46,7 @@ public class TagView extends View {
     private boolean isViewClickable;
 
     /** The max length for this tag view*/
-    private int mTagMaxLength = 23;
+    private int mTagMaxLength;
 
     /** OnTagClickListener for click action*/
     private OnTagClickListener mOnTagClickListener;
@@ -57,7 +57,7 @@ public class TagView extends View {
 
     private Rect mTextBound;
 
-    private String mAbstractText = "", mOriginText = "";
+    private String mAbstractText, mOriginText;
 
     public TagView(Context context, AttributeSet attrs, int defStyleAttr, String text){
         super(context, attrs, defStyleAttr);
@@ -83,26 +83,22 @@ public class TagView extends View {
                 mBackgroundColor);
         mTextColor = attributes.getColor(R.styleable.AndroidTagView_tag_text_color, mTextColor);
         isViewClickable = attributes.getBoolean(R.styleable.AndroidTagView_tag_clickable, false);
-        mTagMaxLength = attributes.getInt(R.styleable.AndroidTagView_tag_max_length, mTagMaxLength);
         attributes.recycle();
         // FIXME can not get all attributes
 
-        onDealText(text);
         mPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
         mPaint.setTextSize(mTextSize);
         mRectF = new RectF();
         mTextBound = new Rect();
-
-        // get text bound
-        mPaint.getTextBounds(mAbstractText, 0, mAbstractText.length(), mTextBound);
-        mPaint.measureText(mAbstractText);
+        mOriginText = text;
     }
 
-    private void onDealText(String text){
-        if(!TextUtils.isEmpty(text)) {
-            mOriginText = text;
-            mAbstractText = text.length() <= mTagMaxLength ? text : text.substring(0, mTagMaxLength - 3) + "...";
+    private void onDealText(){
+        if(!TextUtils.isEmpty(mOriginText)) {
+            mAbstractText = mOriginText.length() <= mTagMaxLength ? mOriginText
+                    : mOriginText.substring(0, mTagMaxLength - 3) + "...";
         }
+        mPaint.getTextBounds(mAbstractText, 0, mAbstractText.length(), mTextBound);
     }
 
     @Override
@@ -145,21 +141,13 @@ public class TagView extends View {
         return super.onTouchEvent(event);
     }
 
-    public void setText(String text){
-        onDealText(text);
-        postInvalidate();
-    }
-
     public String getText(){
         return mOriginText;
     }
 
     public void setTagMaxLength(int maxLength){
         mTagMaxLength = maxLength;
-    }
-
-    public int getTagMaxLength(){
-        return mTagMaxLength;
+        onDealText();
     }
 
     public void setOnTagClickListener(OnTagClickListener listener){

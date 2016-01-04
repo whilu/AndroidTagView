@@ -45,6 +45,9 @@ public class ContainerLayout extends ViewGroup {
     /** ContainerLayout background color(default #11FF0000)*/
     private int mBackgroundColor = Color.parseColor("#11FF0000");
 
+    /** The max length for this tag view(default max length 23)*/
+    private int mTagMaxLength = 23;
+
     /** Tags*/
     private List<String> mTags;
 
@@ -69,6 +72,9 @@ public class ContainerLayout extends ViewGroup {
 
     /** Default interval(dp)*/
     private static final float DEFAULT_INTERVAL = 5;
+
+    /** Default tag min length*/
+    private static final int TAG_MIN_LENGTH = 3;
 
     public ContainerLayout(Context context) {
         this(context, null);
@@ -102,6 +108,7 @@ public class ContainerLayout extends ViewGroup {
         mDragEnable = attributes.getBoolean(R.styleable.AndroidTagView_container_enable_drag, false);
         mSensitivity = attributes.getFloat(R.styleable.AndroidTagView_container_drag_sensitivity,
                 mSensitivity);
+        mTagMaxLength = attributes.getInt(R.styleable.AndroidTagView_tag_max_length, mTagMaxLength);
         attributes.recycle();
 
         mPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
@@ -229,7 +236,19 @@ public class ContainerLayout extends ViewGroup {
         }else {
             tagView.setTag(position);
         }
+        tagView.setTagMaxLength(mTagMaxLength);
         addView(tagView, position);
+    }
+
+    private void onRemoveTag(int position){
+        if (position < 0 || position >= mChildViews.size()){
+            throw new RuntimeException("Illegal position!");
+        }
+        mChildViews.remove(position);
+        removeViewAt(position);
+        for (int i = position; i < mChildViews.size(); i++) {
+            mChildViews.get(i).setTag(i);
+        }
     }
 
     private int[] onGetNewPosition(View view){
@@ -402,5 +421,39 @@ public class ContainerLayout extends ViewGroup {
     public void addTag(String text, int position){
         onAddTag(text, position);
         postInvalidate();
+    }
+
+    /**
+     * Remove a TagView with the specified location.
+     * @param position
+     */
+    public void removeTag(int position){
+        onRemoveTag(position);
+        postInvalidate();
+    }
+
+    /**
+     * Set the TagView text max length(min is 3).
+     * @param maxLength
+     */
+    public void setTagMaxLength(int maxLength){
+        mTagMaxLength = maxLength < TAG_MIN_LENGTH ? TAG_MIN_LENGTH : maxLength;
+    }
+
+    /**
+     * Get TagView max length.
+     * @return
+     */
+    public int getTagMaxLength(){
+        return mTagMaxLength;
+    }
+
+    /**
+     * Get TagView text.
+     * @param position
+     * @return
+     */
+    public String getTagText(int position){
+        return ((TagView)mChildViews.get(position)).getText();
     }
 }
