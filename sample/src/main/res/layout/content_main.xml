@@ -22,6 +22,7 @@
         app:container_enable_drag="true"
         app:horizontal_interval="10dp"
         app:tag_clickable="false"
+        app:tag_theme="pure_teal"
         app:vertical_interval="10dp" />
 
     <Button

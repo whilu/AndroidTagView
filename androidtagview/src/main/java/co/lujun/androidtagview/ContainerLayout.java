@@ -16,7 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Author: lujun
+ * Author: lujun(http://blog.lujun.co)
  * Date: 2015-12-30 17:14
  */
 public class ContainerLayout extends ViewGroup {
@@ -70,6 +70,9 @@ public class ContainerLayout extends ViewGroup {
 
     private int[] mViewPos;
 
+    /** View theme(default PURE_CYAN)*/
+    private int mTheme = 1;
+
     /** Default interval(dp)*/
     private static final float DEFAULT_INTERVAL = 5;
 
@@ -109,6 +112,7 @@ public class ContainerLayout extends ViewGroup {
         mSensitivity = attributes.getFloat(R.styleable.AndroidTagView_container_drag_sensitivity,
                 mSensitivity);
         mTagMaxLength = attributes.getInt(R.styleable.AndroidTagView_tag_max_length, mTagMaxLength);
+        mTheme = attributes.getInt(R.styleable.AndroidTagView_tag_theme, mTheme);
         attributes.recycle();
 
         mPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
@@ -215,6 +219,19 @@ public class ContainerLayout extends ViewGroup {
         return lines;
     }
 
+    private int[] onUpdateColorFactory(){
+        int[] colors;
+        // FIXME , random color bg & bd not match
+        if (mTheme == ColorFactory.RANDOM){
+            colors = ColorFactory.onRandomBuild();
+        }else if (mTheme == ColorFactory.PURE_TEAL){
+            colors = ColorFactory.onPureBuild(ColorFactory.PURE_COLOR.TEAL);
+        }else {
+            colors = ColorFactory.onPureBuild(ColorFactory.PURE_COLOR.CYAN);
+        }
+        return colors;
+    }
+
     private void onSetTag(){
         if (mTags == null || mTags.size() == 0){
             return;
@@ -237,6 +254,9 @@ public class ContainerLayout extends ViewGroup {
             tagView.setTag(position);
         }
         tagView.setTagMaxLength(mTagMaxLength);
+        tagView.setTagBackgroundColor(onUpdateColorFactory()[0]);
+        tagView.setTagBorderColor(onUpdateColorFactory()[1]);
+        tagView.setTagTextColor(onUpdateColorFactory()[2]);
         addView(tagView, position);
     }
 
@@ -455,5 +475,13 @@ public class ContainerLayout extends ViewGroup {
      */
     public String getTagText(int position){
         return ((TagView)mChildViews.get(position)).getText();
+    }
+
+    /**
+     * Set View theme.
+     * @param theme
+     */
+    public void setTheme(int theme){
+        mTheme = theme;
     }
 }

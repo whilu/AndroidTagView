@@ -13,7 +13,7 @@ import android.view.MotionEvent;
 import android.view.View;
 
 /**
- * Author: lujun
+ * Author: lujun(http://blog.lujun.co)
  * Date: 2015-12-31 11:47
  */
 public class TagView extends View {
@@ -83,8 +83,8 @@ public class TagView extends View {
                 mBackgroundColor);
         mTextColor = attributes.getColor(R.styleable.AndroidTagView_tag_text_color, mTextColor);
         isViewClickable = attributes.getBoolean(R.styleable.AndroidTagView_tag_clickable, false);
-        attributes.recycle();
         // FIXME can not get all attributes
+        attributes.recycle();
 
         mPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
         mPaint.setTextSize(mTextSize);
@@ -135,7 +135,7 @@ public class TagView extends View {
     public boolean onTouchEvent(MotionEvent event) {
         if (isViewClickable && event.getAction() == MotionEvent.ACTION_DOWN
                 && mOnTagClickListener != null){
-            mOnTagClickListener.onTagClick((int)getTag(), getText());
+            mOnTagClickListener.onTagClick((int) getTag(), getText());
             return true;
         }
         return super.onTouchEvent(event);
@@ -152,6 +152,18 @@ public class TagView extends View {
 
     public void setOnTagClickListener(OnTagClickListener listener){
         mOnTagClickListener = listener;
+    }
+
+    public void setTagBackgroundColor(int color){
+        mBackgroundColor = color;
+    }
+
+    public void setTagBorderColor(int color){
+        mBorderColor = color;
+    }
+
+    public void setTagTextColor(int color){
+        mTextColor = color;
     }
 
     public interface OnTagClickListener{

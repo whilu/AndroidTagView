@@ -21,5 +21,10 @@
         <attr name="tag_background_color" format="color" />
         <attr name="tag_max_length" format="integer" />
         <attr name="tag_clickable" format="boolean" />
+        <attr name="tag_theme" format="enum">
+            <enum name="random" value="0" />
+            <enum name="pure_cyan" value="1" />
+            <enum name="pure_teal" value="2" />
+        </attr>
     </declare-styleable>
 </resources>

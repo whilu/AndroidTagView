@@ -10,6 +10,7 @@ import android.widget.Toast;
 import java.util.ArrayList;
 import java.util.List;
 
+import co.lujun.androidtagview.ColorFactory;
 import co.lujun.androidtagview.ContainerLayout;
 import co.lujun.androidtagview.TagView;
 
@@ -45,6 +46,7 @@ public class MainActivity extends AppCompatActivity {
         list.add("Hello, this is a TAG example.");
         list.add("Welcome to use AndroidTagView!");
 //        mContainerLayout.setTagMaxLength(4);
+        mContainerLayout.setTheme(ColorFactory.RANDOM);
         mContainerLayout.setTags(list);
 
         Button btnAddTag = (Button) findViewById(R.id.btn_add_tag);
