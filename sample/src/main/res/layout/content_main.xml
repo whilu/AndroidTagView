@@ -18,6 +18,8 @@
         android:layout_height="wrap_content"
         android:layout_margin="0dp"
         android:padding="10dp"
+        app:container_enable_drag="true"
         app:horizontal_interval="10dp"
-        app:vertical_interval="10dp" />
+        app:tag_clickable="false"
+        app:vertical_interval="10dp"/>
 </RelativeLayout>

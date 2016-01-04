@@ -8,6 +8,7 @@
         <attr name="container_corner_radius" format="dimension" />
         <attr name="container_border_color" format="color" />
         <attr name="container_background_color" format="color" />
+        <attr name="container_enable_drag" format="boolean" />
 
         <attr name="tag_border_width" format="dimension" />
         <attr name="tag_corner_radius" format="dimension" />
@@ -18,7 +19,6 @@
         <attr name="tag_border_color" format="color" />
         <attr name="tag_background_color" format="color" />
         <attr name="tag_max_length" format="integer" />
-
         <attr name="tag_clickable" format="boolean" />
     </declare-styleable>
 </resources>

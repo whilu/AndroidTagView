@@ -6,7 +6,11 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.RectF;
+import android.support.v4.view.MotionEventCompat;
+import android.support.v4.widget.ViewDragHelper;
 import android.util.AttributeSet;
+import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -52,6 +56,12 @@ public class ContainerLayout extends ViewGroup {
     /** OnTagClickListener for child view*/
     private TagView.OnTagClickListener mOnTagClickListener;
 
+    private ViewDragHelper mViewDragHelper;
+
+    private float mSensitivity = 1.0f;
+
+    private boolean mEnableDrag;// default false
+
     /** Default interval(dp)*/
     private static final float DEFAULT_INTERVAL = 5;
 
@@ -84,11 +94,12 @@ public class ContainerLayout extends ViewGroup {
                 mBorderColor);
         mBackgroundColor = attributes.getColor(R.styleable.AndroidTagView_container_background_color,
                 mBackgroundColor);
-
+        mEnableDrag = attributes.getBoolean(R.styleable.AndroidTagView_container_enable_drag, false);
         attributes.recycle();
 
         mPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
         mRectF = new RectF();
+        mViewDragHelper = ViewDragHelper.create(this, mSensitivity, new DragHelperCallBack());
         setWillNotDraw(false);
     }
 
@@ -150,6 +161,25 @@ public class ContainerLayout extends ViewGroup {
         canvas.drawRoundRect(mRectF, mBorderRadius, mBorderRadius, mPaint);
     }
 
+    @Override
+    public boolean onInterceptTouchEvent(MotionEvent ev) {
+        return mViewDragHelper.shouldInterceptTouchEvent(ev);
+    }
+
+    @Override
+    public boolean onTouchEvent(MotionEvent event) {
+        mViewDragHelper.processTouchEvent(event);
+        return true;
+    }
+
+    @Override
+    public void computeScroll() {
+        super.computeScroll();
+        if (mViewDragHelper.continueSettling(true)){
+            invalidate();
+        }
+    }
+
     private int getChildLines(int childCount){
         int availableW = getMeasuredWidth() - getPaddingLeft() - getPaddingRight();
         int lines = 1;
@@ -178,6 +208,45 @@ public class ContainerLayout extends ViewGroup {
             addView(tagView);
         }
         postInvalidate();
+    }
+
+    private class DragHelperCallBack extends ViewDragHelper.Callback{
+
+        @Override
+        public boolean tryCaptureView(View child, int pointerId) {
+            return mEnableDrag;
+        }
+
+        @Override
+        public int clampViewPositionHorizontal(View child, int left, int dx) {
+            final int leftX = getPaddingLeft();
+            final int rightX = getWidth() - child.getWidth() - getPaddingRight();
+            return Math.min(Math.max(left, leftX), rightX);
+        }
+
+        @Override
+        public int clampViewPositionVertical(View child, int top, int dy) {
+            final int topY = getPaddingTop();
+            final int bottomY = getHeight() - child.getHeight() - getPaddingBottom();
+            return Math.min(Math.max(top, topY), bottomY);
+        }
+
+        @Override
+        public int getViewHorizontalDragRange(View child) {
+            return getMeasuredWidth() - child.getMeasuredWidth();
+        }
+
+        @Override
+        public int getViewVerticalDragRange(View child) {
+            return getMeasuredHeight() - child.getMeasuredHeight();
+        }
+
+        @Override
+        public void onViewReleased(View releasedChild, float xvel, float yvel) {
+            super.onViewReleased(releasedChild, xvel, yvel);
+            mViewDragHelper.settleCapturedViewAt(0, 0);
+            invalidate();
+        }
     }
 
     public void setVerticalInterval(float interval){

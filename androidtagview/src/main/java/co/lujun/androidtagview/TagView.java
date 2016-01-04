@@ -9,6 +9,7 @@ import android.graphics.Rect;
 import android.graphics.RectF;
 import android.text.TextUtils;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 
@@ -25,7 +26,7 @@ public class TagView extends View {
     private float mBorderRadius = 15.0f;
 
     /** Text size(default 14sp)*/
-    private float mAbstractTextSize = 14;
+    private float mTextSize = 14;
 
     /** Horizontal padding for this view, include left & right padding(left & right padding are equal, default 20px)*/
     private int mHorizontalPadding = 20;
@@ -40,7 +41,7 @@ public class TagView extends View {
     private int mBackgroundColor = Color.parseColor("#33F44336");
 
     /** TagView text color(default #FF666666)*/
-    private int mAbstractTextColor = Color.parseColor("#FF666666");
+    private int mTextColor = Color.parseColor("#FF666666");
 
     /** Whether this view clickable(default unclickable)*/
     private boolean isViewClickable;
@@ -49,7 +50,7 @@ public class TagView extends View {
 
     private RectF mRectF;
 
-    private Rect mAbstractTextBound;
+    private Rect mTextBound;
 
     private String mAbstractText = "", mOriginText = "";
 
@@ -75,25 +76,26 @@ public class TagView extends View {
                 R.styleable.AndroidTagView_tag_horizontal_padding, mHorizontalPadding);
         mVerticalPadding = (int) attributes.getDimension(
                 R.styleable.AndroidTagView_tag_vertical_padding, mVerticalPadding);
-        mAbstractTextSize = attributes.getDimension(R.styleable.AndroidTagView_tag_text_size,
-                Utils.sp2px(context, mAbstractTextSize));
+        mTextSize = attributes.getDimension(R.styleable.AndroidTagView_tag_text_size,
+                Utils.sp2px(context, mTextSize));
         mBorderColor = attributes.getColor(R.styleable.AndroidTagView_tag_border_color,
                 mBorderColor);
         mBackgroundColor = attributes.getColor(R.styleable.AndroidTagView_tag_background_color,
                 mBackgroundColor);
-        mAbstractTextColor = attributes.getColor(R.styleable.AndroidTagView_tag_text_color, mAbstractTextColor);
-        isViewClickable = attributes.getBoolean(R.styleable.AndroidTagView_tag_clickable, true);
+        mTextColor = attributes.getColor(R.styleable.AndroidTagView_tag_text_color, mTextColor);
+        isViewClickable = attributes.getBoolean(R.styleable.AndroidTagView_tag_clickable, false);
         mTagMaxLength = attributes.getInt(R.styleable.AndroidTagView_tag_max_length, mTagMaxLength);
         attributes.recycle();
+        // FIXME can not get all attributes
 
         onDealText(text);
         mPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
-        mPaint.setTextSize(mAbstractTextSize);
+        mPaint.setTextSize(mTextSize);
         mRectF = new RectF();
-        mAbstractTextBound = new Rect();
+        mTextBound = new Rect();
 
         // get text bound
-        mPaint.getTextBounds(mAbstractText, 0, mAbstractText.length(), mAbstractTextBound);
+        mPaint.getTextBounds(mAbstractText, 0, mAbstractText.length(), mTextBound);
         mPaint.measureText(mAbstractText);
     }
 
@@ -107,8 +109,8 @@ public class TagView extends View {
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
-        setMeasuredDimension(mHorizontalPadding * 2 + mAbstractTextBound.width(),
-                mVerticalPadding * 2 + mAbstractTextBound.height());
+        setMeasuredDimension(mHorizontalPadding * 2 + mTextBound.width(),
+                mVerticalPadding * 2 + mTextBound.height());
     }
 
     @Override
@@ -129,9 +131,9 @@ public class TagView extends View {
         canvas.drawRoundRect(mRectF, mBorderRadius, mBorderRadius, mPaint);
 
         mPaint.setStyle(Paint.Style.FILL);
-        mPaint.setColor(mAbstractTextColor);
-        canvas.drawText(mAbstractText, getWidth() / 2 - mAbstractTextBound.width() / 2,
-                getHeight() / 2 + mAbstractTextBound.height() / 2, mPaint);
+        mPaint.setColor(mTextColor);
+        canvas.drawText(mAbstractText, getWidth() / 2 - mTextBound.width() / 2,
+                getHeight() / 2 + mTextBound.height() / 2, mPaint);
     }
 
     @Override
