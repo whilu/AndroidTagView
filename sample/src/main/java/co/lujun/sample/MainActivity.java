@@ -3,6 +3,8 @@ package co.lujun.sample;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.View;
+import android.widget.Button;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -43,5 +45,14 @@ public class MainActivity extends AppCompatActivity {
         list.add("Hello, this is a TAG example.");
         list.add("Welcome to use AndroidTagView!");
         mContainerLayout.setTags(list);
+
+        Button btnAddTag = (Button) findViewById(R.id.btn_add_tag);
+        btnAddTag.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mContainerLayout.addTag("This is a TAG u added!");
+//                mContainerLayout.addTag("This is a TAG u added!", 4);
+            }
+        });
     }
 }

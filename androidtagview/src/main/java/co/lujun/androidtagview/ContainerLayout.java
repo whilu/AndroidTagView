@@ -14,6 +14,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -60,7 +61,11 @@ public class ContainerLayout extends ViewGroup {
 
     private float mSensitivity = 1.0f;
 
-    private boolean mEnableDrag;// default false
+    private int[] mViewPos;
+
+    private boolean mDragEnable;// default false
+
+    private List<View> mChildViews; //
 
     /** Default interval(dp)*/
     private static final float DEFAULT_INTERVAL = 5;
@@ -94,11 +99,12 @@ public class ContainerLayout extends ViewGroup {
                 mBorderColor);
         mBackgroundColor = attributes.getColor(R.styleable.AndroidTagView_container_background_color,
                 mBackgroundColor);
-        mEnableDrag = attributes.getBoolean(R.styleable.AndroidTagView_container_enable_drag, false);
+        mDragEnable = attributes.getBoolean(R.styleable.AndroidTagView_container_enable_drag, false);
         attributes.recycle();
 
         mPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
         mRectF = new RectF();
+        mChildViews = new ArrayList<View>();
         mViewDragHelper = ViewDragHelper.create(this, mSensitivity, new DragHelperCallBack());
         setWillNotDraw(false);
     }
@@ -131,6 +137,7 @@ public class ContainerLayout extends ViewGroup {
         int availableW = getMeasuredWidth() - getPaddingLeft() - getPaddingRight();
         int childCount = getChildCount();
         int curLeft = getPaddingLeft(), curTop = getPaddingTop();
+        mViewPos = new int[childCount * 2];
         for (int i = 0; i < childCount; i++) {
             final View childView = getChildAt(i);
             if (childView.getVisibility() != GONE) {
@@ -139,6 +146,8 @@ public class ContainerLayout extends ViewGroup {
                     curLeft = getPaddingLeft();
                     curTop += mChildHeight + mVerticalInterval;
                 }
+                mViewPos[i * 2] = curLeft;
+                mViewPos[i * 2 + 1] = curTop;
                 childView.layout(curLeft, curTop, curLeft + width, curTop + mChildHeight);
                 curLeft += width + mHorizontalInterval;
             }
@@ -201,20 +210,53 @@ public class ContainerLayout extends ViewGroup {
         if (mTags == null || mTags.size() == 0){
             return;
         }
-        for (String text : mTags) {
-            TagView tagView = new TagView(getContext(), mAttrs, 0, text);
-            tagView.setTag(mTags.indexOf(text));
-            tagView.setOnTagClickListener(mOnTagClickListener);
-            addView(tagView);
+        for (int i = 0; i < mTags.size(); i++) {
+            onAddTag(mTags.get(i), mChildViews.size());
         }
         postInvalidate();
+    }
+
+    private void onAddTag(String text, int position){
+        TagView tagView = new TagView(getContext(), mAttrs, 0, text);
+        tagView.setOnTagClickListener(mOnTagClickListener);
+        mChildViews.add(position, tagView);
+        if (position < mChildViews.size()){
+            for (int i = position; i < mChildViews.size(); i++) {
+                mChildViews.get(i).setTag(i);
+            }
+        }else {
+            tagView.setTag(position);
+        }
+        addView(tagView, position);
+    }
+
+    private int[] onSetNewPosition(View view){
+        int left = view.getLeft();
+        int top = view.getTop();
+        int bestMatchLeft = mViewPos[(int)view.getTag() * 2];
+        int bestMatchTop = mViewPos[(int)view.getTag() * 2 + 1];
+        int tmpLeftDis = Math.abs(left - bestMatchLeft);
+        int tmpTopDis = Math.abs(top - bestMatchTop);
+        for (int i = 0; i < mViewPos.length / 2; i++) {
+            if (Math.abs(top - mViewPos[i * 2 +1]) < tmpTopDis){
+                bestMatchTop = mViewPos[i * 2 +1];
+                tmpTopDis = Math.abs(top - mViewPos[i * 2 +1]);
+            }
+        }
+        for (int i = 0; i < mViewPos.length / 2; i++) {
+            if (mViewPos[i * 2 + 1] == bestMatchTop && Math.abs(left - mViewPos[i * 2]) < tmpLeftDis){
+                bestMatchLeft = mViewPos[i * 2];
+                tmpLeftDis = Math.abs(left - mViewPos[i * 2]);
+            }
+        }
+        return new int[]{bestMatchLeft, bestMatchTop};
     }
 
     private class DragHelperCallBack extends ViewDragHelper.Callback{
 
         @Override
         public boolean tryCaptureView(View child, int pointerId) {
-            return mEnableDrag;
+            return mDragEnable;
         }
 
         @Override
@@ -244,35 +286,93 @@ public class ContainerLayout extends ViewGroup {
         @Override
         public void onViewReleased(View releasedChild, float xvel, float yvel) {
             super.onViewReleased(releasedChild, xvel, yvel);
-            mViewDragHelper.settleCapturedViewAt(0, 0);
+            int[] pos = onSetNewPosition(releasedChild);
+            mViewDragHelper.settleCapturedViewAt(pos[0], pos[1]);
             invalidate();
+        }
+
+        @Override
+        public void onViewPositionChanged(View changedView, int left, int top, int dx, int dy) {
+            super.onViewPositionChanged(changedView, left, top, dx, dy);
+
         }
     }
 
+    /**
+     * Set vertical interval
+     * @param interval
+     */
     public void setVerticalInterval(float interval){
         mVerticalInterval = Utils.dp2px(getContext(), interval);
         postInvalidate();
     }
 
+    /**
+     * Set horizontal interval.
+     * @param interval
+     */
     public void setHorizontalInterval(float interval){
         mHorizontalInterval = Utils.dp2px(getContext(), interval);
         postInvalidate();
     }
 
+    /**
+     * Get vertical interval in this view.
+     * @return
+     */
     public float getVerticalInterval(){
         return mVerticalInterval;
     }
 
+    /**
+     * Get horizontal interval in this view.
+     * @return
+     */
     public float getHorizontalInterval(){
         return mHorizontalInterval;
     }
 
+    /**
+     * Set tags
+     * @param tags
+     */
     public void setTags(List<String> tags){
         mTags = tags;
         onSetTag();
     }
 
+    /**
+     * Set OnTagClickListener for TagView.
+     * @param listener
+     */
     public void setOnTagClickListener(TagView.OnTagClickListener listener){
         mOnTagClickListener = listener;
+    }
+
+    /**
+     * Set whether the child view can be dragged.
+     * @param enable
+     */
+    public void setDragEnable(boolean enable){
+        mDragEnable = enable;
+    }
+
+    /**
+     * Inserts the specified TagView into this ContainerLayout at the end.
+     * @param text
+     */
+    public void addTag(String text){
+        addTag(text, mChildViews.size());
+    }
+
+    /**
+     * Inserts the specified TagView into this ContainerLayout at the specified location.
+     * The TagView is inserted before the current element at the specified location.
+     * @param text
+     * @param position
+     */
+    public void addTag(String text, int position){
+        onAddTag(text, position);
+        postInvalidate();
     }
 }
