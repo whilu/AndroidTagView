@@ -9,13 +9,12 @@ import android.graphics.Rect;
 import android.graphics.RectF;
 import android.text.TextUtils;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 
 /**
  * Author: lujun
- * Date: 2015/12/31 11:47
+ * Date: 2015-12-31 11:47
  */
 public class TagView extends View {
 
@@ -46,6 +45,12 @@ public class TagView extends View {
     /** Whether this view clickable(default unclickable)*/
     private boolean isViewClickable;
 
+    /** The max length for this tag view*/
+    private int mTagMaxLength = 23;
+
+    /** OnTagClickListener for click action*/
+    private OnTagClickListener mOnTagClickListener;
+
     private Paint mPaint;
 
     private RectF mRectF;
@@ -53,12 +58,6 @@ public class TagView extends View {
     private Rect mTextBound;
 
     private String mAbstractText = "", mOriginText = "";
-
-    /** The max length for this tag view*/
-    private int mTagMaxLength = 23;
-
-    /** OnTagClickListener for click action*/
-    private OnTagClickListener mOnTagClickListener;
 
     public TagView(Context context, AttributeSet attrs, int defStyleAttr, String text){
         super(context, attrs, defStyleAttr);

@@ -6,10 +6,8 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.RectF;
-import android.support.v4.view.MotionEventCompat;
 import android.support.v4.widget.ViewDragHelper;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,7 +17,7 @@ import java.util.List;
 
 /**
  * Author: lujun
- * Date: 2015/12/30 17:14
+ * Date: 2015-12-30 17:14
  */
 public class ContainerLayout extends ViewGroup {
 
@@ -34,6 +32,9 @@ public class ContainerLayout extends ViewGroup {
 
     /** ContainerLayout border radius(default 10.0dp)*/
     private float mBorderRadius = 10.0f;
+
+    /** The sensitive of the ViewDragHelper(default 1.0f, normal)*/
+    private float mSensitivity = 1.0f;
 
     /** Tag view average height*/
     private int mChildHeight;
@@ -50,22 +51,21 @@ public class ContainerLayout extends ViewGroup {
     /** AttributeSet for child view*/
     private AttributeSet mAttrs;
 
-    private Paint mPaint;
-
-    private RectF mRectF;
+    /** Can drag view(default false)*/
+    private boolean mDragEnable;
 
     /** OnTagClickListener for child view*/
     private TagView.OnTagClickListener mOnTagClickListener;
 
+    private Paint mPaint;
+
+    private RectF mRectF;
+
     private ViewDragHelper mViewDragHelper;
 
-    private float mSensitivity = 1.0f;
+    private List<View> mChildViews;
 
     private int[] mViewPos;
-
-    private boolean mDragEnable;// default false
-
-    private List<View> mChildViews; //
 
     /** Default interval(dp)*/
     private static final float DEFAULT_INTERVAL = 5;
@@ -100,6 +100,8 @@ public class ContainerLayout extends ViewGroup {
         mBackgroundColor = attributes.getColor(R.styleable.AndroidTagView_container_background_color,
                 mBackgroundColor);
         mDragEnable = attributes.getBoolean(R.styleable.AndroidTagView_container_enable_drag, false);
+        mSensitivity = attributes.getFloat(R.styleable.AndroidTagView_container_drag_sensitivity,
+                mSensitivity);
         attributes.recycle();
 
         mPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
@@ -185,7 +187,7 @@ public class ContainerLayout extends ViewGroup {
     public void computeScroll() {
         super.computeScroll();
         if (mViewDragHelper.continueSettling(true)){
-            invalidate();
+            requestLayout();
         }
     }
 
@@ -230,12 +232,11 @@ public class ContainerLayout extends ViewGroup {
         addView(tagView, position);
     }
 
-    private int[] onSetNewPosition(View view){
+    private int[] onGetNewPosition(View view){
         int left = view.getLeft();
         int top = view.getTop();
         int bestMatchLeft = mViewPos[(int)view.getTag() * 2];
         int bestMatchTop = mViewPos[(int)view.getTag() * 2 + 1];
-        int tmpLeftDis = Math.abs(left - bestMatchLeft);
         int tmpTopDis = Math.abs(top - bestMatchTop);
         for (int i = 0; i < mViewPos.length / 2; i++) {
             if (Math.abs(top - mViewPos[i * 2 +1]) < tmpTopDis){
@@ -243,13 +244,44 @@ public class ContainerLayout extends ViewGroup {
                 tmpTopDis = Math.abs(top - mViewPos[i * 2 +1]);
             }
         }
+        int rowChildCount = 0;
+        int tmpLeftDis = 0;
         for (int i = 0; i < mViewPos.length / 2; i++) {
-            if (mViewPos[i * 2 + 1] == bestMatchTop && Math.abs(left - mViewPos[i * 2]) < tmpLeftDis){
-                bestMatchLeft = mViewPos[i * 2];
-                tmpLeftDis = Math.abs(left - mViewPos[i * 2]);
+            if (mViewPos[i * 2 + 1] == bestMatchTop){
+                if (rowChildCount == 0){
+                    bestMatchLeft = mViewPos[i * 2];
+                    tmpLeftDis = Math.abs(left - bestMatchLeft);
+                }else {
+                    if (Math.abs(left - mViewPos[i * 2]) < tmpLeftDis){
+                        bestMatchLeft = mViewPos[i * 2];
+                        tmpLeftDis = Math.abs(left - bestMatchLeft);
+                    }
+                }
+                rowChildCount++;
             }
         }
         return new int[]{bestMatchLeft, bestMatchTop};
+    }
+
+    private int onGetCoordinateReferPos(int left, int top){
+        int  pos = 0;
+        for (int i = 0; i < mViewPos.length / 2; i++) {
+            if (left == mViewPos[i * 2] && top == mViewPos[i * 2 + 1]){
+                pos = i;
+            }
+        }
+        return pos;
+    }
+
+    private void onChangeView(View view, int newPos, int originPos){
+        mChildViews.remove(originPos);
+        mChildViews.add(newPos, view);
+        for (View child : mChildViews) {
+            child.setTag(mChildViews.indexOf(child));
+        }
+
+        removeViewAt(originPos);
+        addView(view, newPos);
     }
 
     private class DragHelperCallBack extends ViewDragHelper.Callback{
@@ -286,15 +318,11 @@ public class ContainerLayout extends ViewGroup {
         @Override
         public void onViewReleased(View releasedChild, float xvel, float yvel) {
             super.onViewReleased(releasedChild, xvel, yvel);
-            int[] pos = onSetNewPosition(releasedChild);
+            int[] pos = onGetNewPosition(releasedChild);
+            int posRefer = onGetCoordinateReferPos(pos[0], pos[1]);
+            onChangeView(releasedChild, posRefer, (int) releasedChild.getTag());
             mViewDragHelper.settleCapturedViewAt(pos[0], pos[1]);
             invalidate();
-        }
-
-        @Override
-        public void onViewPositionChanged(View changedView, int left, int top, int dx, int dy) {
-            super.onViewPositionChanged(changedView, left, top, dx, dy);
-
         }
     }
 
