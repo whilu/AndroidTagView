@@ -37,9 +37,8 @@ public class ColorFactory {
     public static final int PURE_CYAN = 1;
     public static final int PURE_TEAL = 2;
 
-    public static final int SHARP666 = Color.parseColor("#FF666666");
-    public static final int SHARP00BCD4 = Color.parseColor("#FF00BCD4");
-    public static final int SHARP009688 = Color.parseColor("#FF009688");
+    public static final int SHARP666666 = Color.parseColor("#FF666666");
+    public static final int SHARP727272 = Color.parseColor("#FF727272");
 
     private static final String[] COLORS = new String[]{RED, LIGHTBLUE, AMBER, ORANGE, YELLOW,
             LIME, BLUE, INDIGO, LIGHTGREEN, GREY, DEEPPURPLE, TEAL, CYAN};
@@ -48,16 +47,15 @@ public class ColorFactory {
         int random = (int)(Math.random() * COLORS.length);
         int bgColor = Color.parseColor("#" + BG_COLOR_ALPHA + COLORS[random]);
         int bdColor = Color.parseColor("#" + BD_COLOR_ALPHA + COLORS[random]);
-        int tColor = SHARP666;
+        int tColor = SHARP666666;
         return new int[]{bgColor, bdColor, tColor};
     }
 
     public static int[] onPureBuild(PURE_COLOR type){
         String color = type == PURE_COLOR.CYAN ? CYAN : TEAL;
-        int textColor = type == PURE_COLOR.CYAN ? SHARP00BCD4 : SHARP009688;
         int bgColor = Color.parseColor("#" + BG_COLOR_ALPHA + color);
         int bdColor = Color.parseColor("#" + BD_COLOR_ALPHA + color);
-        int tColor = textColor;
+        int tColor = SHARP727272;
         return new int[]{bgColor, bdColor, tColor};
     }
 

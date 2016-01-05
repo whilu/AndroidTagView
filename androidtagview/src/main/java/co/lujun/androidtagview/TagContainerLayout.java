@@ -13,13 +13,14 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
  * Author: lujun(http://blog.lujun.co)
  * Date: 2015-12-30 17:14
  */
-public class ContainerLayout extends ViewGroup {
+public class TagContainerLayout extends ViewGroup {
 
     /** Vertical interval, default 5(dp)*/
     private float mVerticalInterval;
@@ -79,15 +80,15 @@ public class ContainerLayout extends ViewGroup {
     /** Default tag min length*/
     private static final int TAG_MIN_LENGTH = 3;
 
-    public ContainerLayout(Context context) {
+    public TagContainerLayout(Context context) {
         this(context, null);
     }
 
-    public ContainerLayout(Context context, AttributeSet attrs) {
+    public TagContainerLayout(Context context, AttributeSet attrs) {
         this(context, attrs, 0);
     }
 
-    public ContainerLayout(Context context, AttributeSet attrs, int defStyleAttr){
+    public TagContainerLayout(Context context, AttributeSet attrs, int defStyleAttr){
         super(context, attrs, defStyleAttr);
         init(context, attrs, defStyleAttr);
     }
@@ -221,7 +222,6 @@ public class ContainerLayout extends ViewGroup {
 
     private int[] onUpdateColorFactory(){
         int[] colors;
-        // FIXME , random color bg & bd not match
         if (mTheme == ColorFactory.RANDOM){
             colors = ColorFactory.onRandomBuild();
         }else if (mTheme == ColorFactory.PURE_TEAL){
@@ -253,10 +253,11 @@ public class ContainerLayout extends ViewGroup {
         }else {
             tagView.setTag(position);
         }
+        int[] colors = onUpdateColorFactory();
         tagView.setTagMaxLength(mTagMaxLength);
-        tagView.setTagBackgroundColor(onUpdateColorFactory()[0]);
-        tagView.setTagBorderColor(onUpdateColorFactory()[1]);
-        tagView.setTagTextColor(onUpdateColorFactory()[2]);
+        tagView.setTagBackgroundColor(colors[0]);
+        tagView.setTagBorderColor(colors[1]);
+        tagView.setTagTextColor(colors[2]);
         addView(tagView, position);
     }
 
@@ -405,6 +406,15 @@ public class ContainerLayout extends ViewGroup {
      */
     public void setTags(List<String> tags){
         mTags = tags;
+        onSetTag();
+    }
+
+    /**
+     * Set tags
+     * @param tags
+     */
+    public void setTags(String... tags){
+        mTags = Arrays.asList(tags);
         onSetTag();
     }
 

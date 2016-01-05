@@ -10,13 +10,12 @@ import android.widget.Toast;
 import java.util.ArrayList;
 import java.util.List;
 
-import co.lujun.androidtagview.ColorFactory;
-import co.lujun.androidtagview.ContainerLayout;
+import co.lujun.androidtagview.TagContainerLayout;
 import co.lujun.androidtagview.TagView;
 
 public class MainActivity extends AppCompatActivity {
 
-    private ContainerLayout mContainerLayout;
+    private TagContainerLayout mTagContainerLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,8 +24,8 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        mContainerLayout = (ContainerLayout) findViewById(R.id.containerLayout);
-        mContainerLayout.setOnTagClickListener(new TagView.OnTagClickListener() {
+        mTagContainerLayout = (TagContainerLayout) findViewById(R.id.tagcontainerLayout);
+        mTagContainerLayout.setOnTagClickListener(new TagView.OnTagClickListener() {
             @Override
             public void onTagClick(int position, String text) {
                 Toast.makeText(MainActivity.this, "position:" + position + ", text:" + text,
@@ -45,23 +44,23 @@ public class MainActivity extends AppCompatActivity {
         list.add("Html");
         list.add("Hello, this is a TAG example.");
         list.add("Welcome to use AndroidTagView!");
-//        mContainerLayout.setTagMaxLength(4);
-        mContainerLayout.setTheme(ColorFactory.RANDOM);
-        mContainerLayout.setTags(list);
+//        mTagContainerLayout.setTagMaxLength(4);
+//        mTagContainerLayout.setTheme(ColorFactory.PURE_CYAN);
+        mTagContainerLayout.setTags(list);
 
         Button btnAddTag = (Button) findViewById(R.id.btn_add_tag);
         btnAddTag.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mContainerLayout.addTag("This is a TAG u added!");
-//                mContainerLayout.addTag("This is a TAG u added!", 4);
+                mTagContainerLayout.addTag("This is a TAG u added!");
+//                mTagContainerLayout.addTag("This is a TAG u added!", 4);
             }
         });
         Button btnRemoveTag = (Button) findViewById(R.id.btn_remove_tag);
         btnRemoveTag.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mContainerLayout.removeTag(5);
+                mTagContainerLayout.removeTag(5);
             }
         });
     }
