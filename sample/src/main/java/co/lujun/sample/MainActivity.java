@@ -2,7 +2,6 @@ package co.lujun.sample;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -14,7 +13,6 @@ import android.widget.Toast;
 import java.util.ArrayList;
 import java.util.List;
 
-import co.lujun.androidtagview.ColorFactory;
 import co.lujun.androidtagview.TagContainerLayout;
 import co.lujun.androidtagview.TagView;
 
@@ -49,7 +47,7 @@ public class MainActivity extends AppCompatActivity {
         list2.add("Japan");
         list2.add("Sudan");
         list2.add("Spain");
-        list2.add("tag_max_length");
+        list2.add("UK");
         list2.add("Germany");
         list2.add("Niger");
         list2.add("Singapore");
