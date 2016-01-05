@@ -164,6 +164,9 @@ public class TagContainerLayout extends ViewGroup {
         mViewDragHelper = ViewDragHelper.create(this, mSensitivity, new DragHelperCallBack());
         setWillNotDraw(false);
         setDragState();
+        setTagMaxLength(mTagMaxLength);
+        setTagHorizontalPadding(mTagHorizontalPadding);
+        setTagVerticalPadding(mTagVerticalPadding);
     }
 
     @Override
@@ -287,6 +290,9 @@ public class TagContainerLayout extends ViewGroup {
     }
 
     private void onAddTag(String text, int position) {
+        if (position < 0 || position > mChildViews.size()){
+            throw new RuntimeException("Illegal position!");
+        }
         TagView tagView = new TagView(getContext(), text);
         initTagView(tagView);
         mChildViews.add(position, tagView);
@@ -381,6 +387,10 @@ public class TagContainerLayout extends ViewGroup {
 
         removeViewAt(originPos);
         addView(view, newPos);
+    }
+
+    private int ceilTagBorderWidth(){
+        return (int)Math.ceil(mTagBorderWidth);
     }
 
     private class DragHelperCallBack extends ViewDragHelper.Callback{
@@ -545,7 +555,7 @@ public class TagContainerLayout extends ViewGroup {
     }
 
     /**
-     * Set the TagView text max length(min is 3).
+     * Set the TagView text max length(must >=3).
      * @param maxLength
      */
     public void setTagMaxLength(int maxLength){
@@ -654,7 +664,8 @@ public class TagContainerLayout extends ViewGroup {
      * @param padding
      */
     public void setTagHorizontalPadding(int padding) {
-        this.mTagHorizontalPadding = padding;
+        int ceilWidth = ceilTagBorderWidth();
+        this.mTagHorizontalPadding = padding < ceilWidth ? ceilWidth : padding;
     }
 
     /**
@@ -670,7 +681,8 @@ public class TagContainerLayout extends ViewGroup {
      * @param padding
      */
     public void setTagVerticalPadding(int padding) {
-        this.mTagVerticalPadding = padding;
+        int ceilWidth = ceilTagBorderWidth();
+        this.mTagVerticalPadding = padding < ceilWidth ? ceilWidth : padding;
     }
 
     /**
