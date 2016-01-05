@@ -5,7 +5,7 @@
         <attr name="horizontal_interval" format="dimension" />
 
         <attr name="container_border_width" format="dimension" />
-        <attr name="container_corner_radius" format="dimension" />
+        <attr name="container_border_radius" format="dimension" />
         <attr name="container_border_color" format="color" />
         <attr name="container_background_color" format="color" />
         <attr name="container_enable_drag" format="boolean" />

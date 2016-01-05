@@ -28,16 +28,16 @@ public class TagContainerLayout extends ViewGroup {
     /** Horizontal interval, default 5(dp)*/
     private int mHorizontalInterval;
 
-    /** ContainerLayout border width(default 0.5dp)*/
+    /** TagContainerLayout border width(default 0.5dp)*/
     private float mBorderWidth = 0.5f;
 
-    /** ContainerLayout border radius(default 10.0dp)*/
+    /** TagContainerLayout border radius(default 10.0dp)*/
     private float mBorderRadius = 10.0f;
 
     /** The sensitive of the ViewDragHelper(default 1.0f, normal)*/
     private float mSensitivity = 1.0f;
 
-    /** Tag view average height*/
+    /** Tagview average height*/
     private int mChildHeight;
 
     /** TagContainerLayout border color(default #22FF0000)*/
@@ -129,7 +129,7 @@ public class TagContainerLayout extends ViewGroup {
                 dp2px(context, DEFAULT_INTERVAL));
         mBorderWidth = attributes.getDimension(R.styleable.AndroidTagView_container_border_width,
                 dp2px(context, mBorderWidth));
-        mBorderRadius = attributes.getDimension(R.styleable.AndroidTagView_container_corner_radius,
+        mBorderRadius = attributes.getDimension(R.styleable.AndroidTagView_container_border_radius,
                 dp2px(context, mBorderRadius));
         mBorderColor = attributes.getColor(R.styleable.AndroidTagView_container_border_color,
                 mBorderColor);
@@ -442,41 +442,6 @@ public class TagContainerLayout extends ViewGroup {
     }
 
     /**
-     * Set vertical interval
-     * @param interval
-     */
-    public void setVerticalInterval(float interval){
-        mVerticalInterval = (int) dp2px(getContext(), interval);
-        postInvalidate();
-    }
-
-    /**
-     * Set horizontal interval.
-     * @param interval
-     */
-    public void setHorizontalInterval(float interval){
-        mHorizontalInterval = (int)dp2px(getContext(), interval);
-        postInvalidate();
-    }
-
-    /**
-     * Get vertical interval in this view.
-     * @return
-     */
-    public int getVerticalInterval(){
-        return mVerticalInterval;
-    }
-
-    /**
-     * Get horizontal interval in this view.
-     * @return
-     */
-    public int getHorizontalInterval(){
-        return mHorizontalInterval;
-    }
-
-
-    /**
      * Get current drag view state.
      * @return
      */
@@ -502,31 +467,6 @@ public class TagContainerLayout extends ViewGroup {
     }
 
     /**
-     * Set OnTagClickListener for TagView.
-     * @param listener
-     */
-    public void setOnTagClickListener(TagView.OnTagClickListener listener){
-        mOnTagClickListener = listener;
-    }
-
-    /**
-     * Set whether the child view can be dragged.
-     * @param enable
-     */
-    public void setDragEnable(boolean enable){
-        mDragEnable = enable;
-        setDragState();
-    }
-
-    /**
-     * Get current view is drag enable attribute.
-     * @return
-     */
-    public boolean getDragEnable(){
-        return mDragEnable;
-    }
-
-    /**
      * Inserts the specified TagView into this ContainerLayout at the end.
      * @param text
      */
@@ -546,12 +486,160 @@ public class TagContainerLayout extends ViewGroup {
     }
 
     /**
-     * Remove a TagView with the specified location.
+     * Remove a TagView in specified position.
      * @param position
      */
     public void removeTag(int position){
         onRemoveTag(position);
         postInvalidate();
+    }
+
+    /**
+     * Set OnTagClickListener for TagView.
+     * @param listener
+     */
+    public void setOnTagClickListener(TagView.OnTagClickListener listener){
+        mOnTagClickListener = listener;
+    }
+
+    /**
+     * Get TagView text.
+     * @param position
+     * @return
+     */
+    public String getTagText(int position){
+        return ((TagView)mChildViews.get(position)).getText();
+    }
+
+    /**
+     * Set whether the child view can be dragged.
+     * @param enable
+     */
+    public void setDragEnable(boolean enable){
+        this.mDragEnable = enable;
+        setDragState();
+    }
+
+    /**
+     * Get current view is drag enable attribute.
+     * @return
+     */
+    public boolean getDragEnable(){
+        return mDragEnable;
+    }
+
+    /**
+     * Set vertical interval
+     * @param interval
+     */
+    public void setVerticalInterval(float interval){
+        mVerticalInterval = (int) dp2px(getContext(), interval);
+        postInvalidate();
+    }
+
+    /**
+     * Get vertical interval in this view.
+     * @return
+     */
+    public int getVerticalInterval(){
+        return mVerticalInterval;
+    }
+
+    /**
+     * Set horizontal interval.
+     * @param interval
+     */
+    public void setHorizontalInterval(float interval){
+        mHorizontalInterval = (int)dp2px(getContext(), interval);
+        postInvalidate();
+    }
+
+    /**
+     * Get horizontal interval in this view.
+     * @return
+     */
+    public int getHorizontalInterval(){
+        return mHorizontalInterval;
+    }
+
+    /**
+     * Get TagContainerLayout border width.
+     * @return
+     */
+    public float getBorderWidth() {
+        return mBorderWidth;
+    }
+
+    /**
+     * Set TagContainerLayout border width.
+     * @param width
+     */
+    public void setBorderWidth(float width) {
+        this.mBorderWidth = width;
+    }
+
+    /**
+     * Get TagContainerLayout border radius.
+     * @return
+     */
+    public float getBorderRadius() {
+        return mBorderRadius;
+    }
+
+    /**
+     * Set TagContainerLayout border radius.
+     * @param radius
+     */
+    public void setBorderRadius(float radius) {
+        this.mBorderRadius = radius;
+    }
+
+    /**
+     * Get TagContainerLayout border color.
+     * @return
+     */
+    public int getBorderColor() {
+        return mBorderColor;
+    }
+
+    /**
+     * Set TagContainerLayout border color.
+     * @param color
+     */
+    public void setBorderColor(int color) {
+        this.mBorderColor = color;
+    }
+
+    /**
+     * Get TagContainerLayout background color.
+     * @return
+     */
+    public int getBackgroundColor() {
+        return mBackgroundColor;
+    }
+
+    /**
+     * Set TagContainerLayout background color.
+     * @param color
+     */
+    public void setBackgroundColor(int color) {
+        this.mBackgroundColor = color;
+    }
+
+    /**
+     * Get TagContainerLayout ViewDragHelper sensitivity.
+     * @return
+     */
+    public float getSensitivity() {
+        return mSensitivity;
+    }
+
+    /**
+     * Set TagContainerLayout ViewDragHelper sensitivity.
+     * @param sensitivity
+     */
+    public void setSensitivity(float sensitivity) {
+        this.mSensitivity = sensitivity;
     }
 
     /**
@@ -571,16 +659,7 @@ public class TagContainerLayout extends ViewGroup {
     }
 
     /**
-     * Get TagView text.
-     * @param position
-     * @return
-     */
-    public String getTagText(int position){
-        return ((TagView)mChildViews.get(position)).getText();
-    }
-
-    /**
-     * Set View theme.
+     * Set TagView theme.
      * @param theme
      */
     public void setTheme(int theme){
@@ -588,10 +667,18 @@ public class TagContainerLayout extends ViewGroup {
     }
 
     /**
+     * Get TagView theme.
+     * @return
+     */
+    public int getTheme(){
+        return mTheme;
+    }
+
+    /**
      * Get TagView is clickable.
      * @return
      */
-    public boolean isTagViewClickable() {
+    public boolean getIsTagViewClickable() {
         return isTagViewClickable;
     }
 
