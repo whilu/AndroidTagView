@@ -1,14 +1,11 @@
 package co.lujun.androidtagview;
 
 import android.content.Context;
-import android.content.res.TypedArray;
 import android.graphics.Canvas;
-import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
 import android.graphics.RectF;
 import android.text.TextUtils;
-import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
 
@@ -18,31 +15,31 @@ import android.view.View;
  */
 public class TagView extends View {
 
-    /** Border width(default 0.5dp)*/
-    private float mBorderWidth = 0.5f;
+    /** Border width*/
+    private float mBorderWidth;
 
-    /** Border radius(default 15.0dp)*/
-    private float mBorderRadius = 15.0f;
+    /** Border radius*/
+    private float mBorderRadius;
 
-    /** Text size(default 14sp)*/
-    private float mTextSize = 14;
+    /** Text size*/
+    private float mTextSize;
 
-    /** Horizontal padding for this view, include left & right padding(left & right padding are equal, default 20px)*/
-    private int mHorizontalPadding = 20;
+    /** Horizontal padding for this view, include left & right padding(left & right padding are equal*/
+    private int mHorizontalPadding;
 
-    /** Vertical padding for this view, include top & bottom padding(top & bottom padding are equal, default 17px)*/
-    private int mVerticalPadding = 17;
+    /** Vertical padding for this view, include top & bottom padding(top & bottom padding are equal)*/
+    private int mVerticalPadding;
 
-    /** TagView border color(default #88F44336)*/
-    private int mBorderColor = Color.parseColor("#88F44336");
+    /** TagView border color*/
+    private int mBorderColor;
 
-    /** TagView background color(default #33F44336)*/
-    private int mBackgroundColor = Color.parseColor("#33F44336");
+    /** TagView background color*/
+    private int mBackgroundColor;
 
-    /** TagView text color(default #FF666666)*/
-    private int mTextColor = Color.parseColor("#FF666666");
+    /** TagView text color*/
+    private int mTextColor;
 
-    /** Whether this view clickable(default unclickable)*/
+    /** Whether this view clickable*/
     private boolean isViewClickable;
 
     /** The max length for this tag view*/
@@ -59,35 +56,13 @@ public class TagView extends View {
 
     private String mAbstractText, mOriginText;
 
-    public TagView(Context context, AttributeSet attrs, int defStyleAttr, String text){
-        super(context, attrs, defStyleAttr);
-        init(context, attrs, defStyleAttr, text);
+    public TagView(Context context, String text){
+        super(context);
+        init(text);
     }
 
-    private void init(Context context, AttributeSet attrs, int defStyleAttr, String text){
-        TypedArray attributes = context.obtainStyledAttributes(attrs, R.styleable.AndroidTagView,
-                defStyleAttr, 0);
-        mBorderWidth = attributes.getDimension(R.styleable.AndroidTagView_tag_border_width,
-                Utils.dp2px(context, mBorderWidth));
-        mBorderRadius = attributes.getDimension(
-                R.styleable.AndroidTagView_tag_corner_radius, Utils.dp2px(context, mBorderRadius));
-        mHorizontalPadding = (int) attributes.getDimension(
-                R.styleable.AndroidTagView_tag_horizontal_padding, mHorizontalPadding);
-        mVerticalPadding = (int) attributes.getDimension(
-                R.styleable.AndroidTagView_tag_vertical_padding, mVerticalPadding);
-        mTextSize = attributes.getDimension(R.styleable.AndroidTagView_tag_text_size,
-                Utils.sp2px(context, mTextSize));
-        mBorderColor = attributes.getColor(R.styleable.AndroidTagView_tag_border_color,
-                mBorderColor);
-        mBackgroundColor = attributes.getColor(R.styleable.AndroidTagView_tag_background_color,
-                mBackgroundColor);
-        mTextColor = attributes.getColor(R.styleable.AndroidTagView_tag_text_color, mTextColor);
-        isViewClickable = attributes.getBoolean(R.styleable.AndroidTagView_tag_clickable, false);
-        // FIXME can not get all attributes
-        attributes.recycle();
-
+    private void init(String text){
         mPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
-        mPaint.setTextSize(mTextSize);
         mRectF = new RectF();
         mTextBound = new Rect();
         mOriginText = text;
@@ -98,6 +73,7 @@ public class TagView extends View {
             mAbstractText = mOriginText.length() <= mTagMaxLength ? mOriginText
                     : mOriginText.substring(0, mTagMaxLength - 3) + "...";
         }
+        mPaint.setTextSize(mTextSize);
         mPaint.getTextBounds(mAbstractText, 0, mAbstractText.length(), mTextBound);
     }
 
@@ -146,24 +122,49 @@ public class TagView extends View {
     }
 
     public void setTagMaxLength(int maxLength){
-        mTagMaxLength = maxLength;
+        this.mTagMaxLength = maxLength;
         onDealText();
     }
 
     public void setOnTagClickListener(OnTagClickListener listener){
-        mOnTagClickListener = listener;
+        this.mOnTagClickListener = listener;
     }
 
     public void setTagBackgroundColor(int color){
-        mBackgroundColor = color;
+        this.mBackgroundColor = color;
     }
 
     public void setTagBorderColor(int color){
-        mBorderColor = color;
+        this.mBorderColor = color;
     }
 
     public void setTagTextColor(int color){
-        mTextColor = color;
+        this.mTextColor = color;
+    }
+
+    public void setBorderWidth(float width) {
+        this.mBorderWidth = width;
+    }
+
+    public void setBorderRadius(float radius) {
+        this.mBorderRadius = radius;
+    }
+
+    public void setTextSize(float size) {
+        this.mTextSize = size;
+        onDealText();
+    }
+
+    public void setHorizontalPadding(int padding) {
+        this.mHorizontalPadding = padding;
+    }
+
+    public void setVerticalPadding(int padding) {
+        this.mVerticalPadding = padding;
+    }
+
+    public void setIsViewClickable(boolean clickable) {
+        this.isViewClickable = clickable;
     }
 
     public interface OnTagClickListener{

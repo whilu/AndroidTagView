@@ -33,6 +33,7 @@ public class ColorFactory {
 
     public enum PURE_COLOR{CYAN, TEAL}
 
+    public static final int NONE = -1;
     public static final int RANDOM = 0;
     public static final int PURE_CYAN = 1;
     public static final int PURE_TEAL = 2;

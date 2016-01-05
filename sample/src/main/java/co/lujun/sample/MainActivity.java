@@ -1,5 +1,6 @@
 package co.lujun.sample;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -10,6 +11,7 @@ import android.widget.Toast;
 import java.util.ArrayList;
 import java.util.List;
 
+import co.lujun.androidtagview.ColorFactory;
 import co.lujun.androidtagview.TagContainerLayout;
 import co.lujun.androidtagview.TagView;
 
@@ -37,15 +39,25 @@ public class MainActivity extends AppCompatActivity {
         list.add("C/C++");
         list.add("Python");
         list.add("Swift");
-        list.add("你好，这是一个TAG示例。你好，这是一个TAG示例。你好，这是一个TAG示例。你好，这是一个TAG示例。");
+        list.add("你好，这是一个TAG。你好，这是一个TAG。你好，这是一个TAG。你好，这是一个TAG。");
         list.add("PHP");
         list.add("Python");
         list.add("JavaScript");
         list.add("Html");
         list.add("Hello, this is a TAG example.");
         list.add("Welcome to use AndroidTagView!");
+
+        // Custom settings
 //        mTagContainerLayout.setTagMaxLength(4);
+
+        // Set the custom theme
 //        mTagContainerLayout.setTheme(ColorFactory.PURE_CYAN);
+
+        // If you want to use your colors for TagView, remember set the theme with ColorFactory.NONE
+//        mTagContainerLayout.setTheme(ColorFactory.NONE);
+//        mTagContainerLayout.setTagBackgroundColor(Color.TRANSPARENT);
+
+        // After you set your own attributes for TagView, then set tag(s) or add tag(s)
         mTagContainerLayout.setTags(list);
 
         Button btnAddTag = (Button) findViewById(R.id.btn_add_tag);

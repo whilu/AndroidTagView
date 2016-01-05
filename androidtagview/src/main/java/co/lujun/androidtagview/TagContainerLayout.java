@@ -40,25 +40,49 @@ public class TagContainerLayout extends ViewGroup {
     /** Tag view average height*/
     private int mChildHeight;
 
-    /** ContainerLayout border color(default #22FF0000)*/
+    /** TagContainerLayout border color(default #22FF0000)*/
     private int mBorderColor = Color.parseColor("#22FF0000");
 
-    /** ContainerLayout background color(default #11FF0000)*/
+    /** TagContainerLayout background color(default #11FF0000)*/
     private int mBackgroundColor = Color.parseColor("#11FF0000");
 
-    /** The max length for this tag view(default max length 23)*/
+    /** The max length for TagView(default max length 23)*/
     private int mTagMaxLength = 23;
+
+    /** TagView Border width(default 0.5dp)*/
+    private float mTagBorderWidth = 0.5f;
+
+    /** TagView Border radius(default 15.0dp)*/
+    private float mTagBorderRadius = 15.0f;
+
+    /** TagView Text size(default 14sp)*/
+    private float mTagTextSize = 14;
+
+    /** Horizontal padding for TagView, include left & right padding(left & right padding are equal, default 20px)*/
+    private int mTagHorizontalPadding = 20;
+
+    /** Vertical padding for TagView, include top & bottom padding(top & bottom padding are equal, default 17px)*/
+    private int mTagVerticalPadding = 17;
+
+    /** TagView border color(default #88F44336)*/
+    private int mTagBorderColor = Color.parseColor("#88F44336");
+
+    /** TagView background color(default #33F44336)*/
+    private int mTagBackgroundColor = Color.parseColor("#33F44336");
+
+    /** TagView text color(default #FF666666)*/
+    private int mTagTextColor = Color.parseColor("#FF666666");
+
+    /** Whether TagView can clickable(default unclickable)*/
+    private boolean isTagViewClickable;
 
     /** Tags*/
     private List<String> mTags;
 
-    /** AttributeSet for child view*/
-    private AttributeSet mAttrs;
-
-    /** Can drag view(default false)*/
+    /** Can drag TagView(default false)*/
     private boolean mDragEnable;
 
-    /** OnTagClickListener for child view*/
+    /** OnTagClickListener for TagView*/
     private TagView.OnTagClickListener mOnTagClickListener;
 
     private Paint mPaint;
@@ -94,7 +118,6 @@ public class TagContainerLayout extends ViewGroup {
     }
 
     private void init(Context context, AttributeSet attrs, int defStyleAttr){
-        mAttrs = attrs;
         TypedArray attributes = context.obtainStyledAttributes(attrs, R.styleable.AndroidTagView,
                 defStyleAttr, 0);
         mVerticalInterval = attributes.getDimension(R.styleable.AndroidTagView_vertical_interval,
@@ -114,6 +137,22 @@ public class TagContainerLayout extends ViewGroup {
                 mSensitivity);
         mTagMaxLength = attributes.getInt(R.styleable.AndroidTagView_tag_max_length, mTagMaxLength);
         mTheme = attributes.getInt(R.styleable.AndroidTagView_tag_theme, mTheme);
+        mTagBorderWidth = attributes.getDimension(R.styleable.AndroidTagView_tag_border_width,
+                Utils.dp2px(context, mTagBorderWidth));
+        mTagBorderRadius = attributes.getDimension(
+                R.styleable.AndroidTagView_tag_corner_radius, Utils.dp2px(context, mTagBorderRadius));
+        mTagHorizontalPadding = (int) attributes.getDimension(
+                R.styleable.AndroidTagView_tag_horizontal_padding, mTagHorizontalPadding);
+        mTagVerticalPadding = (int) attributes.getDimension(
+                R.styleable.AndroidTagView_tag_vertical_padding, mTagVerticalPadding);
+        mTagTextSize = attributes.getDimension(R.styleable.AndroidTagView_tag_text_size,
+                Utils.sp2px(context, mTagTextSize));
+        mTagBorderColor = attributes.getColor(R.styleable.AndroidTagView_tag_border_color,
+                mTagBorderColor);
+        mTagBackgroundColor = attributes.getColor(R.styleable.AndroidTagView_tag_background_color,
+                mTagBackgroundColor);
+        mTagTextColor = attributes.getColor(R.styleable.AndroidTagView_tag_text_color, mTagTextColor);
+        isTagViewClickable = attributes.getBoolean(R.styleable.AndroidTagView_tag_clickable, false);
         attributes.recycle();
 
         mPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
@@ -226,8 +265,10 @@ public class TagContainerLayout extends ViewGroup {
             colors = ColorFactory.onRandomBuild();
         }else if (mTheme == ColorFactory.PURE_TEAL){
             colors = ColorFactory.onPureBuild(ColorFactory.PURE_COLOR.TEAL);
-        }else {
+        }else if (mTheme == ColorFactory.PURE_CYAN){
             colors = ColorFactory.onPureBuild(ColorFactory.PURE_COLOR.CYAN);
+        }else {
+            colors = new int[]{mTagBackgroundColor, mTagBorderColor, mTagTextColor};
         }
         return colors;
     }
@@ -243,8 +284,8 @@ public class TagContainerLayout extends ViewGroup {
     }
 
     private void onAddTag(String text, int position){
-        TagView tagView = new TagView(getContext(), mAttrs, 0, text);
-        tagView.setOnTagClickListener(mOnTagClickListener);
+        TagView tagView = new TagView(getContext(), text);
+        initTagView(tagView);
         mChildViews.add(position, tagView);
         if (position < mChildViews.size()){
             for (int i = position; i < mChildViews.size(); i++) {
@@ -253,12 +294,22 @@ public class TagContainerLayout extends ViewGroup {
         }else {
             tagView.setTag(position);
         }
-        int[] colors = onUpdateColorFactory();
+        addView(tagView, position);
+    }
+
+    private void initTagView(TagView tagView){
         tagView.setTagMaxLength(mTagMaxLength);
+        tagView.setOnTagClickListener(mOnTagClickListener);
+        int[] colors = onUpdateColorFactory();
         tagView.setTagBackgroundColor(colors[0]);
         tagView.setTagBorderColor(colors[1]);
         tagView.setTagTextColor(colors[2]);
-        addView(tagView, position);
+        tagView.setBorderWidth(mTagBorderWidth);
+        tagView.setBorderRadius(mTagBorderRadius);
+        tagView.setTextSize(mTagTextSize);
+        tagView.setHorizontalPadding(mTagHorizontalPadding);
+        tagView.setVerticalPadding(mTagVerticalPadding);
+        tagView.setIsViewClickable(isTagViewClickable);
     }
 
     private void onRemoveTag(int position){
@@ -493,5 +544,149 @@ public class TagContainerLayout extends ViewGroup {
      */
     public void setTheme(int theme){
         mTheme = theme;
+    }
+
+    /**
+     * Get TagView is clickable.
+     * @return
+     */
+    public boolean isTagViewClickable() {
+        return isTagViewClickable;
+    }
+
+    /**
+     * Set TagView is clickable
+     * @param clickable
+     */
+    public void setIsTagViewClickable(boolean clickable) {
+        this.isTagViewClickable = clickable;
+    }
+
+    /**
+     * Get TagView border width.
+     * @return
+     */
+    public float getTagBorderWidth() {
+        return mTagBorderWidth;
+    }
+
+    /**
+     * Set TagView border width.
+     * @param width
+     */
+    public void setTagBorderWidth(float width) {
+        this.mTagBorderWidth = width;
+    }
+
+    /**
+     * Get TagView border radius.
+     * @return
+     */
+    public float getTagBorderRadius() {
+        return mTagBorderRadius;
+    }
+
+    /**
+     * Set TagView border radius.
+     * @param radius
+     */
+    public void setTagBorderRadius(float radius) {
+        this.mTagBorderRadius = radius;
+    }
+
+    /**
+     * Get TagView text size.
+     * @return
+     */
+    public float getTagTextSize() {
+        return mTagTextSize;
+    }
+
+    /**
+     * Set TagView text size.
+     * @param size
+     */
+    public void setTagTextSize(float size) {
+        this.mTagTextSize = size;
+    }
+
+    /**
+     * Get TagView horizontal padding.
+     * @return
+     */
+    public int getTagHorizontalPadding() {
+        return mTagHorizontalPadding;
+    }
+
+    /**
+     * Set TagView horizontal padding.
+     * @param padding
+     */
+    public void setTagHorizontalPadding(int padding) {
+        this.mTagHorizontalPadding = padding;
+    }
+
+    /**
+     * Get TagView vertical padding.
+     * @return
+     */
+    public int getTagVerticalPadding() {
+        return mTagVerticalPadding;
+    }
+
+    /**
+     * Set TagView vertical padding.
+     * @param padding
+     */
+    public void setTagVerticalPadding(int padding) {
+        this.mTagVerticalPadding = padding;
+    }
+
+    /**
+     * Get TagView border color.
+     * @return
+     */
+    public int getTagBorderColor() {
+        return mTagBorderColor;
+    }
+
+    /**
+     * Set TagView border color.
+     * @param color
+     */
+    public void setTagBorderColor(int color) {
+        this.mTagBorderColor = color;
+    }
+
+    /**
+     * Get TagView background color.
+     * @return
+     */
+    public int getTagBackgroundColor() {
+        return mTagBackgroundColor;
+    }
+
+    /**
+     * Set TagView background color.
+     * @param color
+     */
+    public void setTagBackgroundColor(int color) {
+        this.mTagBackgroundColor = color;
+    }
+
+    /**
+     * Get TagView text color.
+     * @return
+     */
+    public int getTagTextColor() {
+        return mTagTextColor;
+    }
+
+    /**
+     * Set TagView text color.
+     * @param color
+     */
+    public void setTagTextColor(int color) {
+        this.mTagTextColor = color;
     }
 }
