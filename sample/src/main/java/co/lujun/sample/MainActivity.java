@@ -1,5 +1,7 @@
 package co.lujun.sample;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -26,14 +28,6 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        mTagContainerLayout = (TagContainerLayout) findViewById(R.id.tagcontainerLayout);
-        mTagContainerLayout.setOnTagClickListener(new TagView.OnTagClickListener() {
-            @Override
-            public void onTagClick(int position, String text) {
-                Toast.makeText(MainActivity.this, "position:" + position + ", text:" + text,
-                        Toast.LENGTH_SHORT).show();
-            }
-        });
         List<String> list = new ArrayList<String>();
         list.add("Java");
         list.add("C/C++");
@@ -46,6 +40,38 @@ public class MainActivity extends AppCompatActivity {
         list.add("Html");
         list.add("Hello, this is a TAG example.");
         list.add("Welcome to use AndroidTagView!");
+
+        mTagContainerLayout = (TagContainerLayout) findViewById(R.id.tagcontainerLayout);
+
+        // Set custom click listener
+        mTagContainerLayout.setOnTagClickListener(new TagView.OnTagClickListener() {
+            @Override
+            public void onTagClick(int position, String text) {
+                Toast.makeText(MainActivity.this, "click-position:" + position + ", text:" + text,
+                        Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onTagLongClick(final int position, String text) {
+                AlertDialog dialog = new AlertDialog.Builder(MainActivity.this)
+                        .setTitle("long click")
+                        .setMessage("You will delete this tag!")
+                        .setPositiveButton("Delete", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                mTagContainerLayout.removeTag(position);
+                            }
+                        })
+                        .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
+                            }
+                        })
+                        .create();
+                dialog.show();
+            }
+        });
 
         // Custom settings
 //        mTagContainerLayout.setTagMaxLength(4);
@@ -66,13 +92,6 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 mTagContainerLayout.addTag("This is a TAG u added!");
 //                mTagContainerLayout.addTag("This is a TAG u added!", 4);
-            }
-        });
-        Button btnRemoveTag = (Button) findViewById(R.id.btn_remove_tag);
-        btnRemoveTag.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mTagContainerLayout.removeTag(5);
             }
         });
     }

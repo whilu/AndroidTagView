@@ -23,10 +23,10 @@ import java.util.List;
 public class TagContainerLayout extends ViewGroup {
 
     /** Vertical interval, default 5(dp)*/
-    private float mVerticalInterval;
+    private int mVerticalInterval;
 
     /** Horizontal interval, default 5(dp)*/
-    private float mHorizontalInterval;
+    private int mHorizontalInterval;
 
     /** ContainerLayout border width(default 0.5dp)*/
     private float mBorderWidth = 0.5f;
@@ -82,6 +82,9 @@ public class TagContainerLayout extends ViewGroup {
     /** Can drag TagView(default false)*/
     private boolean mDragEnable;
 
+    /** TagView drag state(default STATE_IDLE)*/
+    private int mTagViewState = ViewDragHelper.STATE_IDLE;
+
     /** OnTagClickListener for TagView*/
     private TagView.OnTagClickListener mOnTagClickListener;
 
@@ -120,14 +123,14 @@ public class TagContainerLayout extends ViewGroup {
     private void init(Context context, AttributeSet attrs, int defStyleAttr){
         TypedArray attributes = context.obtainStyledAttributes(attrs, R.styleable.AndroidTagView,
                 defStyleAttr, 0);
-        mVerticalInterval = attributes.getDimension(R.styleable.AndroidTagView_vertical_interval,
-                Utils.dp2px(context, DEFAULT_INTERVAL));
-        mHorizontalInterval = attributes.getDimension(R.styleable.AndroidTagView_horizontal_interval,
-                Utils.dp2px(context, DEFAULT_INTERVAL));
+        mVerticalInterval = (int)attributes.getDimension(R.styleable.AndroidTagView_vertical_interval,
+                dp2px(context, DEFAULT_INTERVAL));
+        mHorizontalInterval = (int)attributes.getDimension(R.styleable.AndroidTagView_horizontal_interval,
+                dp2px(context, DEFAULT_INTERVAL));
         mBorderWidth = attributes.getDimension(R.styleable.AndroidTagView_container_border_width,
-                Utils.dp2px(context, mBorderWidth));
+                dp2px(context, mBorderWidth));
         mBorderRadius = attributes.getDimension(R.styleable.AndroidTagView_container_corner_radius,
-                Utils.dp2px(context, mBorderRadius));
+                dp2px(context, mBorderRadius));
         mBorderColor = attributes.getColor(R.styleable.AndroidTagView_container_border_color,
                 mBorderColor);
         mBackgroundColor = attributes.getColor(R.styleable.AndroidTagView_container_background_color,
@@ -138,15 +141,15 @@ public class TagContainerLayout extends ViewGroup {
         mTagMaxLength = attributes.getInt(R.styleable.AndroidTagView_tag_max_length, mTagMaxLength);
         mTheme = attributes.getInt(R.styleable.AndroidTagView_tag_theme, mTheme);
         mTagBorderWidth = attributes.getDimension(R.styleable.AndroidTagView_tag_border_width,
-                Utils.dp2px(context, mTagBorderWidth));
+                dp2px(context, mTagBorderWidth));
         mTagBorderRadius = attributes.getDimension(
-                R.styleable.AndroidTagView_tag_corner_radius, Utils.dp2px(context, mTagBorderRadius));
+                R.styleable.AndroidTagView_tag_corner_radius, dp2px(context, mTagBorderRadius));
         mTagHorizontalPadding = (int) attributes.getDimension(
                 R.styleable.AndroidTagView_tag_horizontal_padding, mTagHorizontalPadding);
         mTagVerticalPadding = (int) attributes.getDimension(
                 R.styleable.AndroidTagView_tag_vertical_padding, mTagVerticalPadding);
         mTagTextSize = attributes.getDimension(R.styleable.AndroidTagView_tag_text_size,
-                Utils.sp2px(context, mTagTextSize));
+                sp2px(context, mTagTextSize));
         mTagBorderColor = attributes.getColor(R.styleable.AndroidTagView_tag_border_color,
                 mTagBorderColor);
         mTagBackgroundColor = attributes.getColor(R.styleable.AndroidTagView_tag_background_color,
@@ -160,6 +163,7 @@ public class TagContainerLayout extends ViewGroup {
         mChildViews = new ArrayList<View>();
         mViewDragHelper = ViewDragHelper.create(this, mSensitivity, new DragHelperCallBack());
         setWillNotDraw(false);
+        setDragState();
     }
 
     @Override
@@ -177,9 +181,8 @@ public class TagContainerLayout extends ViewGroup {
         if (childCount == 0){
             setMeasuredDimension(0, 0);
         }else if (heightSpecMode == MeasureSpec.AT_MOST) {
-            int childHeight = getChildAt(0).getMeasuredHeight();
-            setMeasuredDimension(widthSpecSize, (int)((mVerticalInterval + childHeight) * lines
-                    - mVerticalInterval + getPaddingTop() + getPaddingBottom()));
+            setMeasuredDimension(widthSpecSize, (mVerticalInterval + mChildHeight) * lines
+                    - mVerticalInterval + getPaddingTop() + getPaddingBottom());
         }else {
             setMeasuredDimension(widthSpecSize, heightSpecSize);
         }
@@ -283,7 +286,7 @@ public class TagContainerLayout extends ViewGroup {
         postInvalidate();
     }
 
-    private void onAddTag(String text, int position){
+    private void onAddTag(String text, int position) {
         TagView tagView = new TagView(getContext(), text);
         initTagView(tagView);
         mChildViews.add(position, tagView);
@@ -321,6 +324,7 @@ public class TagContainerLayout extends ViewGroup {
         for (int i = position; i < mChildViews.size(); i++) {
             mChildViews.get(i).setTag(i);
         }
+        // TODO, make removed view null?
     }
 
     private int[] onGetNewPosition(View view){
@@ -364,6 +368,10 @@ public class TagContainerLayout extends ViewGroup {
         return pos;
     }
 
+    private void setDragState(){
+        mTagViewState = mDragEnable ? ViewDragHelper.STATE_DRAGGING : ViewDragHelper.STATE_IDLE;
+    }
+
     private void onChangeView(View view, int newPos, int originPos){
         mChildViews.remove(originPos);
         mChildViews.add(newPos, view);
@@ -376,6 +384,12 @@ public class TagContainerLayout extends ViewGroup {
     }
 
     private class DragHelperCallBack extends ViewDragHelper.Callback{
+
+        @Override
+        public void onViewDragStateChanged(int state) {
+            super.onViewDragStateChanged(state);
+            mTagViewState = state;
+        }
 
         @Override
         public boolean tryCaptureView(View child, int pointerId) {
@@ -422,7 +436,7 @@ public class TagContainerLayout extends ViewGroup {
      * @param interval
      */
     public void setVerticalInterval(float interval){
-        mVerticalInterval = Utils.dp2px(getContext(), interval);
+        mVerticalInterval = (int) dp2px(getContext(), interval);
         postInvalidate();
     }
 
@@ -431,7 +445,7 @@ public class TagContainerLayout extends ViewGroup {
      * @param interval
      */
     public void setHorizontalInterval(float interval){
-        mHorizontalInterval = Utils.dp2px(getContext(), interval);
+        mHorizontalInterval = (int)dp2px(getContext(), interval);
         postInvalidate();
     }
 
@@ -439,7 +453,7 @@ public class TagContainerLayout extends ViewGroup {
      * Get vertical interval in this view.
      * @return
      */
-    public float getVerticalInterval(){
+    public int getVerticalInterval(){
         return mVerticalInterval;
     }
 
@@ -447,10 +461,18 @@ public class TagContainerLayout extends ViewGroup {
      * Get horizontal interval in this view.
      * @return
      */
-    public float getHorizontalInterval(){
+    public int getHorizontalInterval(){
         return mHorizontalInterval;
     }
 
+
+    /**
+     * Get current drag view state.
+     * @return
+     */
+    public int getTagViewState(){
+        return mTagViewState;
+    }
     /**
      * Set tags
      * @param tags
@@ -483,6 +505,15 @@ public class TagContainerLayout extends ViewGroup {
      */
     public void setDragEnable(boolean enable){
         mDragEnable = enable;
+        setDragState();
+    }
+
+    /**
+     * Get current view is drag enable attribute.
+     * @return
+     */
+    public boolean getDragEnable(){
+        return mDragEnable;
     }
 
     /**
@@ -688,5 +719,15 @@ public class TagContainerLayout extends ViewGroup {
      */
     public void setTagTextColor(int color) {
         this.mTagTextColor = color;
+    }
+
+    public float dp2px(Context context, float dp) {
+        final float scale = context.getResources().getDisplayMetrics().density;
+        return dp * scale + 0.5f;
+    }
+
+    public float sp2px(Context context, float sp) {
+        final float scale = context.getResources().getDisplayMetrics().scaledDensity;
+        return sp * scale;
     }
 }

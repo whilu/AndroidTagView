@@ -5,6 +5,7 @@ import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Rect;
 import android.graphics.RectF;
+import android.support.v4.widget.ViewDragHelper;
 import android.text.TextUtils;
 import android.view.MotionEvent;
 import android.view.View;
@@ -48,6 +49,12 @@ public class TagView extends View {
     /** OnTagClickListener for click action*/
     private OnTagClickListener mOnTagClickListener;
 
+    /** Move slop(default 20px)*/
+    private int mMoveSlop = 20;
+
+    /** How long trigger long click callback(default 500ms)*/
+    private int mLongPressTime = 500;
+
     private Paint mPaint;
 
     private RectF mRectF;
@@ -55,6 +62,21 @@ public class TagView extends View {
     private Rect mTextBound;
 
     private String mAbstractText, mOriginText;
+
+    private boolean isUp, isMoved, isExecLongClick;
+
+    private int mLastX, mLastY;
+
+    private Runnable mLongClickHandle = new Runnable() {
+        @Override
+        public void run() {
+            int state = ((TagContainerLayout)getParent()).getTagViewState();
+            if (!isMoved && !isUp && state == ViewDragHelper.STATE_IDLE){
+                isExecLongClick = true;
+                mOnTagClickListener.onTagLongClick((int) getTag(), getText());
+            }
+        }
+    };
 
     public TagView(Context context, String text){
         super(context);
@@ -109,9 +131,36 @@ public class TagView extends View {
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
-        if (isViewClickable && event.getAction() == MotionEvent.ACTION_DOWN
-                && mOnTagClickListener != null){
-            mOnTagClickListener.onTagClick((int) getTag(), getText());
+        if (isViewClickable && mOnTagClickListener != null){
+            int x = (int) event.getX();
+            int y = (int) event.getY();
+            int action = event.getAction();
+            switch (action){
+                case MotionEvent.ACTION_DOWN:
+                    mLastY = y;
+                    mLastX = x;
+                    isMoved = false;
+                    isUp = false;
+                    isExecLongClick = false;
+                    postDelayed(mLongClickHandle, mLongPressTime);
+                    break;
+
+                case MotionEvent.ACTION_MOVE:
+                    if (isMoved){
+                        break;
+                    }
+                    if (Math.abs(mLastX - x) > mMoveSlop || Math.abs(mLastY - y) > mMoveSlop){
+                        isMoved = true;
+                    }
+                    break;
+
+                case MotionEvent.ACTION_UP:
+                    isUp = true;
+                    if (!isExecLongClick) {
+                        mOnTagClickListener.onTagClick((int) getTag(), getText());
+                    }
+                    break;
+            }
             return true;
         }
         return super.onTouchEvent(event);
@@ -119,6 +168,10 @@ public class TagView extends View {
 
     public String getText(){
         return mOriginText;
+    }
+
+    public boolean getIsViewClickable(){
+        return isViewClickable;
     }
 
     public void setTagMaxLength(int maxLength){
@@ -169,5 +222,6 @@ public class TagView extends View {
 
     public interface OnTagClickListener{
         void onTagClick(int position, String text);
+        void onTagLongClick(int position, String text);
     }
 }
