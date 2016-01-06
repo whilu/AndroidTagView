@@ -12,7 +12,7 @@ An Android TagView library. You can customize awesome TagView by using this libr
 
 ### Step 1
 
-Add the dependency in your build.gradle.
+Add below dependency in your **build.gradle** file.
 
 ```groovy
 dependencies {
@@ -70,11 +70,11 @@ Now, you have successfully created some TagViews. The following will show some m
 | tag_background_color | color | TagView background color(default #33F44336)
 | tag_max_length | integer | The max length for TagView(default max length 23)
 | tag_clickable | boolean | Whether TagView can clickable(default unclickable)
-| tag_theme | enum | The TagView [theme](#Themes)
+| tag_theme | enum | The TagView [theme](#themes)
 
 **You can set these attributes in layout file, or use setters(each attribute has get and set method) to set them.**
 
-## <span id="Themes">Themes</span>
+## <span id="themes">Themes</span>
 
 |theme|code|description
 |:---:|:---:|:---:|
@@ -92,7 +92,7 @@ mTagContainerLayout.setOnTagClickListener(new TagView.OnTagClickListener() {
 
     @Override
     public void onTagClick(int position, String text) {
-    	// ...
+        // ...
     }
 
     @Override
@@ -101,53 +101,53 @@ mTagContainerLayout.setOnTagClickListener(new TagView.OnTagClickListener() {
     }
 });
 ```
-* Set text max length for all TagView in ContainerLayout.
+* Use ```setTagMaxLength(int max)``` to set text max length for all TagView.
 ```java
 mTagContainerLayout.setTagMaxLength(int max);
 ```
-* Get TagView text at the specified location.
+* Use ```getTagText(int position)``` to get TagView text at the specified location.
 ```java
 String text = mTagContainerLayout.getTagText(int position);
 ```
-* If you set the attribute ```container_enable_drag``` to ```true```, when drag the TagView you can get latest state use this method. There are 4 state:```ViewDragHelper.STATE_IDLE```, ```ViewDragHelper.STATE_DRAGGING```, and ```ViewDragHelper.STATE_SETTLING```.
+* If you set the attribute ```container_enable_drag``` to ```true```, when drag the TagView you can get latest state by using ```getTagViewState()```. There are 4 state:```ViewDragHelper.STATE_IDLE```, ```ViewDragHelper.STATE_DRAGGING```, and ```ViewDragHelper.STATE_SETTLING```.
 ```java
 int state = mTagContainerLayout.getTagViewState();
 ```
-* Set the [theme](#Themes). If you want to customize theme, remember set theme with ```ColorFactory.NONE``` first, then set other attributes.
+* Set the [theme](#themes). If you want to customize theme, remember set theme with ```ColorFactory.NONE``` first, then set other attributes.
 ```java
 // Set library provides theme
 mTagContainerLayout.setTheme(ColorFactory.PURE_CYAN);
 ```
 ```java
 // Set customize theme
-mTagContainerLayout1.setTheme(ColorFactory.NONE);
-mTagContainerLayout1.setTagBackgroundColor(Color.TRANSPARENT);
+mTagContainerLayout.setTheme(ColorFactory.NONE);
+mTagContainerLayout.setTagBackgroundColor(Color.TRANSPARENT);
 ```
 
-**After set the attributes, set tags or add tags.**
+**After set the attributes, set tags or add a tag.**
 
 * Use ```setTags()``` to set tags, require a parameter of type ```List<String>``` or ```String[]```.
 ```java
 mTagContainerLayout.setTags(List<String> tags);
 ```
-* Inserts a TagView into ContainerLayout at the end position.
+* Insert a TagView into ContainerLayout at the end.
 ```java
 mTagContainerLayout.addTag(String text);
 ```
-* Inserts a TagView into ContainerLayout at the specified location, the TagView is inserted before the current element at the specified location.
-* ```java
+* Insert a TagView into ContainerLayout at the specified location, the TagView is inserted before the current element at the specified location.
+```java
 mTagContainerLayout.addTag(String text, int position);
 ```
-* Remove a TagView in specified position, require the positon of the TagView
+* Remove TagView on particular position, require the position of the TagView
 ```java
 mTagContainerLayout.removeTag(int position);
 ```
 
-## Log
+## Change logs
 ###1.0.0
 - First release
 
-## Sample
+## Sample App
 [APK](/sample/sample-release.apk)
 
 ## About
@@ -157,14 +157,14 @@ If you have any questions, contact me: [lujun.byte#gmail.com](mailto:lujun.byte@
 
     Copyright 2015 lujun
 
-	Licensed under the Apache License, Version 2.0 (the "License");
-	you may not use this file except in compliance with the License.
-	You may obtain a copy of the License at
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
 
      http://www.apache.org/licenses/LICENSE-2.0
 
-	Unless required by applicable law or agreed to in writing, software
-	distributed under the License is distributed on an "AS IS" BASIS,
-	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-	See the License for the specific language governing permissions and
-	limitations under the License.
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
