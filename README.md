@@ -1,6 +1,6 @@
 # AndroidTagView
 
-[![Build Status](https://travis-ci.org/whilu/AndroidTagView.svg)](https://travis-ci.org/whilu/AndroidTagView)
+[![Build Status](https://travis-ci.org/whilu/AndroidTagView.svg)](https://travis-ci.org/whilu/AndroidTagView) [![Android Arsenal](https://img.shields.io/badge/Android%20Arsenal-AndroidTagView-green.svg?style=true)](https://android-arsenal.com/details/1/2992)
 
 An Android TagView library. You can customize awesome TagView by using this library.
 
