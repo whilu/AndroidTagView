@@ -128,9 +128,9 @@ public class TagView extends View {
         mPaint.setStyle(Paint.Style.FILL);
         mPaint.setColor(mTextColor);
 
-        // Set the distance between baseline and descent as 5px
+        // Set the distance between baseline and descent as 5.5px
         canvas.drawText(mAbstractText, getWidth() / 2 - fontW / 2,
-                getHeight() / 2 + fontH / 2 - 5, mPaint);
+                getHeight() / 2 + fontH / 2 - 5.5f, mPaint);
     }
 
     @Override
