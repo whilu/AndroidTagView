@@ -99,7 +99,7 @@ public class TagContainerLayout extends ViewGroup {
     private int[] mViewPos;
 
     /** View theme(default PURE_CYAN)*/
-    private int mTheme = 1;
+    private int mTheme = ColorFactory.PURE_CYAN;
 
     /** Default interval(dp)*/
     private static final float DEFAULT_INTERVAL = 5;
@@ -192,6 +192,12 @@ public class TagContainerLayout extends ViewGroup {
     }
 
     @Override
+    protected void onSizeChanged(int w, int h, int oldw, int oldh) {
+        super.onSizeChanged(w, h, oldw, oldh);
+        mRectF.set(0, 0, w, h);
+    }
+
+    @Override
     protected void onLayout(boolean changed, int l, int t, int r, int b) {
         int availableW = getMeasuredWidth() - getPaddingLeft() - getPaddingRight();
         int childCount = getChildCount();
@@ -216,8 +222,6 @@ public class TagContainerLayout extends ViewGroup {
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
-        mRectF.set(canvas.getClipBounds().left, canvas.getClipBounds().top,
-                canvas.getClipBounds().right, canvas.getClipBounds().bottom);
 
         mPaint.setStyle(Paint.Style.FILL);
         mPaint.setColor(mBackgroundColor);

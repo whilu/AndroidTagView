@@ -3,7 +3,6 @@ package co.lujun.androidtagview;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Paint;
-import android.graphics.Rect;
 import android.graphics.RectF;
 import android.support.v4.widget.ViewDragHelper;
 import android.text.TextUtils;
@@ -59,13 +58,13 @@ public class TagView extends View {
 
     private RectF mRectF;
 
-    private Rect mTextBound;
-
     private String mAbstractText, mOriginText;
 
     private boolean isUp, isMoved, isExecLongClick;
 
     private int mLastX, mLastY;
+
+    private float fontH, fontW;
 
     private Runnable mLongClickHandle = new Runnable() {
         @Override
@@ -86,34 +85,37 @@ public class TagView extends View {
     private void init(String text){
         mPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
         mRectF = new RectF();
-        mTextBound = new Rect();
-        mOriginText = text;
+        mOriginText = text == null ? "" : text;
     }
 
     private void onDealText(){
         if(!TextUtils.isEmpty(mOriginText)) {
             mAbstractText = mOriginText.length() <= mTagMaxLength ? mOriginText
                     : mOriginText.substring(0, mTagMaxLength - 3) + "...";
+        }else {
+            mAbstractText = "";
         }
         mPaint.setTextSize(mTextSize);
-        mPaint.getTextBounds(mAbstractText, 0, mAbstractText.length(), mTextBound);
+        final Paint.FontMetrics fontMetrics = mPaint.getFontMetrics();
+        fontH = fontMetrics.descent - fontMetrics.ascent;
+        fontW = mPaint.measureText(mAbstractText);
     }
 
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
-        setMeasuredDimension(mHorizontalPadding * 2 + mTextBound.width(),
-                mVerticalPadding * 2 + mTextBound.height());
+        setMeasuredDimension(mHorizontalPadding * 2 + (int)fontW,
+                mVerticalPadding * 2 + (int)fontH);
+    }
+
+    @Override
+    protected void onSizeChanged(int w, int h, int oldw, int oldh) {
+        super.onSizeChanged(w, h, oldw, oldh);
+        mRectF.set(mBorderWidth, mBorderWidth, w - mBorderWidth, h - mBorderWidth);
     }
 
     @Override
     protected void onDraw(Canvas canvas) {
-        super.onDraw(canvas);
-        mRectF.set(canvas.getClipBounds().left + mBorderWidth,
-                canvas.getClipBounds().top + mBorderWidth,
-                canvas.getClipBounds().right - mBorderWidth,
-                canvas.getClipBounds().bottom - mBorderWidth);
-
         mPaint.setStyle(Paint.Style.FILL);
         mPaint.setColor(mBackgroundColor);
         canvas.drawRoundRect(mRectF, mBorderRadius, mBorderRadius, mPaint);
@@ -125,8 +127,10 @@ public class TagView extends View {
 
         mPaint.setStyle(Paint.Style.FILL);
         mPaint.setColor(mTextColor);
-        canvas.drawText(mAbstractText, getWidth() / 2 - mTextBound.width() / 2,
-                getHeight() / 2 + mTextBound.height() / 2, mPaint);
+
+        // Set the distance between baseline and descent as 5px
+        canvas.drawText(mAbstractText, getWidth() / 2 - fontW / 2,
+                getHeight() / 2 + fontH / 2 - 5, mPaint);
     }
 
     @Override

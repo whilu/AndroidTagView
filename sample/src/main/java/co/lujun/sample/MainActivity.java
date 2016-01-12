@@ -29,15 +29,13 @@ public class MainActivity extends AppCompatActivity {
 
         List<String> list1 = new ArrayList<String>();
         list1.add("Java");
-        list1.add("C/C++");
+        list1.add("C++");
         list1.add("Python");
         list1.add("Swift");
         list1.add("你好，这是一个TAG。你好，这是一个TAG。你好，这是一个TAG。你好，这是一个TAG。");
         list1.add("PHP");
-        list1.add("Python");
         list1.add("JavaScript");
         list1.add("Html");
-        list1.add("Hello, this is a TAG example.");
         list1.add("Welcome to use AndroidTagView!");
 
         List<String> list2 = new ArrayList<String>();
@@ -50,7 +48,6 @@ public class MainActivity extends AppCompatActivity {
         list2.add("UK");
         list2.add("Germany");
         list2.add("Niger");
-        list2.add("Singapore");
         list2.add("Poland");
         list2.add("Norway");
         list2.add("Uruguay");
