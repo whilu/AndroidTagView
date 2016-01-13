@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.RectF;
+import android.support.v4.text.BidiFormatter;
 import android.support.v4.widget.ViewDragHelper;
 import android.text.TextUtils;
 import android.view.MotionEvent;
@@ -56,6 +57,9 @@ public class TagView extends View {
 
     /** How long trigger long click callback(default 500ms)*/
     private int mLongPressTime = 500;
+
+    /** Text direction(support:TEXT_DIRECTION_RTL & TEXT_DIRECTION_LTR, default TEXT_DIRECTION_LTR)*/
+    private int mTextDirection = View.TEXT_DIRECTION_LTR;
 
     private Paint mPaint;
 
@@ -134,8 +138,13 @@ public class TagView extends View {
         mPaint.setColor(mTextColor);
 
         // Set the distance between baseline and descent as 5.5px
+        float bdDistance = 5.5f;
+
+        if (mTextDirection == View.TEXT_DIRECTION_RTL){
+//            mAbstractText = BidiFormatter.getInstance(true).unicodeWrap(mAbstractText);
+        }
         canvas.drawText(mAbstractText, getWidth() / 2 - fontW / 2,
-                getHeight() / 2 + fontH / 2 - 5.5f, mPaint);
+                getHeight() / 2 + fontH / 2 - bdDistance, mPaint);
     }
 
     @Override
@@ -258,5 +267,13 @@ public class TagView extends View {
     public interface OnTagClickListener{
         void onTagClick(int position, String text);
         void onTagLongClick(int position, String text);
+    }
+
+    public int getTextDirection() {
+        return mTextDirection;
+    }
+
+    public void setTextDirection(int textDirection) {
+        this.mTextDirection = textDirection;
     }
 }

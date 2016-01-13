@@ -87,6 +87,7 @@
                 app:tag_horizontal_padding="15dp"
                 app:tag_max_length="18"
                 app:tag_text_color="#ff666666"
+                app:tag_text_direction="rtl"
                 app:tag_text_size="14sp"
                 app:tag_theme="none"
                 app:tag_vertical_padding="10dp"

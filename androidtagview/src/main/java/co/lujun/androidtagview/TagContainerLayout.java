@@ -58,6 +58,9 @@ public class TagContainerLayout extends ViewGroup {
     /** TagView Text size(default 14sp)*/
     private float mTagTextSize = 14;
 
+    /** Text direction(support:TEXT_DIRECTION_RTL & TEXT_DIRECTION_LTR, default TEXT_DIRECTION_LTR)*/
+    private int mTagTextDirection = View.TEXT_DIRECTION_LTR;
+
     /** Horizontal padding for TagView, include left & right padding(left & right padding are equal, default 20px)*/
     private int mTagHorizontalPadding = 20;
 
@@ -155,6 +158,7 @@ public class TagContainerLayout extends ViewGroup {
         mTagBackgroundColor = attributes.getColor(R.styleable.AndroidTagView_tag_background_color,
                 mTagBackgroundColor);
         mTagTextColor = attributes.getColor(R.styleable.AndroidTagView_tag_text_color, mTagTextColor);
+        mTagTextDirection = attributes.getInt(R.styleable.AndroidTagView_tag_text_direction, mTagTextDirection);
         isTagViewClickable = attributes.getBoolean(R.styleable.AndroidTagView_tag_clickable, false);
         attributes.recycle();
 
@@ -323,6 +327,7 @@ public class TagContainerLayout extends ViewGroup {
         tagView.setTextSize(mTagTextSize);
         tagView.setHorizontalPadding(mTagHorizontalPadding);
         tagView.setVerticalPadding(mTagVerticalPadding);
+        tagView.setTextDirection(mTagTextDirection);
         tagView.setIsViewClickable(isTagViewClickable);
     }
 
@@ -817,6 +822,23 @@ public class TagContainerLayout extends ViewGroup {
      */
     public int getTagTextColor() {
         return mTagTextColor;
+    }
+
+    /**
+     * Set tag text direction, support:View.TEXT_DIRECTION_RTL & View.TEXT_DIRECTION_LTR,
+     * default View.TEXT_DIRECTION_LTR
+     * @param textDirection
+     */
+    public void setTagTextDirection(int textDirection) {
+        this.mTagTextDirection = textDirection;
+    }
+
+    /**
+     * Get tag text direction
+     * @return
+     */
+    public int getTagTextDirection() {
+        return mTagTextDirection;
     }
 
     /**
