@@ -71,6 +71,7 @@ Now, you have successfully created some TagViews. The following will show some m
 | tag_max_length | integer | The max length for TagView(default max length 23)
 | tag_clickable | boolean | Whether TagView can clickable(default unclickable)
 | tag_theme | enum | The TagView [theme](#themes)
+| tag_text_direction | enum | The TagView text [direction](#directions)
 
 **You can set these attributes in layout file, or use setters(each attribute has get and set method) to set them.**
 
@@ -82,6 +83,13 @@ Now, you have successfully created some TagViews. The following will show some m
 | random | ColorFactory.RANDOM | Create each TagView using random color
 | pure_cyan | ColorFactory.PURE_CYAN | All TagView created by pure cyan color
 | pure_teal | ColorFactory.PURE_TEAL | All TagView created by pure teal color
+
+## <span id="directions">Directions</span>
+
+|direction|code|value|description
+|:---:|:---:|:---:|:---:|
+| ltr | View.TEXT_DIRECTION_LTR | 3 | Text direction is forced to LTR(default)
+| rtl | View.TEXT_DIRECTION_RTL | 4 | Text direction is forced to RTL
 
 
 ## <span id="Methods">Methods</span>
@@ -123,6 +131,10 @@ mTagContainerLayout.setTheme(ColorFactory.PURE_CYAN);
 mTagContainerLayout.setTheme(ColorFactory.NONE);
 mTagContainerLayout.setTagBackgroundColor(Color.TRANSPARENT);
 ```
+* Set the text [direction](#directions). The library support two direction ```View.TEXT_DIRECTION_LTR``` and ```View.TEXT_DIRECTION_RTL```.
+```java
+mTagContainerLayout.setTagTextDirection(View.TEXT_DIRECTION_RTL);
+```
 
 **After set the attributes, set tags or add a tag.**
 
@@ -141,6 +153,10 @@ mTagContainerLayout.addTag(String text, int position);
 * Remove TagView on particular position, require the position of the TagView
 ```java
 mTagContainerLayout.removeTag(int position);
+```
+* Remove all TagViews.
+```java
+mTagContainerLayout.removeAllTags();
 ```
 
 ## Change logs

@@ -4,7 +4,6 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.RectF;
-import android.support.v4.text.BidiFormatter;
 import android.support.v4.widget.ViewDragHelper;
 import android.text.TextUtils;
 import android.view.MotionEvent;
@@ -107,7 +106,15 @@ public class TagView extends View {
         mPaint.setTextSize(mTextSize);
         final Paint.FontMetrics fontMetrics = mPaint.getFontMetrics();
         fontH = fontMetrics.descent - fontMetrics.ascent;
-        fontW = mPaint.measureText(mAbstractText);
+        if (mTextDirection == View.TEXT_DIRECTION_RTL){
+            fontW = 0;
+            for (char c : mAbstractText.toCharArray()) {
+                String sc = String.valueOf(c);
+                fontW += mPaint.measureText(sc);
+            }
+        }else {
+            fontW = mPaint.measureText(mAbstractText);
+        }
     }
 
     @Override
@@ -141,10 +148,16 @@ public class TagView extends View {
         float bdDistance = 5.5f;
 
         if (mTextDirection == View.TEXT_DIRECTION_RTL){
-//            mAbstractText = BidiFormatter.getInstance(true).unicodeWrap(mAbstractText);
+            float tmpX = getWidth() / 2 + fontW / 2;
+            for (char c : mAbstractText.toCharArray()) {
+                String sc = String.valueOf(c);
+                tmpX -= mPaint.measureText(sc);
+                canvas.drawText(sc, tmpX, getHeight() / 2 + fontH / 2 - bdDistance, mPaint);
+            }
+        }else {
+            canvas.drawText(mAbstractText, getWidth() / 2 - fontW / 2,
+                    getHeight() / 2 + fontH / 2 - bdDistance, mPaint);
         }
-        canvas.drawText(mAbstractText, getWidth() / 2 - fontW / 2,
-                getHeight() / 2 + fontH / 2 - bdDistance, mPaint);
     }
 
     @Override

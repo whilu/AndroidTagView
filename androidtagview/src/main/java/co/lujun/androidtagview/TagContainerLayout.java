@@ -316,19 +316,19 @@ public class TagContainerLayout extends ViewGroup {
     }
 
     private void initTagView(TagView tagView){
-        tagView.setTagMaxLength(mTagMaxLength);
-        tagView.setOnTagClickListener(mOnTagClickListener);
         int[] colors = onUpdateColorFactory();
         tagView.setTagBackgroundColor(colors[0]);
         tagView.setTagBorderColor(colors[1]);
         tagView.setTagTextColor(colors[2]);
+        tagView.setTagMaxLength(mTagMaxLength);
+        tagView.setTextDirection(mTagTextDirection);
         tagView.setBorderWidth(mTagBorderWidth);
         tagView.setBorderRadius(mTagBorderRadius);
         tagView.setTextSize(mTagTextSize);
         tagView.setHorizontalPadding(mTagHorizontalPadding);
         tagView.setVerticalPadding(mTagVerticalPadding);
-        tagView.setTextDirection(mTagTextDirection);
         tagView.setIsViewClickable(isTagViewClickable);
+        tagView.setOnTagClickListener(mOnTagClickListener);
     }
 
     private void onRemoveTag(int position){
@@ -503,6 +503,15 @@ public class TagContainerLayout extends ViewGroup {
      */
     public void removeTag(int position){
         onRemoveTag(position);
+        postInvalidate();
+    }
+
+    /**
+     * Remove all TagViews.
+     */
+    public void removeAllTags(){
+        mChildViews.clear();
+        removeAllViews();
         postInvalidate();
     }
 

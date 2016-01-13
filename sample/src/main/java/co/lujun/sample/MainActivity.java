@@ -53,7 +53,7 @@ public class MainActivity extends AppCompatActivity {
         list2.add("Uruguay");
         list2.add("Brazil");
 
-        String[] list3 = new String[]{"Adele", "Avril Lavigne", "Taylor Swift", "Rihanna", " Whitney Houston"};
+        String[] list3 = new String[]{"Persian", "波斯语", "فارسی", "Hello", "你好", "سلام"};
 
         mTagContainerLayout1 = (TagContainerLayout) findViewById(R.id.tagcontainerLayout1);
         mTagContainerLayout2 = (TagContainerLayout) findViewById(R.id.tagcontainerLayout2);
@@ -98,6 +98,7 @@ public class MainActivity extends AppCompatActivity {
         // If you want to use your colors for TagView, remember set the theme with ColorFactory.NONE
 //        mTagContainerLayout1.setTheme(ColorFactory.NONE);
 //        mTagContainerLayout1.setTagBackgroundColor(Color.TRANSPARENT);
+//        mTagContainerLayout1.setTagTextDirection(View.TEXT_DIRECTION_RTL);
 
         // After you set your own attributes for TagView, then set tag(s) or add tag(s)
         mTagContainerLayout1.setTags(list1);
