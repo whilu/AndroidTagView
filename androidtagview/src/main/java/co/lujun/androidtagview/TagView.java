@@ -48,8 +48,11 @@ public class TagView extends View {
     /** OnTagClickListener for click action*/
     private OnTagClickListener mOnTagClickListener;
 
-    /** Move slop(default 7px)*/
-    private int mMoveSlop = 7;
+    /** Move slop(default 20px)*/
+    private int mMoveSlop = 20;
+
+    /** Scroll slop threshold*/
+    private int mSlopThreshold = 4;
 
     /** How long trigger long click callback(default 500ms)*/
     private int mLongPressTime = 500;
@@ -134,11 +137,37 @@ public class TagView extends View {
     }
 
     @Override
+    public boolean dispatchTouchEvent(MotionEvent event) {
+        if (isViewClickable){
+            int y = (int) event.getY();
+            int x = (int) event.getX();
+            int action = event.getAction();
+            switch (action){
+                case MotionEvent.ACTION_DOWN:
+                    getParent().requestDisallowInterceptTouchEvent(true);
+                    mLastY = y;
+                    mLastX = x;
+                    break;
+
+                case MotionEvent.ACTION_MOVE:
+                    if (Math.abs(mLastY - y) > mSlopThreshold
+                            || Math.abs(mLastX - x) > mSlopThreshold){
+                        getParent().requestDisallowInterceptTouchEvent(false);
+                        isMoved = true;
+                        return false;
+                    }
+                    break;
+            }
+        }
+        return super.dispatchTouchEvent(event);
+    }
+
+    @Override
     public boolean onTouchEvent(MotionEvent event) {
         if (isViewClickable && mOnTagClickListener != null){
             int x = (int) event.getX();
             int y = (int) event.getY();
-            int action = event.getActionMasked();
+            int action = event.getAction();
             switch (action){
                 case MotionEvent.ACTION_DOWN:
                     mLastY = y;
