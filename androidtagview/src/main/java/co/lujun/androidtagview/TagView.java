@@ -72,10 +72,12 @@ public class TagView extends View {
     private Runnable mLongClickHandle = new Runnable() {
         @Override
         public void run() {
-            int state = ((TagContainerLayout)getParent()).getTagViewState();
-            if (!isMoved && !isUp && state == ViewDragHelper.STATE_IDLE){
-                isExecLongClick = true;
-                mOnTagClickListener.onTagLongClick((int) getTag(), getText());
+            if (!isMoved && !isUp){
+                int state = ((TagContainerLayout)getParent()).getTagViewState();
+                if (state == ViewDragHelper.STATE_IDLE){
+                    isExecLongClick = true;
+                    mOnTagClickListener.onTagLongClick((int) getTag(), getText());
+                }
             }
         }
     };
