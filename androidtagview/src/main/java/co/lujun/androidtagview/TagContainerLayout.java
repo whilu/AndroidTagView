@@ -183,7 +183,8 @@ public class TagContainerLayout extends ViewGroup {
 
         if (childCount == 0){
             setMeasuredDimension(0, 0);
-        }else if (heightSpecMode == MeasureSpec.AT_MOST) {
+        }else if (heightSpecMode == MeasureSpec.AT_MOST
+                || heightSpecMode == MeasureSpec.UNSPECIFIED) {
             setMeasuredDimension(widthSpecSize, (mVerticalInterval + mChildHeight) * lines
                     - mVerticalInterval + getPaddingTop() + getPaddingBottom());
         }else {
@@ -407,6 +408,7 @@ public class TagContainerLayout extends ViewGroup {
 
         @Override
         public boolean tryCaptureView(View child, int pointerId) {
+            requestDisallowInterceptTouchEvent(true);
             return mDragEnable;
         }
 
@@ -437,6 +439,7 @@ public class TagContainerLayout extends ViewGroup {
         @Override
         public void onViewReleased(View releasedChild, float xvel, float yvel) {
             super.onViewReleased(releasedChild, xvel, yvel);
+            requestDisallowInterceptTouchEvent(false);
             int[] pos = onGetNewPosition(releasedChild);
             int posRefer = onGetCoordinateReferPos(pos[0], pos[1]);
             onChangeView(releasedChild, posRefer, (int) releasedChild.getTag());

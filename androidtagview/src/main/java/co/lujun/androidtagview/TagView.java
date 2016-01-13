@@ -48,8 +48,8 @@ public class TagView extends View {
     /** OnTagClickListener for click action*/
     private OnTagClickListener mOnTagClickListener;
 
-    /** Move slop(default 20px)*/
-    private int mMoveSlop = 20;
+    /** Move slop(default 7px)*/
+    private int mMoveSlop = 7;
 
     /** How long trigger long click callback(default 500ms)*/
     private int mLongPressTime = 500;
@@ -104,8 +104,8 @@ public class TagView extends View {
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
-        setMeasuredDimension(mHorizontalPadding * 2 + (int)fontW,
-                mVerticalPadding * 2 + (int)fontH);
+        setMeasuredDimension(mHorizontalPadding * 2 + (int) fontW,
+                mVerticalPadding * 2 + (int) fontH);
     }
 
     @Override
@@ -138,7 +138,7 @@ public class TagView extends View {
         if (isViewClickable && mOnTagClickListener != null){
             int x = (int) event.getX();
             int y = (int) event.getY();
-            int action = event.getAction();
+            int action = event.getActionMasked();
             switch (action){
                 case MotionEvent.ACTION_DOWN:
                     mLastY = y;
@@ -160,7 +160,7 @@ public class TagView extends View {
 
                 case MotionEvent.ACTION_UP:
                     isUp = true;
-                    if (!isExecLongClick) {
+                    if (!isExecLongClick && !isMoved) {
                         mOnTagClickListener.onTagClick((int) getTag(), getText());
                     }
                     break;
