@@ -16,7 +16,7 @@ Add below dependency in your **build.gradle** file.
 
 ```groovy
 dependencies {
-    compile 'co.lujun:androidtagview:1.0.0'
+    compile 'co.lujun:androidtagview:1.0.1'
 }
 ```
 
@@ -160,7 +160,13 @@ mTagContainerLayout.removeAllTags();
 ```
 
 ## Change logs
-###1.0.0
+###1.0.1(2016-1-14)
+- support text [direction](#directions)
+- add ```removeAllTags()``` method for remove all TagViews
+- fixed issue [#1](https://github.com/whilu/AndroidTagView/issues/1)
+- fixed other bugs
+
+###1.0.0(2016-1-6)
 - First release
 
 ## Sample App
