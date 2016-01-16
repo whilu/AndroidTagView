@@ -8,6 +8,7 @@ import android.graphics.Paint;
 import android.graphics.RectF;
 import android.support.v4.widget.ViewDragHelper;
 import android.util.AttributeSet;
+import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
@@ -45,6 +46,9 @@ public class TagContainerLayout extends ViewGroup {
 
     /** TagContainerLayout background color(default #11FF0000)*/
     private int mBackgroundColor = Color.parseColor("#11FF0000");
+
+    /** The container layout(default left)*/
+    private int mGravity = Gravity.LEFT;
 
     /** The max length for TagView(default max length 23)*/
     private int mTagMaxLength = 23;
@@ -141,6 +145,7 @@ public class TagContainerLayout extends ViewGroup {
         mDragEnable = attributes.getBoolean(R.styleable.AndroidTagView_container_enable_drag, false);
         mSensitivity = attributes.getFloat(R.styleable.AndroidTagView_container_drag_sensitivity,
                 mSensitivity);
+        mGravity = attributes.getInt(R.styleable.AndroidTagView_container_gravity, mGravity);
         mTagMaxLength = attributes.getInt(R.styleable.AndroidTagView_tag_max_length, mTagMaxLength);
         mTheme = attributes.getInt(R.styleable.AndroidTagView_tag_theme, mTheme);
         mTagBorderWidth = attributes.getDimension(R.styleable.AndroidTagView_tag_border_width,
@@ -206,20 +211,58 @@ public class TagContainerLayout extends ViewGroup {
     protected void onLayout(boolean changed, int l, int t, int r, int b) {
         int availableW = getMeasuredWidth() - getPaddingLeft() - getPaddingRight();
         int childCount = getChildCount();
-        int curLeft = getPaddingLeft(), curTop = getPaddingTop();
+        int curTop = getPaddingTop();
         mViewPos = new int[childCount * 2];
-        for (int i = 0; i < childCount; i++) {
-            final View childView = getChildAt(i);
-            if (childView.getVisibility() != GONE) {
-                int width = childView.getMeasuredWidth();
-                if (curLeft + width + mHorizontalInterval - getPaddingLeft() > availableW){
-                    curLeft = getPaddingLeft();
-                    curTop += mChildHeight + mVerticalInterval;
+        if (mGravity == Gravity.RIGHT){
+            int curRight = getMeasuredWidth() - getPaddingRight();
+            for (int i = 0; i < childCount; i++) {
+                final View childView = getChildAt(i);
+                if (childView.getVisibility() != GONE) {
+                    int width = childView.getMeasuredWidth();
+                    if (curRight - width < getPaddingLeft()){
+                        curRight = getMeasuredWidth() - getPaddingRight();
+                        curTop += mChildHeight + mVerticalInterval;
+                    }
+                    mViewPos[i * 2] = curRight - width;
+                    mViewPos[i * 2 + 1] = curTop;
+                    childView.layout(curRight - width, curTop, curRight, curTop + mChildHeight);
+                    curRight -= width + mHorizontalInterval;
                 }
-                mViewPos[i * 2] = curLeft;
-                mViewPos[i * 2 + 1] = curTop;
-                childView.layout(curLeft, curTop, curLeft + width, curTop + mChildHeight);
-                curLeft += width + mHorizontalInterval;
+            }
+        }else if (mGravity == Gravity.CENTER){
+            /*int curLeft = getPaddingLeft();
+            for (int i = 0; i < childCount; i++) {
+                final View childView = getChildAt(i);
+                if (childView.getVisibility() != GONE) {
+                    int width = childView.getMeasuredWidth();
+                    if (curLeft + width - getPaddingLeft() > availableW){
+                        int leftW = getMeasuredWidth() - getChildAt(i - 1).getMeasuredWidth() - getPaddingRight() - mViewPos[i * 2];
+                        for (int j = i; j < mViewPos.length / 2; j++) {
+                            mViewPos[j * 2] = mViewPos[j * 2] +
+                        }
+                        curLeft = getPaddingLeft();
+                        curTop += mChildHeight + mVerticalInterval;
+                    }
+                    mViewPos[i * 2] = curLeft;
+                    mViewPos[i * 2 + 1] = curTop;
+                    curLeft += width + mHorizontalInterval;
+                }
+            }*/
+        }else {
+            int curLeft = getPaddingLeft();
+            for (int i = 0; i < childCount; i++) {
+                final View childView = getChildAt(i);
+                if (childView.getVisibility() != GONE) {
+                    int width = childView.getMeasuredWidth();
+                    if (curLeft + width - getPaddingLeft() > availableW){
+                        curLeft = getPaddingLeft();
+                        curTop += mChildHeight + mVerticalInterval;
+                    }
+                    mViewPos[i * 2] = curLeft;
+                    mViewPos[i * 2 + 1] = curTop;
+                    childView.layout(curLeft, curTop, curLeft + width, curTop + mChildHeight);
+                    curLeft += width + mHorizontalInterval;
+                }
             }
         }
     }
@@ -262,11 +305,11 @@ public class TagContainerLayout extends ViewGroup {
         int lines = 1;
         for (int i = 0, curLineW = 0; i < childCount; i++) {
             View childView = getChildAt(i);
-            int dis = childView.getMeasuredWidth() + (int) mHorizontalInterval;
+            int dis = childView.getMeasuredWidth() + mHorizontalInterval;
             int height = childView.getMeasuredHeight();
             mChildHeight = i == 0 ? height : Math.min(mChildHeight, height);
             curLineW += dis;
-            if (curLineW > availableW){
+            if (curLineW - mHorizontalInterval > availableW){
                 lines++;
                 curLineW = dis;
             }
@@ -645,6 +688,22 @@ public class TagContainerLayout extends ViewGroup {
      */
     public void setBackgroundColor(int color) {
         this.mBackgroundColor = color;
+    }
+
+    /**
+     * Get container layout gravity.
+     * @return
+     */
+    public int getGravity() {
+        return mGravity;
+    }
+
+    /**
+     * Set container layout gravity.
+     * @param gravity
+     */
+    public void setGravity(int gravity) {
+        this.mGravity = gravity;
     }
 
     /**

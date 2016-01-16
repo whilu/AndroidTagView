@@ -10,6 +10,11 @@
         <attr name="container_background_color" format="color" />
         <attr name="container_enable_drag" format="boolean" />
         <attr name="container_drag_sensitivity" format="float" />
+        <attr name="container_gravity" format="enum">
+            <enum name="left" value="3" />
+            <enum name="center" value="17" />
+            <enum name="right" value="5" />
+        </attr>
 
         <attr name="tag_border_width" format="dimension" />
         <attr name="tag_corner_radius" format="dimension" />
