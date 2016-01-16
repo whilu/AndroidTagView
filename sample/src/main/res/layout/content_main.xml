@@ -29,7 +29,6 @@
                 android:layout_margin="0dp"
                 android:padding="10dp"
                 app:container_enable_drag="false"
-                app:container_gravity="center"
                 app:horizontal_interval="10dp"
                 app:tag_clickable="true"
                 app:tag_theme="pure_teal"
@@ -93,6 +92,19 @@
                 app:tag_text_size="14sp"
                 app:tag_theme="none"
                 app:tag_vertical_padding="10dp"
+                app:vertical_interval="10dp" />
+
+            <co.lujun.androidtagview.TagContainerLayout
+                android:id="@+id/tagcontainerLayout4"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:padding="10dp"
+                app:container_enable_drag="false"
+                app:container_gravity="center"
+                app:horizontal_interval="10dp"
+                app:tag_clickable="true"
+                app:tag_theme="pure_teal"
                 app:vertical_interval="10dp" />
 
         </LinearLayout>

@@ -38,7 +38,7 @@ public class TagContainerLayout extends ViewGroup {
     /** The sensitive of the ViewDragHelper(default 1.0f, normal)*/
     private float mSensitivity = 1.0f;
 
-    /** Tagview average height*/
+    /** TagView average height*/
     private int mChildHeight;
 
     /** TagContainerLayout border color(default #22FF0000)*/
@@ -47,7 +47,7 @@ public class TagContainerLayout extends ViewGroup {
     /** TagContainerLayout background color(default #11FF0000)*/
     private int mBackgroundColor = Color.parseColor("#11FF0000");
 
-    /** The container layout(default left)*/
+    /** The container layout gravity(default left)*/
     private int mGravity = Gravity.LEFT;
 
     /** The max length for TagView(default max length 23)*/
@@ -186,7 +186,7 @@ public class TagContainerLayout extends ViewGroup {
         final int childCount = getChildCount();
         int lines = childCount == 0 ? 0 : getChildLines(childCount);
         int widthSpecSize = MeasureSpec.getSize(widthMeasureSpec);
-        int widthSpecMode = MeasureSpec.getMode(widthMeasureSpec);
+//        int widthSpecMode = MeasureSpec.getMode(widthMeasureSpec);
         int heightSpecSize = MeasureSpec.getSize(heightMeasureSpec);
         int heightSpecMode = MeasureSpec.getMode(heightMeasureSpec);
 
@@ -209,61 +209,69 @@ public class TagContainerLayout extends ViewGroup {
 
     @Override
     protected void onLayout(boolean changed, int l, int t, int r, int b) {
+        int childCount;
+        if ((childCount = getChildCount()) <= 0){
+            return;
+        }
         int availableW = getMeasuredWidth() - getPaddingLeft() - getPaddingRight();
-        int childCount = getChildCount();
+        int curRight = getMeasuredWidth() - getPaddingRight();
         int curTop = getPaddingTop();
+        int curLeft = getPaddingLeft();
+        int sPos = 0;
         mViewPos = new int[childCount * 2];
-        if (mGravity == Gravity.RIGHT){
-            int curRight = getMeasuredWidth() - getPaddingRight();
-            for (int i = 0; i < childCount; i++) {
-                final View childView = getChildAt(i);
-                if (childView.getVisibility() != GONE) {
-                    int width = childView.getMeasuredWidth();
+
+        for (int i = 0; i < childCount; i++) {
+            final View childView = getChildAt(i);
+            if (childView.getVisibility() != GONE) {
+                int width = childView.getMeasuredWidth();
+                if (mGravity == Gravity.RIGHT){
                     if (curRight - width < getPaddingLeft()){
                         curRight = getMeasuredWidth() - getPaddingRight();
                         curTop += mChildHeight + mVerticalInterval;
                     }
                     mViewPos[i * 2] = curRight - width;
                     mViewPos[i * 2 + 1] = curTop;
-                    childView.layout(curRight - width, curTop, curRight, curTop + mChildHeight);
                     curRight -= width + mHorizontalInterval;
-                }
-            }
-        }else if (mGravity == Gravity.CENTER){
-            /*int curLeft = getPaddingLeft();
-            for (int i = 0; i < childCount; i++) {
-                final View childView = getChildAt(i);
-                if (childView.getVisibility() != GONE) {
-                    int width = childView.getMeasuredWidth();
+                }else if (mGravity == Gravity.CENTER){
                     if (curLeft + width - getPaddingLeft() > availableW){
-                        int leftW = getMeasuredWidth() - getChildAt(i - 1).getMeasuredWidth() - getPaddingRight() - mViewPos[i * 2];
-                        for (int j = i; j < mViewPos.length / 2; j++) {
-                            mViewPos[j * 2] = mViewPos[j * 2] +
+                        int leftW = getMeasuredWidth() - mViewPos[(i - 1) * 2]
+                                - getChildAt(i - 1).getMeasuredWidth() - getPaddingRight();
+                        for (int j = sPos; j < i; j++) {
+                            mViewPos[j * 2] = mViewPos[j * 2] + leftW / 2;
                         }
+                        sPos = i;
                         curLeft = getPaddingLeft();
                         curTop += mChildHeight + mVerticalInterval;
                     }
                     mViewPos[i * 2] = curLeft;
                     mViewPos[i * 2 + 1] = curTop;
                     curLeft += width + mHorizontalInterval;
-                }
-            }*/
-        }else {
-            int curLeft = getPaddingLeft();
-            for (int i = 0; i < childCount; i++) {
-                final View childView = getChildAt(i);
-                if (childView.getVisibility() != GONE) {
-                    int width = childView.getMeasuredWidth();
+
+                    if (i == childCount - 1){
+                        int leftW = getMeasuredWidth() - mViewPos[i * 2]
+                                - childView.getMeasuredWidth() - getPaddingRight();
+                        for (int j = sPos; j < childCount; j++) {
+                            mViewPos[j * 2] = mViewPos[j * 2] + leftW / 2;
+                        }
+                    }
+                }else {
                     if (curLeft + width - getPaddingLeft() > availableW){
                         curLeft = getPaddingLeft();
                         curTop += mChildHeight + mVerticalInterval;
                     }
                     mViewPos[i * 2] = curLeft;
                     mViewPos[i * 2 + 1] = curTop;
-                    childView.layout(curLeft, curTop, curLeft + width, curTop + mChildHeight);
                     curLeft += width + mHorizontalInterval;
                 }
             }
+        }
+
+        // layout all child views
+        for (int i = 0; i < mViewPos.length / 2; i++) {
+            View childView = getChildAt(i);
+            childView.layout(mViewPos[i * 2], mViewPos[i * 2 + 1],
+                    mViewPos[i * 2] + childView.getMeasuredWidth(),
+                    mViewPos[i * 2 + 1] + mChildHeight);
         }
     }
 

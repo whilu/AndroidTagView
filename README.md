@@ -6,7 +6,7 @@ An Android TagView library. You can customize awesome TagView by using this libr
 
 ## Screenshots
 
-<img src="/screenshots/androidtagview_record_1.gif" alt="androidtagview_record_1.gif" title="androidtagview_record_1.gif" width="400" height="660" />
+<img src="/screenshots/androidtagview_record_1.gif" alt="androidtagview_record_1.gif" title="androidtagview_record_1.gif" width="400" height="660" /> <img src="/screenshots/device-2016-01-16-233617.png" alt="device-2016-01-16-233617.png" title="device-2016-01-16-233617.png" width="400" height="660" />
 
 ## Usage
 
@@ -60,6 +60,7 @@ Now, you have successfully created some TagViews. The following will show some m
 | container_background_color | color | TagContainerLayout background color(default #11FF0000)
 | container_enable_drag | boolean | Can drag TagView(default false)
 | container_drag_sensitivity | float | The sensitive of the ViewDragHelper(default 1.0f, normal)
+| container_gravity | enum | The TagContainerLayout [gravity](#gravity)
 | tag_border_width | dimension | TagView Border width(default 0.5dp)
 | tag_corner_radius | dimension | TagView Border radius(default 15.0dp)
 | tag_horizontal_padding | dimension | Horizontal padding for TagView, include left and right padding(left and right padding are equal, default 20px)
@@ -91,6 +92,13 @@ Now, you have successfully created some TagViews. The following will show some m
 | ltr | View.TEXT_DIRECTION_LTR | 3 | Text direction is forced to LTR(default)
 | rtl | View.TEXT_DIRECTION_RTL | 4 | Text direction is forced to RTL
 
+## <span id="gravity">Gravity</span>
+
+|gravity|code|value|description
+|:---:|:---:|:---:|:---:|
+| left | Gravity.LEFT | 3 | Push TagView to the left of TagContainerLayout(default)
+| center | Gravity.CENTER | 17 | Push TagView to the center of TagContainerLayout
+| right | Gravity.RIGHT | 5 | Push TagView to the right of TagContainerLayout
 
 ## <span id="Methods">Methods</span>
 

@@ -18,7 +18,7 @@ import co.lujun.androidtagview.TagView;
 
 public class MainActivity extends AppCompatActivity {
 
-    private TagContainerLayout mTagContainerLayout1, mTagContainerLayout2, mTagContainerLayout3;
+    private TagContainerLayout mTagContainerLayout1, mTagContainerLayout2, mTagContainerLayout3, mTagContainerLayout4;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,10 +54,12 @@ public class MainActivity extends AppCompatActivity {
         list2.add("Brazil");
 
         String[] list3 = new String[]{"Persian", "波斯语", "فارسی", "Hello", "你好", "سلام"};
+        String[] list4 = new String[]{"Adele", "Whitney Houston"};
 
         mTagContainerLayout1 = (TagContainerLayout) findViewById(R.id.tagcontainerLayout1);
         mTagContainerLayout2 = (TagContainerLayout) findViewById(R.id.tagcontainerLayout2);
         mTagContainerLayout3 = (TagContainerLayout) findViewById(R.id.tagcontainerLayout3);
+        mTagContainerLayout4 = (TagContainerLayout) findViewById(R.id.tagcontainerLayout4);
 
         // Set custom click listener
         mTagContainerLayout1.setOnTagClickListener(new TagView.OnTagClickListener() {
@@ -104,6 +106,7 @@ public class MainActivity extends AppCompatActivity {
         mTagContainerLayout1.setTags(list1);
         mTagContainerLayout2.setTags(list2);
         mTagContainerLayout3.setTags(list3);
+        mTagContainerLayout4.setTags(list4);
 
         final EditText text = (EditText) findViewById(R.id.text_tag);
         Button btnAddTag = (Button) findViewById(R.id.btn_add_tag);
