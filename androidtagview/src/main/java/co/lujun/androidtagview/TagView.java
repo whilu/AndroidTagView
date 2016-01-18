@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.RectF;
+import android.graphics.Typeface;
 import android.support.v4.widget.ViewDragHelper;
 import android.text.TextUtils;
 import android.view.MotionEvent;
@@ -60,6 +61,9 @@ public class TagView extends View {
     /** Text direction(support:TEXT_DIRECTION_RTL & TEXT_DIRECTION_LTR, default TEXT_DIRECTION_LTR)*/
     private int mTextDirection = View.TEXT_DIRECTION_LTR;
 
+    /** The distance between baseline and descent*/
+    private float bdDistance;
+
     private Paint mPaint;
 
     private RectF mRectF;
@@ -71,6 +75,8 @@ public class TagView extends View {
     private int mLastX, mLastY;
 
     private float fontH, fontW;
+
+    private Typeface mTypeface;
 
     private Runnable mLongClickHandle = new Runnable() {
         @Override
@@ -103,6 +109,7 @@ public class TagView extends View {
         }else {
             mAbstractText = "";
         }
+        mPaint.setTypeface(mTypeface);
         mPaint.setTextSize(mTextSize);
         final Paint.FontMetrics fontMetrics = mPaint.getFontMetrics();
         fontH = fontMetrics.descent - fontMetrics.ascent;
@@ -143,9 +150,6 @@ public class TagView extends View {
 
         mPaint.setStyle(Paint.Style.FILL);
         mPaint.setColor(mTextColor);
-
-        // Set the distance between baseline and descent as 5.5px
-        float bdDistance = 5.5f;
 
         if (mTextDirection == View.TEXT_DIRECTION_RTL){
             float tmpX = getWidth() / 2 + fontW / 2;
@@ -288,5 +292,14 @@ public class TagView extends View {
 
     public void setTextDirection(int textDirection) {
         this.mTextDirection = textDirection;
+    }
+
+    public void setTypeface(Typeface typeface) {
+        this.mTypeface = typeface;
+        onDealText();
+    }
+
+    public void setBdDistance(float bdDistance) {
+        this.bdDistance = bdDistance;
     }
 }

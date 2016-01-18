@@ -66,6 +66,7 @@ Now, you have successfully created some TagViews. The following will show some m
 | tag_horizontal_padding | dimension | Horizontal padding for TagView, include left and right padding(left and right padding are equal, default 20px)
 | tag_vertical_padding | dimension | Vertical padding for TagView, include top and bottom padding(top and bottom padding are equal, default 17px)
 | tag_text_size | dimension | TagView Text size(default 14sp)
+| tag_bd_distance | dimension | The distance between baseline and descent(default 5.5px)
 | tag_text_color | color | TagView text color(default #FF666666)
 | tag_border_color | color | TagView border color(default #88F44336)
 | tag_background_color | color | TagView background color(default #33F44336)
@@ -142,6 +143,11 @@ mTagContainerLayout.setTagBackgroundColor(Color.TRANSPARENT);
 * Set the text [direction](#directions). The library support two direction ```View.TEXT_DIRECTION_LTR``` and ```View.TEXT_DIRECTION_RTL```.
 ```java
 mTagContainerLayout.setTagTextDirection(View.TEXT_DIRECTION_RTL);
+```
+* Use ```setTagTypeface(Typeface typeface)``` to set TagView text typeface.
+```java
+Typeface typeface = Typeface.createFromAsset(getAssets(), "iran_sans.ttf");
+mTagContainerLayout.setTagTypeface(typeface);
 ```
 
 **After set the attributes, set tags or add a tag.**

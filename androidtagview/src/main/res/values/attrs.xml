@@ -21,6 +21,7 @@
         <attr name="tag_horizontal_padding" format="dimension" />
         <attr name="tag_vertical_padding" format="dimension" />
         <attr name="tag_text_size" format="dimension" />
+        <attr name="tag_bd_distance" format="dimension" />
         <attr name="tag_text_color" format="color" />
         <attr name="tag_border_color" format="color" />
         <attr name="tag_background_color" format="color" />

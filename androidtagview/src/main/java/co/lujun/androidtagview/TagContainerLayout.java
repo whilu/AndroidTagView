@@ -6,6 +6,7 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.RectF;
+import android.graphics.Typeface;
 import android.support.v4.widget.ViewDragHelper;
 import android.util.AttributeSet;
 import android.view.Gravity;
@@ -80,6 +81,9 @@ public class TagContainerLayout extends ViewGroup {
     /** TagView text color(default #FF666666)*/
     private int mTagTextColor = Color.parseColor("#FF666666");
 
+    /** TagView typeface*/
+    private Typeface mTagTypeface = Typeface.DEFAULT;
+
     /** Whether TagView can clickable(default unclickable)*/
     private boolean isTagViewClickable;
 
@@ -91,6 +95,9 @@ public class TagContainerLayout extends ViewGroup {
 
     /** TagView drag state(default STATE_IDLE)*/
     private int mTagViewState = ViewDragHelper.STATE_IDLE;
+
+    /** The distance between baseline and descent(default 5.5px)*/
+    private float mTagBdDistance = 5.5f;
 
     /** OnTagClickListener for TagView*/
     private TagView.OnTagClickListener mOnTagClickListener;
@@ -138,6 +145,8 @@ public class TagContainerLayout extends ViewGroup {
                 dp2px(context, mBorderWidth));
         mBorderRadius = attributes.getDimension(R.styleable.AndroidTagView_container_border_radius,
                 dp2px(context, mBorderRadius));
+        mTagBdDistance = attributes.getDimension(R.styleable.AndroidTagView_tag_bd_distance,
+                mTagBdDistance);
         mBorderColor = attributes.getColor(R.styleable.AndroidTagView_container_border_color,
                 mBorderColor);
         mBackgroundColor = attributes.getColor(R.styleable.AndroidTagView_container_background_color,
@@ -373,12 +382,14 @@ public class TagContainerLayout extends ViewGroup {
         tagView.setTagTextColor(colors[2]);
         tagView.setTagMaxLength(mTagMaxLength);
         tagView.setTextDirection(mTagTextDirection);
+        tagView.setTypeface(mTagTypeface);
         tagView.setBorderWidth(mTagBorderWidth);
         tagView.setBorderRadius(mTagBorderRadius);
         tagView.setTextSize(mTagTextSize);
         tagView.setHorizontalPadding(mTagHorizontalPadding);
         tagView.setVerticalPadding(mTagVerticalPadding);
         tagView.setIsViewClickable(isTagViewClickable);
+        tagView.setBdDistance(mTagBdDistance);
         tagView.setOnTagClickListener(mOnTagClickListener);
     }
 
@@ -511,6 +522,23 @@ public class TagContainerLayout extends ViewGroup {
     public int getTagViewState(){
         return mTagViewState;
     }
+
+    /**
+     * Get TagView text baseline and descent distance.
+     * @return
+     */
+    public float getTagBdDistance() {
+        return mTagBdDistance;
+    }
+
+    /**
+     * Set TagView text baseline and descent distance.
+     * @param tagBdDistance
+     */
+    public void setTagBdDistance(float tagBdDistance) {
+        this.mTagBdDistance = dp2px(getContext(), tagBdDistance);
+    }
+
     /**
      * Set tags
      * @param tags
@@ -907,6 +935,22 @@ public class TagContainerLayout extends ViewGroup {
      */
     public void setTagTextDirection(int textDirection) {
         this.mTagTextDirection = textDirection;
+    }
+
+    /**
+     * Get TagView typeface.
+     * @return
+     */
+    public Typeface getTagTypeface() {
+        return mTagTypeface;
+    }
+
+    /**
+     * Set TagView typeface.
+     * @param typeface
+     */
+    public void setTagTypeface(Typeface typeface) {
+        this.mTagTypeface = typeface;
     }
 
     /**

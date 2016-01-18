@@ -2,6 +2,7 @@ package co.lujun.sample;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -101,6 +102,13 @@ public class MainActivity extends AppCompatActivity {
 //        mTagContainerLayout1.setTheme(ColorFactory.NONE);
 //        mTagContainerLayout1.setTagBackgroundColor(Color.TRANSPARENT);
 //        mTagContainerLayout1.setTagTextDirection(View.TEXT_DIRECTION_RTL);
+
+        // support typeface
+//        Typeface typeface = Typeface.createFromAsset(getAssets(), "iran_sans.ttf");
+//        mTagContainerLayout.setTagTypeface(typeface);
+
+        // adjust distance baseline and descent
+//        mTagContainerLayout.setTagBdDistance(4.6f);
 
         // After you set your own attributes for TagView, then set tag(s) or add tag(s)
         mTagContainerLayout1.setTags(list1);
