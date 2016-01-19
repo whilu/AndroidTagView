@@ -28,7 +28,7 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="0dp"
                 android:padding="10dp"
-                app:container_enable_drag="false"
+                app:container_enable_drag="true"
                 app:horizontal_interval="10dp"
                 app:tag_clickable="true"
                 app:tag_theme="pure_teal"

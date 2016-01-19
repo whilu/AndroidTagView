@@ -181,7 +181,6 @@ public class TagContainerLayout extends ViewGroup {
         mChildViews = new ArrayList<View>();
         mViewDragHelper = ViewDragHelper.create(this, mSensitivity, new DragHelperCallBack());
         setWillNotDraw(false);
-        setDragState();
         setTagMaxLength(mTagMaxLength);
         setTagHorizontalPadding(mTagHorizontalPadding);
         setTagVerticalPadding(mTagVerticalPadding);
@@ -446,10 +445,6 @@ public class TagContainerLayout extends ViewGroup {
         return pos;
     }
 
-    private void setDragState(){
-        mTagViewState = mDragEnable ? ViewDragHelper.STATE_DRAGGING : ViewDragHelper.STATE_IDLE;
-    }
-
     private void onChangeView(View view, int newPos, int originPos){
         mChildViews.remove(originPos);
         mChildViews.add(newPos, view);
@@ -617,7 +612,6 @@ public class TagContainerLayout extends ViewGroup {
      */
     public void setDragEnable(boolean enable){
         this.mDragEnable = enable;
-        setDragState();
     }
 
     /**
