@@ -123,8 +123,8 @@ public class MainActivity extends AppCompatActivity {
         // Set the custom theme
 //        mTagContainerLayout1.setTheme(ColorFactory.PURE_CYAN);
 
-        // If you want to use your colors for TagView, remember set the theme with ColorFactory.NONE
-//        mTagContainerLayout1.setTheme(ColorFactory.NONE);
+        // If you want to use your colors for TagView, remember set the theme with ColorFactory.CUSTOM
+//        mTagContainerLayout1.setTheme(ColorFactory.CUSTOM);
 //        mTagContainerLayout1.setTagBackgroundColor(Color.TRANSPARENT);
 //        mTagContainerLayout1.setTagTextDirection(View.TEXT_DIRECTION_RTL);
 

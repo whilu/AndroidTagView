@@ -90,7 +90,6 @@
                 app:tag_text_color="#ff666666"
                 app:tag_text_direction="rtl"
                 app:tag_text_size="14sp"
-                app:tag_theme="pure_teal"
                 app:tag_vertical_padding="10dp"
                 app:vertical_interval="10dp" />
 
@@ -117,7 +116,7 @@
                 app:container_gravity="center"
                 app:horizontal_interval="10dp"
                 app:tag_clickable="true"
-                app:tag_theme="none"
+                app:tag_theme="custom"
                 app:vertical_interval="10dp" />
 
         </LinearLayout>

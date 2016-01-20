@@ -119,7 +119,7 @@ public class TagContainerLayout extends ViewGroup {
     private int[] mViewPos;
 
     /** View theme(default PURE_CYAN)*/
-    private int mTheme = ColorFactory.PURE_CYAN;
+    private int mTheme = ColorTheme.ATTR_PURE_CYAN;
 
     /** Default interval(dp)*/
     private static final float DEFAULT_INTERVAL = 5;
@@ -779,7 +779,7 @@ public class TagContainerLayout extends ViewGroup {
             mColorFactory = new RandomColorFactory();
         } else if (colorTheme == ColorTheme.PURE_CYAN || colorTheme == ColorTheme.PURE_TEAL) {
             mColorFactory = new PureColorFactory(colorTheme);
-        } else if (colorTheme != ColorTheme.NONE) {
+        } else if (colorTheme != ColorTheme.CUSTOM) {
             mColorFactory = null;
             Log.e("TagContainerLayout", "ColorFactory not determined with theme set to " + theme);
         }

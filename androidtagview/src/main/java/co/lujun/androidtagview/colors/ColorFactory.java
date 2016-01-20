@@ -11,13 +11,5 @@ public interface ColorFactory {
      * =============
      */
 
-    /**
-     * Fix color themes
-     */
-    public static final int NONE = -1;
-    public static final int RANDOM = 0;
-    public static final int PURE_CYAN = 1;
-    public static final int PURE_TEAL = 2;
-
     int[] colorForTag(final String tag);
 }
