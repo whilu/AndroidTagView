@@ -2,7 +2,7 @@ package co.lujun.sample;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
-import android.graphics.Typeface;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -16,10 +16,11 @@ import java.util.List;
 
 import co.lujun.androidtagview.TagContainerLayout;
 import co.lujun.androidtagview.TagView;
+import co.lujun.androidtagview.colors.ColorFactory;
 
 public class MainActivity extends AppCompatActivity {
 
-    private TagContainerLayout mTagContainerLayout1, mTagContainerLayout2, mTagContainerLayout3, mTagContainerLayout4;
+    private TagContainerLayout mTagContainerLayout1, mTagContainerLayout2, mTagContainerLayout3, mTagContainerLayout4, mTagContainerLayout5;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,11 +57,35 @@ public class MainActivity extends AppCompatActivity {
 
         String[] list3 = new String[]{"Persian", "波斯语", "فارسی", "Hello", "你好", "سلام"};
         String[] list4 = new String[]{"Adele", "Whitney Houston"};
+        String[] list5 = new String[]{"Apple", "Asparagus", "Banana", "Brunch", "Candy", "Cake", "Donuts"};
 
         mTagContainerLayout1 = (TagContainerLayout) findViewById(R.id.tagcontainerLayout1);
         mTagContainerLayout2 = (TagContainerLayout) findViewById(R.id.tagcontainerLayout2);
         mTagContainerLayout3 = (TagContainerLayout) findViewById(R.id.tagcontainerLayout3);
         mTagContainerLayout4 = (TagContainerLayout) findViewById(R.id.tagcontainerLayout4);
+        mTagContainerLayout5 = (TagContainerLayout) findViewById(R.id.tagcontainerLayout5);
+
+        mTagContainerLayout5.setColorFactory(new ColorFactory() {
+            @Override
+            public int[] colorForTag(String tag) {
+                String themeColorHex;
+                if (tag.startsWith("A")) {
+                    themeColorHex = "FF0000";
+                } else if (tag.startsWith("B")) {
+                    themeColorHex = "00FF00";
+                } else if (tag.startsWith("C")){
+                    themeColorHex = "0000FF";
+                } else {
+                    themeColorHex = "000000";
+                }
+
+                int[] colors = new int[3];
+                colors[0] = Color.parseColor("#33" + themeColorHex);
+                colors[1] = Color.parseColor("#88" + themeColorHex);
+                colors[2] = Color.parseColor("#FFFFFF");
+                return colors;
+            }
+        });
 
         // Set custom click listener
         mTagContainerLayout1.setOnTagClickListener(new TagView.OnTagClickListener() {
@@ -115,6 +140,7 @@ public class MainActivity extends AppCompatActivity {
         mTagContainerLayout2.setTags(list2);
         mTagContainerLayout3.setTags(list3);
         mTagContainerLayout4.setTags(list4);
+        mTagContainerLayout5.setTags(list5);
 
         final EditText text = (EditText) findViewById(R.id.text_tag);
         Button btnAddTag = (Button) findViewById(R.id.btn_add_tag);
