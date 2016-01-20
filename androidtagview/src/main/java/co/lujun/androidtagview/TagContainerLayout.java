@@ -9,6 +9,7 @@ import android.graphics.RectF;
 import android.graphics.Typeface;
 import android.support.v4.widget.ViewDragHelper;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.View;
@@ -17,6 +18,11 @@ import android.view.ViewGroup;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+
+import co.lujun.androidtagview.colors.ColorFactory;
+import co.lujun.androidtagview.colors.ColorTheme;
+import co.lujun.androidtagview.colors.PureColorFactory;
+import co.lujun.androidtagview.colors.RandomColorFactory;
 
 /**
  * Author: lujun(http://blog.lujun.co)
@@ -121,6 +127,8 @@ public class TagContainerLayout extends ViewGroup {
     /** Default tag min length*/
     private static final int TAG_MIN_LENGTH = 3;
 
+    private ColorFactory mColorFactory;
+
     public TagContainerLayout(Context context) {
         this(context, null);
     }
@@ -184,6 +192,7 @@ public class TagContainerLayout extends ViewGroup {
         setTagMaxLength(mTagMaxLength);
         setTagHorizontalPadding(mTagHorizontalPadding);
         setTagVerticalPadding(mTagVerticalPadding);
+        setTheme(mTheme);
     }
 
     @Override
@@ -333,20 +342,6 @@ public class TagContainerLayout extends ViewGroup {
         return lines;
     }
 
-    private int[] onUpdateColorFactory(){
-        int[] colors;
-        if (mTheme == ColorFactory.RANDOM){
-            colors = ColorFactory.onRandomBuild();
-        }else if (mTheme == ColorFactory.PURE_TEAL){
-            colors = ColorFactory.onPureBuild(ColorFactory.PURE_COLOR.TEAL);
-        }else if (mTheme == ColorFactory.PURE_CYAN){
-            colors = ColorFactory.onPureBuild(ColorFactory.PURE_COLOR.CYAN);
-        }else {
-            colors = new int[]{mTagBackgroundColor, mTagBorderColor, mTagTextColor};
-        }
-        return colors;
-    }
-
     private void onSetTag(){
         if (mTags == null || mTags.size() == 0){
             return;
@@ -375,7 +370,7 @@ public class TagContainerLayout extends ViewGroup {
     }
 
     private void initTagView(TagView tagView){
-        int[] colors = onUpdateColorFactory();
+        int[] colors = mColorFactory.colorForTag(tagView.getText());
         tagView.setTagBackgroundColor(colors[0]);
         tagView.setTagBorderColor(colors[1]);
         tagView.setTagTextColor(colors[2]);
@@ -458,6 +453,10 @@ public class TagContainerLayout extends ViewGroup {
 
     private int ceilTagBorderWidth(){
         return (int)Math.ceil(mTagBorderWidth);
+    }
+
+    public void setColorFactory(ColorFactory colorFactory) {
+        this.mColorFactory = colorFactory;
     }
 
     private class DragHelperCallBack extends ViewDragHelper.Callback{
@@ -772,8 +771,18 @@ public class TagContainerLayout extends ViewGroup {
      * Set TagView theme.
      * @param theme
      */
-    public void setTheme(int theme){
+    public void setTheme(int theme) {
         mTheme = theme;
+
+        ColorTheme colorTheme = ColorTheme.getThemeFromAttr(theme);
+        if (colorTheme == ColorTheme.RANDOM) {
+            mColorFactory = new RandomColorFactory();
+        } else if (colorTheme == ColorTheme.PURE_CYAN || colorTheme == ColorTheme.PURE_TEAL) {
+            mColorFactory = new PureColorFactory(colorTheme);
+        } else if (colorTheme != ColorTheme.NONE) {
+            mColorFactory = null;
+            Log.e("TagContainerLayout", "ColorFactory not determined with theme set to " + theme);
+        }
     }
 
     /**
