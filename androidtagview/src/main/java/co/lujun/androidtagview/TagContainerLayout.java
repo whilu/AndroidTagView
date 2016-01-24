@@ -607,6 +607,20 @@ public class TagContainerLayout extends ViewGroup {
     }
 
     /**
+     * Get a string list for all tags in TagContainerLayout.
+     * @return
+     */
+    public List<String> getTags(){
+        List<String> tmpList = new ArrayList<String>();
+        for (View view : mChildViews){
+            if (view instanceof TagView){
+                tmpList.add(((TagView) view).getText());
+            }
+        }
+        return tmpList;
+    }
+
+    /**
      * Set whether the child view can be dragged.
      * @param enable
      */

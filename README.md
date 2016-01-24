@@ -126,6 +126,10 @@ mTagContainerLayout.setTagMaxLength(int max);
 ```java
 String text = mTagContainerLayout.getTagText(int position);
 ```
+* ```getTags()``` return a string list for all tags in TagContainerLayout.
+```java
+List<String> list = mTagContainerLayout.getTags();
+```
 * If you set the attribute ```container_enable_drag``` to ```true```, when drag the TagView you can get latest state by using ```getTagViewState()```. There are 4 state:```ViewDragHelper.STATE_IDLE```, ```ViewDragHelper.STATE_DRAGGING```, and ```ViewDragHelper.STATE_SETTLING```.
 ```java
 int state = mTagContainerLayout.getTagViewState();
