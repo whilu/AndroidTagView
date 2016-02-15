@@ -392,6 +392,13 @@ public class TagContainerLayout extends ViewGroup {
         tagView.setOnTagClickListener(mOnTagClickListener);
     }
 
+    private void invalidateTags(){
+        for (View view : mChildViews) {
+            final TagView tagView = (TagView) view;
+            tagView.setOnTagClickListener(mOnTagClickListener);
+        }
+    }
+
     private void onRemoveTag(int position){
         if (position < 0 || position >= mChildViews.size()){
             throw new RuntimeException("Illegal position!");
@@ -595,6 +602,7 @@ public class TagContainerLayout extends ViewGroup {
      */
     public void setOnTagClickListener(TagView.OnTagClickListener listener){
         mOnTagClickListener = listener;
+        invalidateTags();
     }
 
     /**
