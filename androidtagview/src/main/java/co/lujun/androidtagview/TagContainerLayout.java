@@ -348,7 +348,11 @@ public class TagContainerLayout extends ViewGroup {
     }
 
     private void onSetTag(){
-        if (mTags == null || mTags.size() == 0){
+        if (mTags == null){
+            throw new RuntimeException("NullPointer exception!");
+        }
+        removeAllTags();
+        if (mTags.size() == 0){
             return;
         }
         for (int i = 0; i < mTags.size(); i++) {
