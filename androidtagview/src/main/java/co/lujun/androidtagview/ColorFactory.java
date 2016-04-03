@@ -9,9 +9,9 @@ import android.graphics.Color;
 public class ColorFactory {
 
     /**
-     *                       ============= -->border color
-     *  background color<---||-  Text --||-->text color
-     *                      =============
+     *                      ============= --border color
+     *  background color---||-  Text --||--text color
+     *                     =============
      */
 
     public static final String BG_COLOR_ALPHA = "33";

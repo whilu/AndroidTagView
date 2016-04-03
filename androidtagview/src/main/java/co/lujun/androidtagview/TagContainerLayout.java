@@ -779,7 +779,7 @@ public class TagContainerLayout extends ViewGroup {
     }
 
     /**
-     * Set the TagView text max length(must >=3).
+     * Set the TagView text max length(must greater or equal to 3).
      * @param maxLength
      */
     public void setTagMaxLength(int maxLength){
@@ -949,7 +949,7 @@ public class TagContainerLayout extends ViewGroup {
     }
 
     /**
-     * Set tag text direction, support:View.TEXT_DIRECTION_RTL & View.TEXT_DIRECTION_LTR,
+     * Set tag text direction, support:View.TEXT_DIRECTION_RTL and View.TEXT_DIRECTION_LTR,
      * default View.TEXT_DIRECTION_LTR
      * @param textDirection
      */

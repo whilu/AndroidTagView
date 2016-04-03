@@ -16,7 +16,7 @@ Add below dependency in your **build.gradle** file.
 
 ```groovy
 dependencies {
-    compile 'co.lujun:androidtagview:1.0.2'
+    compile 'co.lujun:androidtagview:1.0.3'
 }
 ```
 
@@ -178,6 +178,10 @@ mTagContainerLayout.removeAllTags();
 ```
 
 ## Change logs
+###1.0.3(2016-4-3)
+- add ```getTags()``` method to get the list for all tags
+- fixed bugs in ListView/RecyclerView
+
 ###1.0.2(2016-1-18)
 - support [gravity](#gravity) for ```TagContainerLayout```
 - support set typeface
