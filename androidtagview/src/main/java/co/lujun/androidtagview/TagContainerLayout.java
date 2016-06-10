@@ -51,6 +51,9 @@ public class TagContainerLayout extends ViewGroup {
     /** The container layout gravity(default left)*/
     private int mGravity = Gravity.LEFT;
 
+    /** The max line count of container */
+    private int mMaxLines = 1;
+
     /** The max length for TagView(default max length 23)*/
     private int mTagMaxLength = 23;
 
@@ -155,6 +158,7 @@ public class TagContainerLayout extends ViewGroup {
         mSensitivity = attributes.getFloat(R.styleable.AndroidTagView_container_drag_sensitivity,
                 mSensitivity);
         mGravity = attributes.getInt(R.styleable.AndroidTagView_container_gravity, mGravity);
+        mMaxLines = attributes.getInt(R.styleable.AndroidTagView_container_max_lines, mMaxLines);
         mTagMaxLength = attributes.getInt(R.styleable.AndroidTagView_tag_max_length, mTagMaxLength);
         mTheme = attributes.getInt(R.styleable.AndroidTagView_tag_theme, mTheme);
         mTagBorderWidth = attributes.getDimension(R.styleable.AndroidTagView_tag_border_width,
@@ -295,6 +299,11 @@ public class TagContainerLayout extends ViewGroup {
         mPaint.setStrokeWidth(mBorderWidth);
         mPaint.setColor(mBorderColor);
         canvas.drawRoundRect(mRectF, mBorderRadius, mBorderRadius, mPaint);
+
+        int lineCount = getChildLines(mChildViews.size());
+        if(lineCount > mMaxLines) {
+            removeTag(mChildViews.size()-1);
+        }
     }
 
     @Override
