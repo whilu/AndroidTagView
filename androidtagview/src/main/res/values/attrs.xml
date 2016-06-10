@@ -10,6 +10,7 @@
         <attr name="container_background_color" format="color" />
         <attr name="container_enable_drag" format="boolean" />
         <attr name="container_drag_sensitivity" format="float" />
+        <attr name="container_max_lines" format="integer" />
         <attr name="container_gravity" format="enum">
             <enum name="left" value="3" />
             <enum name="center" value="17" />
