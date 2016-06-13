@@ -127,6 +127,6 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        mTagContainerLayout1.setMaxLines(1);
+//        mTagContainerLayout1.setMaxLines(1);
     }
 }

@@ -51,7 +51,7 @@ public class TagContainerLayout extends ViewGroup {
     /** The container layout gravity(default left)*/
     private int mGravity = Gravity.LEFT;
 
-    /** The max line count of container */
+    /** The max line count of TagContainerLayout */
     private int mMaxLines = 0;
 
     /** The max length for TagView(default max length 23)*/
@@ -299,14 +299,6 @@ public class TagContainerLayout extends ViewGroup {
         mPaint.setStrokeWidth(mBorderWidth);
         mPaint.setColor(mBorderColor);
         canvas.drawRoundRect(mRectF, mBorderRadius, mBorderRadius, mPaint);
-
-        if(mMaxLines <=0)
-            return;
-
-        int lineCount = getChildLines(mChildViews.size());
-        if(lineCount > mMaxLines) {
-            removeTag(mChildViews.size()-1);
-        }
     }
 
     @Override
@@ -342,7 +334,8 @@ public class TagContainerLayout extends ViewGroup {
                 curLineW = dis;
             }
         }
-        return lines;
+
+        return mMaxLines <= 0 ? lines : mMaxLines;
     }
 
     private int[] onUpdateColorFactory(){
@@ -791,12 +784,20 @@ public class TagContainerLayout extends ViewGroup {
     }
 
     /**
-     * Set max line count for TagContainer
+     * Set max line count for TagContainerLayout
      * @param maxLines max line count
      */
     public void setMaxLines(int maxLines) {
         mMaxLines = maxLines;
         postInvalidate();
+    }
+
+    /**
+     * Get TagContainerLayout's max lines
+     * @return maxLines
+     */
+    public int getMaxLines(){
+        return mMaxLines;
     }
 
     /**

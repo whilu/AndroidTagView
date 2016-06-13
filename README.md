@@ -61,6 +61,7 @@ Now, you have successfully created some TagViews. The following will show some m
 | container_enable_drag | boolean | Can drag TagView(default false)
 | container_drag_sensitivity | float | The sensitive of the ViewDragHelper(default 1.0f, normal)
 | container_gravity | enum | The TagContainerLayout [gravity](#gravity)
+| container_max_lines | integer | The max lines for TagContainerLayout(default 0, auto increase)
 | tag_border_width | dimension | TagView Border width(default 0.5dp)
 | tag_corner_radius | dimension | TagView Border radius(default 15.0dp)
 | tag_horizontal_padding | dimension | Horizontal padding for TagView, include left and right padding(left and right padding are equal, default 20px)
