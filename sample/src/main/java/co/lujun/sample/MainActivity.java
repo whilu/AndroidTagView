@@ -126,5 +126,7 @@ public class MainActivity extends AppCompatActivity {
 //                mTagContainerLayout1.addTag(text.getText().toString(), 4);
             }
         });
+
+        mTagContainerLayout1.setMaxLines(1);
     }
 }
