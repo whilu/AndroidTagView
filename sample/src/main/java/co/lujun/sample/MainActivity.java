@@ -1,12 +1,16 @@
 package co.lujun.sample;
 
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -128,5 +132,71 @@ public class MainActivity extends AppCompatActivity {
         });
 
 //        mTagContainerLayout1.setMaxLines(1);
+
+
+        // test in RecyclerView
+//        RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
+//        recyclerView.setVisibility(View.VISIBLE);
+//        TagRecyclerViewAdapter adapter = new TagRecyclerViewAdapter(this, list3);
+//        adapter.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                Toast.makeText(MainActivity.this, "Click on TagContainerLayout", Toast.LENGTH_SHORT).show();
+//            }
+//        });
+//        recyclerView.setAdapter(adapter);
+    }
+
+    public class TagRecyclerViewAdapter
+            extends RecyclerView.Adapter<TagRecyclerViewAdapter.TagViewHolder>{
+
+        private Context mContext;
+        private String[] mData;
+        private View.OnClickListener mOnClickListener;
+
+        public TagRecyclerViewAdapter(Context context, String[] data){
+            this.mContext = context;
+            this.mData = data;
+        }
+
+        @Override
+        public int getItemCount() {
+            return 10;
+        }
+
+        @Override
+        public TagViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+            return new TagViewHolder(LayoutInflater.from(mContext)
+                    .inflate(R.layout.view_recyclerview_item, parent, false), mOnClickListener);
+        }
+
+        @Override
+        public void onBindViewHolder(TagViewHolder holder, int position) {
+            holder.tagContainerLayout.setTags(mData);
+        }
+
+        public void setOnClickListener(View.OnClickListener listener){
+            this.mOnClickListener = listener;
+        }
+
+        class TagViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
+
+            TagContainerLayout tagContainerLayout;
+            View.OnClickListener clickListener;
+
+            public TagViewHolder(View v, View.OnClickListener listener){
+                super(v);
+                this.clickListener = listener;
+                tagContainerLayout = (TagContainerLayout) v.findViewById(R.id.tagcontainerLayout);
+                v.setOnClickListener(this);
+            }
+
+            @Override
+            public void onClick(View v) {
+                if (clickListener != null){
+                    clickListener.onClick(v);
+                }
+            }
+        }
     }
 }
