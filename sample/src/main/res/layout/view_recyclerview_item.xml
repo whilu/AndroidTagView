@@ -1,18 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_marginTop="20dp"
+    android:layout_height="60dp">
 
     <co.lujun.androidtagview.TagContainerLayout
         android:id="@+id/tagcontainerLayout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
+        android:layout_height="match_parent"
         android:padding="10dp"
         app:container_enable_drag="true"
         app:horizontal_interval="10dp"
         app:tag_clickable="true"
         app:tag_theme="pure_teal"
         app:vertical_interval="10dp" />
-</LinearLayout>
+
+    <Button
+        android:id="@+id/button"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@null"/>
+</RelativeLayout>

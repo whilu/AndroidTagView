@@ -173,6 +173,7 @@ public class MainActivity extends AppCompatActivity {
         @Override
         public void onBindViewHolder(TagViewHolder holder, int position) {
             holder.tagContainerLayout.setTags(mData);
+            holder.button.setOnClickListener(mOnClickListener);
         }
 
         public void setOnClickListener(View.OnClickListener listener){
@@ -183,12 +184,14 @@ public class MainActivity extends AppCompatActivity {
 
             TagContainerLayout tagContainerLayout;
             View.OnClickListener clickListener;
+            Button button;
 
             public TagViewHolder(View v, View.OnClickListener listener){
                 super(v);
                 this.clickListener = listener;
                 tagContainerLayout = (TagContainerLayout) v.findViewById(R.id.tagcontainerLayout);
-                v.setOnClickListener(this);
+                button = (Button) v.findViewById(R.id.button);
+//                v.setOnClickListener(this);
             }
 
             @Override
