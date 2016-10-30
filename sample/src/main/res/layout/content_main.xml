@@ -111,6 +111,9 @@
                 app:container_gravity="center"
                 app:horizontal_interval="10dp"
                 app:tag_clickable="true"
+                app:tag_ripple_alpha="47"
+                app:tag_ripple_color="#000000"
+                app:tag_ripple_duration="2000"
                 app:tag_theme="pure_teal"
                 app:vertical_interval="10dp" />
 

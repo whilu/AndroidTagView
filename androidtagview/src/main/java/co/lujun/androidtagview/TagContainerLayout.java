@@ -124,6 +124,15 @@ public class TagContainerLayout extends ViewGroup {
     /** Default tag min length*/
     private static final int TAG_MIN_LENGTH = 3;
 
+    /** The ripple effect duration(In milliseconds, default 1000ms)*/
+    private int mRippleDuration = 1000;
+
+    /** The ripple effect color(default #EEEEEE)*/
+    private int mRippleColor;
+
+    /** The ripple effect color alpha(the value may between 0 - 255, default 128)*/
+    private int mRippleAlpha = 128;
+
     public TagContainerLayout(Context context) {
         this(context, null);
     }
@@ -178,6 +187,9 @@ public class TagContainerLayout extends ViewGroup {
         mTagTextColor = attributes.getColor(R.styleable.AndroidTagView_tag_text_color, mTagTextColor);
         mTagTextDirection = attributes.getInt(R.styleable.AndroidTagView_tag_text_direction, mTagTextDirection);
         isTagViewClickable = attributes.getBoolean(R.styleable.AndroidTagView_tag_clickable, false);
+        mRippleColor = attributes.getColor(R.styleable.AndroidTagView_tag_ripple_color, Color.parseColor("#EEEEEE"));
+        mRippleAlpha = attributes.getInteger(R.styleable.AndroidTagView_tag_ripple_alpha, mRippleAlpha);
+        mRippleDuration = attributes.getInteger(R.styleable.AndroidTagView_tag_ripple_duration, mRippleDuration);
         attributes.recycle();
 
         mPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
@@ -399,6 +411,9 @@ public class TagContainerLayout extends ViewGroup {
         tagView.setIsViewClickable(isTagViewClickable);
         tagView.setBdDistance(mTagBdDistance);
         tagView.setOnTagClickListener(mOnTagClickListener);
+        tagView.setRippleAlpha(mRippleAlpha);
+        tagView.setRippleColor(mRippleColor);
+        tagView.setRippleDuration(mRippleDuration);
     }
 
     private void invalidateTags(){
@@ -1009,6 +1024,54 @@ public class TagContainerLayout extends ViewGroup {
      */
     public void setTagTextColor(int color) {
         this.mTagTextColor = color;
+    }
+
+    /**
+     * Get the ripple effect color's alpha.
+     * @return
+     */
+    public int getRippleAlpha() {
+        return mRippleAlpha;
+    }
+
+    /**
+     * Set TagView ripple effect alpha, the value may between 0 to 255, default is 128.
+     * @param mRippleAlpha
+     */
+    public void setRippleAlpha(int mRippleAlpha) {
+        this.mRippleAlpha = mRippleAlpha;
+    }
+
+    /**
+     * Get the ripple effect color.
+     * @return
+     */
+    public int getRippleColor() {
+        return mRippleColor;
+    }
+
+    /**
+     * Set TagView ripple effect color.
+     * @param mRippleColor
+     */
+    public void setRippleColor(int mRippleColor) {
+        this.mRippleColor = mRippleColor;
+    }
+
+    /**
+     * Get the ripple effect duration.
+     * @return
+     */
+    public int getRippleDuration() {
+        return mRippleDuration;
+    }
+
+    /**
+     * Set TagView ripple effect duration, default is 1000ms.
+     * @param mRippleDuration
+     */
+    public void setRippleDuration(int mRippleDuration) {
+        this.mRippleDuration = mRippleDuration;
     }
 
     public float dp2px(Context context, float dp) {

@@ -38,5 +38,9 @@
             <enum name="ltr" value="3" />
             <enum name="rtl" value="4" />
         </attr>
+
+        <attr name="tag_ripple_color" format="color" />
+        <attr name="tag_ripple_alpha" format="integer" />
+        <attr name="tag_ripple_duration" format="integer" />
     </declare-styleable>
 </resources>

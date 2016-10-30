@@ -1,10 +1,15 @@
 package co.lujun.androidtagview;
 
+import android.animation.ValueAnimator;
+import android.annotation.TargetApi;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Paint;
+import android.graphics.Path;
 import android.graphics.RectF;
+import android.graphics.Region;
 import android.graphics.Typeface;
+import android.os.Build;
 import android.support.v4.widget.ViewDragHelper;
 import android.text.TextUtils;
 import android.view.MotionEvent;
@@ -64,7 +69,7 @@ public class TagView extends View {
     /** The distance between baseline and descent*/
     private float bdDistance;
 
-    private Paint mPaint;
+    private Paint mPaint, mRipplePaint;
 
     private RectF mRectF;
 
@@ -75,8 +80,23 @@ public class TagView extends View {
     private int mLastX, mLastY;
 
     private float fontH, fontW;
+    
+    private float mTouchX, mTouchY;
+
+    /** The ripple effect duration(default 1000ms)*/
+    private int mRippleDuration = 1000;
+
+    private float mRippleRadius;
+
+    private int mRippleColor;
+
+    private int mRippleAlpha;
+
+    private Path mPath;
 
     private Typeface mTypeface;
+
+    private ValueAnimator mRippleValueAnimator;
 
     private Runnable mLongClickHandle = new Runnable() {
         @Override
@@ -98,7 +118,10 @@ public class TagView extends View {
 
     private void init(String text){
         mPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+        mRipplePaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+        mRipplePaint.setStyle(Paint.Style.FILL);
         mRectF = new RectF();
+        mPath = new Path();
         mOriginText = text == null ? "" : text;
     }
 
@@ -162,6 +185,9 @@ public class TagView extends View {
             canvas.drawText(mAbstractText, getWidth() / 2 - fontW / 2,
                     getHeight() / 2 + fontH / 2 - bdDistance, mPaint);
         }
+
+        // draw ripple for TagView
+        drawRipple(canvas);
     }
 
     @Override
@@ -192,6 +218,13 @@ public class TagView extends View {
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
+        if (event.getAction() == MotionEvent.ACTION_DOWN) {
+            mRippleRadius = 0.0f;
+            mTouchX = event.getX();
+            mTouchY = event.getY();
+            splashRipple();
+        }
+
         if (isViewClickable && mOnTagClickListener != null){
             int x = (int) event.getX();
             int y = (int) event.getY();
@@ -225,6 +258,42 @@ public class TagView extends View {
             return true;
         }
         return super.onTouchEvent(event);
+    }
+
+    @TargetApi(Build.VERSION_CODES.HONEYCOMB)
+    private void drawRipple(Canvas canvas){
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB && canvas != null){
+            canvas.save();
+            mPath.reset();
+
+            canvas.clipPath(mPath);
+            mPath.addRoundRect(mRectF, mBorderRadius, mBorderRadius, Path.Direction.CCW);
+
+            canvas.clipPath(mPath, Region.Op.REPLACE);
+            canvas.drawCircle(mTouchX, mTouchY, mRippleRadius, mRipplePaint);
+            canvas.restore();
+        }
+    }
+
+    @TargetApi(Build.VERSION_CODES.HONEYCOMB)
+    private void splashRipple(){
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB && mTouchX > 0 && mTouchY > 0){
+            mRipplePaint.setColor(mRippleColor);
+            mRipplePaint.setAlpha(mRippleAlpha);
+            final float maxDis = Math.max(Math.max(Math.max(mTouchX, mTouchY),
+                    Math.abs(getMeasuredWidth() - mTouchX)), Math.abs(getMeasuredHeight() - mTouchY));
+
+            mRippleValueAnimator = ValueAnimator.ofFloat(0.0f, maxDis).setDuration(mRippleDuration);
+            mRippleValueAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+                @Override
+                public void onAnimationUpdate(ValueAnimator animation) {
+                    float animValue = (float) animation.getAnimatedValue();
+                    mRippleRadius = animValue >= maxDis ? 0 : animValue;
+                    postInvalidate();
+                }
+            });
+            mRippleValueAnimator.start();
+        }
     }
 
     public String getText(){
@@ -297,6 +366,18 @@ public class TagView extends View {
     public void setTypeface(Typeface typeface) {
         this.mTypeface = typeface;
         onDealText();
+    }
+
+    public void setRippleAlpha(int mRippleAlpha) {
+        this.mRippleAlpha = mRippleAlpha;
+    }
+
+    public void setRippleColor(int mRippleColor) {
+        this.mRippleColor = mRippleColor;
+    }
+
+    public void setRippleDuration(int mRippleDuration) {
+        this.mRippleDuration = mRippleDuration;
     }
 
     public void setBdDistance(float bdDistance) {

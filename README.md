@@ -16,7 +16,7 @@ Add below dependency in your **build.gradle** file.
 
 ```groovy
 dependencies {
-    compile 'co.lujun:androidtagview:1.0.3'
+    compile 'co.lujun:androidtagview:1.0.4'
 }
 ```
 
@@ -75,6 +75,9 @@ Now, you have successfully created some TagViews. The following will show some m
 | tag_clickable | boolean | Whether TagView can clickable(default unclickable)
 | tag_theme | enum | The TagView [theme](#themes)
 | tag_text_direction | enum | The TagView text [direction](#directions)
+| tag_ripple_color | color | The ripple effect color(default #EEEEEE)
+| tag_ripple_alpha | integer | The ripple effect color alpha(the value may between 0 - 255, default 128)
+| tag_ripple_duration | integer | The ripple effect duration(In milliseconds, default 1000ms)
 
 **You can set these attributes in layout file, or use setters(each attribute has get and set method) to set them.**
 
@@ -179,6 +182,10 @@ mTagContainerLayout.removeAllTags();
 ```
 
 ## Change logs
+###1.0.4(2016-10-30)
+- Support ripple effect(Call requires API level 11), like [Android CustomButton](https://github.com/whilu/AndroidSample/tree/master/CustomButton)
+- fix bugs
+
 ###1.0.3(2016-4-3)
 - add ```getTags()``` method to get the list for all tags
 - fixed bugs in ListView/RecyclerView
