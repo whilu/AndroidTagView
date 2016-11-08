@@ -6,12 +6,14 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Path;
+import android.graphics.Point;
 import android.graphics.RectF;
 import android.graphics.Region;
 import android.graphics.Typeface;
 import android.os.Build;
 import android.support.v4.widget.ViewDragHelper;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 
@@ -98,6 +100,18 @@ public class TagView extends View {
 
     private ValueAnimator mRippleValueAnimator;
 
+    private boolean mEnableCross;
+
+    private float mCrossAreaWidth;
+
+    private float mCrossAreaPadding;
+
+    private int mCrossColor;
+
+    private float mCrossLineWidth;
+
+    private Point mCrossLT, mCrossLB, mCrossRT, mCrossRB;
+
     private Runnable mLongClickHandle = new Runnable() {
         @Override
         public void run() {
@@ -147,11 +161,21 @@ public class TagView extends View {
         }
     }
 
+    private void enableCross(){
+        if (mEnableCross && mCrossLT == null){
+            mCrossLT = new Point();
+            mCrossLB = new Point();
+            mCrossRT = new Point();
+            mCrossRB = new Point();
+        }
+    }
+
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
-        setMeasuredDimension(mHorizontalPadding * 2 + (int) fontW,
-                mVerticalPadding * 2 + (int) fontH);
+        int height = mVerticalPadding * 2 + (int) fontH;
+        setMeasuredDimension(mHorizontalPadding * 2 + (int) fontW + (isEnableCross() ? height : 0),
+                height);
     }
 
     @Override
@@ -175,19 +199,46 @@ public class TagView extends View {
         mPaint.setColor(mTextColor);
 
         if (mTextDirection == View.TEXT_DIRECTION_RTL){
-            float tmpX = getWidth() / 2 + fontW / 2;
+            float tmpX = (isEnableCross() ? getWidth() + getHeight() : getWidth()) / 2 + fontW / 2;
             for (char c : mAbstractText.toCharArray()) {
                 String sc = String.valueOf(c);
                 tmpX -= mPaint.measureText(sc);
                 canvas.drawText(sc, tmpX, getHeight() / 2 + fontH / 2 - bdDistance, mPaint);
             }
+            if (isEnableCross()){
+                mCrossLT.set((int)(mCrossAreaPadding), (int)(mCrossAreaPadding));
+                mCrossLB.set((int)(mCrossAreaPadding), (int)(getHeight() - mCrossAreaPadding));
+                mCrossRT.set((int)(getHeight() - mCrossAreaPadding), (int)(mCrossAreaPadding));
+                mCrossRB.set((int)(getHeight() - mCrossAreaPadding),
+                        (int)(getHeight() - mCrossAreaPadding));
+            }
         }else {
-            canvas.drawText(mAbstractText, getWidth() / 2 - fontW / 2,
+            if (isEnableCross()){
+                mCrossLT.set((int)(getWidth() - getHeight() + mCrossAreaPadding),
+                        (int)(mCrossAreaPadding));
+                Log.d("debugs", "" + mCrossAreaPadding);
+                mCrossLB.set((int)(getWidth() - getHeight() + mCrossAreaPadding),
+                        (int)(getHeight() - mCrossAreaPadding));
+                mCrossRT.set((int)(getWidth() - mCrossAreaPadding), (int)(mCrossAreaPadding));
+                mCrossRB.set((int)(getWidth() - mCrossAreaPadding),
+                        (int)(getHeight() - mCrossAreaPadding));
+            }
+            canvas.drawText(mAbstractText,
+                    (isEnableCross() ? getWidth() - getHeight() : getWidth()) / 2 - fontW / 2,
                     getHeight() / 2 + fontH / 2 - bdDistance, mPaint);
         }
 
         // draw ripple for TagView
         drawRipple(canvas);
+
+        // draw cross
+        if (isEnableCross()){
+            mPaint.setStyle(Paint.Style.STROKE);
+            mPaint.setColor(mCrossColor);
+            mPaint.setStrokeWidth(mCrossLineWidth);
+            canvas.drawLine(mCrossLT.x, mCrossLT.y, mCrossRB.x, mCrossRB.y, mPaint);
+            canvas.drawLine(mCrossLB.x, mCrossLB.y, mCrossRT.x, mCrossRT.y, mPaint);
+        }
     }
 
     @Override
@@ -382,5 +433,46 @@ public class TagView extends View {
 
     public void setBdDistance(float bdDistance) {
         this.bdDistance = bdDistance;
+    }
+
+    public boolean isEnableCross() {
+        return mEnableCross;
+    }
+
+    public void setEnableCross(boolean mEnableCross) {
+        this.mEnableCross = mEnableCross;
+        enableCross();
+    }
+
+    public float getCrossAreaWidth() {
+        return mCrossAreaWidth;
+    }
+
+    public void setCrossAreaWidth(float mCrossAreaWidth) {
+        this.mCrossAreaWidth = mCrossAreaWidth;
+    }
+
+    public float getCrossLineWidth() {
+        return mCrossLineWidth;
+    }
+
+    public void setCrossLineWidth(float mCrossLineWidth) {
+        this.mCrossLineWidth = mCrossLineWidth;
+    }
+
+    public float getCrossAreaPadding() {
+        return mCrossAreaPadding;
+    }
+
+    public void setCrossAreaPadding(float mCrossAreaPadding) {
+        this.mCrossAreaPadding = mCrossAreaPadding;
+    }
+
+    public int getCrossColor() {
+        return mCrossColor;
+    }
+
+    public void setCrossColor(int mCrossColor) {
+        this.mCrossColor = mCrossColor;
     }
 }

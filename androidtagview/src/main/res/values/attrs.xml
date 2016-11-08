@@ -42,5 +42,11 @@
         <attr name="tag_ripple_color" format="color" />
         <attr name="tag_ripple_alpha" format="integer" />
         <attr name="tag_ripple_duration" format="integer" />
+
+        <attr name="tag_enable_cross" format="boolean" />
+        <attr name="tag_cross_width" format="dimension" />
+        <attr name="tag_cross_color" format="color" />
+        <attr name="tag_cross_line_width" format="dimension" />
+        <attr name="tag_cross_area_padding" format="dimension" />
     </declare-styleable>
 </resources>

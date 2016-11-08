@@ -133,6 +133,21 @@ public class TagContainerLayout extends ViewGroup {
     /** The ripple effect color alpha(the value may between 0 - 255, default 128)*/
     private int mRippleAlpha = 128;
 
+    /** Enable draw cross icon(default false) */
+    private boolean mEnableCross = false;
+
+    /** The cross area width(default 0dp) */
+    private float mCrossAreaWidth = 0.0f;
+
+    /** The padding of the cross area(default 15dp)*/
+    private float mCrossAreaPadding = 15.0f;
+
+    /** The cross icon color(default black)*/
+    private int mCrossColor = Color.BLACK;
+
+    /** The cross line width(default 1dp)*/
+    private float mCrossLineWidth = 1.0f;
+
     public TagContainerLayout(Context context) {
         this(context, null);
     }
@@ -190,6 +205,13 @@ public class TagContainerLayout extends ViewGroup {
         mRippleColor = attributes.getColor(R.styleable.AndroidTagView_tag_ripple_color, Color.parseColor("#EEEEEE"));
         mRippleAlpha = attributes.getInteger(R.styleable.AndroidTagView_tag_ripple_alpha, mRippleAlpha);
         mRippleDuration = attributes.getInteger(R.styleable.AndroidTagView_tag_ripple_duration, mRippleDuration);
+        mEnableCross = attributes.getBoolean(R.styleable.AndroidTagView_tag_enable_cross, mEnableCross);
+        mCrossAreaWidth = attributes.getDimension(R.styleable.AndroidTagView_tag_cross_width, mCrossAreaWidth);
+        mCrossAreaPadding = attributes.getDimension(R.styleable.AndroidTagView_tag_cross_area_padding,
+                dp2px(context, mCrossAreaPadding));
+        mCrossColor = attributes.getColor(R.styleable.AndroidTagView_tag_cross_color, mCrossColor);
+        mCrossLineWidth = attributes.getDimension(R.styleable.AndroidTagView_tag_cross_line_width,
+                dp2px(context, mCrossLineWidth));
         attributes.recycle();
 
         mPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
@@ -414,6 +436,11 @@ public class TagContainerLayout extends ViewGroup {
         tagView.setRippleAlpha(mRippleAlpha);
         tagView.setRippleColor(mRippleColor);
         tagView.setRippleDuration(mRippleDuration);
+        tagView.setEnableCross(mEnableCross);
+        tagView.setCrossAreaWidth(mCrossAreaWidth);
+        tagView.setCrossAreaPadding(mCrossAreaPadding);
+        tagView.setCrossColor(mCrossColor);
+        tagView.setCrossLineWidth(mCrossLineWidth);
     }
 
     private void invalidateTags(){
@@ -1072,6 +1099,86 @@ public class TagContainerLayout extends ViewGroup {
      */
     public void setRippleDuration(int mRippleDuration) {
         this.mRippleDuration = mRippleDuration;
+    }
+
+    /**
+     * Set TagView cross color.
+     * @return
+     */
+    public int getCrossColor() {
+        return mCrossColor;
+    }
+
+    /**
+     * Set TagView cross color, default Color.BLACK.
+     * @param mCrossColor
+     */
+    public void setCrossColor(int mCrossColor) {
+        this.mCrossColor = mCrossColor;
+    }
+
+    /**
+     * Get agView cross area's padding.
+     * @return
+     */
+    public float getCrossAreaPadding() {
+        return mCrossAreaPadding;
+    }
+
+    /**
+     * Set TagView cross area padding, default 15dp.
+     * @param mCrossAreaPadding
+     */
+    public void setCrossAreaPadding(float mCrossAreaPadding) {
+        this.mCrossAreaPadding = mCrossAreaPadding;
+    }
+
+    /**
+     * Get is the TagView's cross enable, default false.
+     * @return
+     */
+    public boolean isEnableCross() {
+        return mEnableCross;
+    }
+
+    /**
+     * Enable or disable the TagView's cross.
+     * @param mEnableCross
+     */
+    public void setEnableCross(boolean mEnableCross) {
+        this.mEnableCross = mEnableCross;
+    }
+
+    /**
+     * Get TagView cross area width.
+     * @return
+     */
+    public float getCrossAreaWidth() {
+        return mCrossAreaWidth;
+    }
+
+    /**
+     * Set TagView area width.
+     * @param mCrossAreaWidth
+     */
+    public void setCrossAreaWidth(float mCrossAreaWidth) {
+        this.mCrossAreaWidth = mCrossAreaWidth;
+    }
+
+    /**
+     * Get TagView cross line width.
+     * @return
+     */
+    public float getCrossLineWidth() {
+        return mCrossLineWidth;
+    }
+
+    /**
+     * Set TagView cross line width, default 1dp.
+     * @param mCrossLineWidth
+     */
+    public void setCrossLineWidth(float mCrossLineWidth) {
+        this.mCrossLineWidth = mCrossLineWidth;
     }
 
     public float dp2px(Context context, float dp) {
