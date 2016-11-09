@@ -40,8 +40,7 @@
                 app:tag_clickable="true"
                 app:tag_theme="pure_teal"
                 app:vertical_interval="10dp"
-                app:tag_enable_cross="true"
-                app:tag_cross_width="40dp"/>
+                app:tag_enable_cross="true"/>
 
             <LinearLayout
                 android:layout_width="match_parent"

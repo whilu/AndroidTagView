@@ -136,13 +136,13 @@ public class TagContainerLayout extends ViewGroup {
     /** Enable draw cross icon(default false) */
     private boolean mEnableCross = false;
 
-    /** The cross area width(default 0dp) */
+    /** The cross area width(your cross click area, default equal to the TagView's height) */
     private float mCrossAreaWidth = 0.0f;
 
     /** The padding of the cross area(default 10dp)*/
     private float mCrossAreaPadding = 10.0f;
 
-    /** The cross icon color(default black)*/
+    /** The cross icon color(default Color.BLACK)*/
     private int mCrossColor = Color.BLACK;
 
     /** The cross line width(default 1dp)*/
@@ -206,7 +206,8 @@ public class TagContainerLayout extends ViewGroup {
         mRippleAlpha = attributes.getInteger(R.styleable.AndroidTagView_tag_ripple_alpha, mRippleAlpha);
         mRippleDuration = attributes.getInteger(R.styleable.AndroidTagView_tag_ripple_duration, mRippleDuration);
         mEnableCross = attributes.getBoolean(R.styleable.AndroidTagView_tag_enable_cross, mEnableCross);
-        mCrossAreaWidth = attributes.getDimension(R.styleable.AndroidTagView_tag_cross_width, mCrossAreaWidth);
+        mCrossAreaWidth = attributes.getDimension(R.styleable.AndroidTagView_tag_cross_width,
+                dp2px(context, mCrossAreaWidth));
         mCrossAreaPadding = attributes.getDimension(R.styleable.AndroidTagView_tag_cross_area_padding,
                 dp2px(context, mCrossAreaPadding));
         mCrossColor = attributes.getColor(R.styleable.AndroidTagView_tag_cross_color, mCrossColor);

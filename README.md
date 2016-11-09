@@ -6,7 +6,7 @@ An Android TagView library. You can customize awesome TagView by using this libr
 
 ## Screenshots
 
-<img src="/screenshots/androidtagview_record_1.gif" alt="androidtagview_record_1.gif" title="androidtagview_record_1.gif" width="400" height="660" /> <img src="/screenshots/device-2016-01-16-233617.png" alt="device-2016-01-16-233617.png" title="device-2016-01-16-233617.png" width="400" height="660" />
+<img src="/screenshots/androidtagview_record_1.gif" alt="androidtagview_record_1.gif" title="androidtagview_record_1.gif" width="400" height="660" /> <img src="/screenshots/device-2016-11-09-223523.png" alt="device-2016-11-09-223523.png" title="device-2016-01-16-233617.png" width="400" height="660" />
 
 ## Usage
 
@@ -16,7 +16,7 @@ Add below dependency in your **build.gradle** file.
 
 ```groovy
 dependencies {
-    compile 'co.lujun:androidtagview:1.0.4'
+    compile 'co.lujun:androidtagview:1.0.5'
 }
 ```
 
@@ -78,6 +78,11 @@ Now, you have successfully created some TagViews. The following will show some m
 | tag_ripple_color | color | The ripple effect color(default #EEEEEE)
 | tag_ripple_alpha | integer | The ripple effect color alpha(the value may between 0 - 255, default 128)
 | tag_ripple_duration | integer | The ripple effect duration(In milliseconds, default 1000ms)
+| tag_enable_cross | boolean | Enable draw cross icon(default false)
+| tag_cross_width | dimension | The cross area width(your cross click area, default equal to the TagView's height)
+| tag_cross_color | color | The cross icon color(default Color.BLACK)
+| tag_cross_line_width | dimension | The cross line width(default 1dp)
+| tag_cross_area_padding | dimension | The padding of the cross area(default 10dp)
 
 **You can set these attributes in layout file, or use setters(each attribute has get and set method) to set them.**
 
@@ -107,7 +112,7 @@ Now, you have successfully created some TagViews. The following will show some m
 
 ## <span id="Methods">Methods</span>
 
-* Set a ```TagView.OnTagClickListener``` for TagView, for ```onTagClick``` and ```onTagLongClick``` callback
+* Set a ```TagView.OnTagClickListener``` for TagView, for ```onTagClick``` , ```onTagLongClick``` and ```onTagCrossClick``` callback
 ```java
 mTagContainerLayout.setOnTagClickListener(new TagView.OnTagClickListener() {
 
@@ -118,6 +123,11 @@ mTagContainerLayout.setOnTagClickListener(new TagView.OnTagClickListener() {
 
     @Override
     public void onTagLongClick(final int position, String text) {
+        // ...
+    }
+    
+    @Override
+    public void onTagCrossClick(int position) {
         // ...
     }
 });
@@ -182,6 +192,9 @@ mTagContainerLayout.removeAllTags();
 ```
 
 ## Change logs
+###1.0.5(2016-11-9)
+- Add cross view for TagView
+
 ###1.0.4(2016-10-30)
 - Support ripple effect(Call requires API level 11), like [Android CustomButton](https://github.com/whilu/AndroidSample/tree/master/CustomButton)
 - fix bugs

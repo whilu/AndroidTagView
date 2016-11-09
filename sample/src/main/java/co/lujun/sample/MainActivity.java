@@ -3,7 +3,6 @@ package co.lujun.sample;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
@@ -93,6 +92,13 @@ public class MainActivity extends AppCompatActivity {
                         })
                         .create();
                 dialog.show();
+            }
+
+            @Override
+            public void onTagCrossClick(int position) {
+//                mTagContainerLayout1.removeTag(position);
+                Toast.makeText(MainActivity.this, "Click TagView cross! position = " + position,
+                        Toast.LENGTH_SHORT).show();
             }
         });
 
