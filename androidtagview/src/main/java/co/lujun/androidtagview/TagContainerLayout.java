@@ -139,8 +139,8 @@ public class TagContainerLayout extends ViewGroup {
     /** The cross area width(default 0dp) */
     private float mCrossAreaWidth = 0.0f;
 
-    /** The padding of the cross area(default 15dp)*/
-    private float mCrossAreaPadding = 15.0f;
+    /** The padding of the cross area(default 10dp)*/
+    private float mCrossAreaPadding = 10.0f;
 
     /** The cross icon color(default black)*/
     private int mCrossColor = Color.BLACK;
@@ -1126,7 +1126,7 @@ public class TagContainerLayout extends ViewGroup {
     }
 
     /**
-     * Set TagView cross area padding, default 15dp.
+     * Set TagView cross area padding, default 10dp.
      * @param mCrossAreaPadding
      */
     public void setCrossAreaPadding(float mCrossAreaPadding) {

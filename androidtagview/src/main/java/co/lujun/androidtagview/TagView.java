@@ -198,6 +198,10 @@ public class TagView extends View {
         mPaint.setStyle(Paint.Style.FILL);
         mPaint.setColor(mTextColor);
 
+        if (isEnableCross()){
+            mCrossAreaPadding = mCrossAreaPadding > getHeight() / 2 ? getHeight() / 2 : mCrossAreaPadding;
+        }
+
         if (mTextDirection == View.TEXT_DIRECTION_RTL){
             float tmpX = (isEnableCross() ? getWidth() + getHeight() : getWidth()) / 2 + fontW / 2;
             for (char c : mAbstractText.toCharArray()) {
@@ -216,12 +220,13 @@ public class TagView extends View {
             if (isEnableCross()){
                 mCrossLT.set((int)(getWidth() - getHeight() + mCrossAreaPadding),
                         (int)(mCrossAreaPadding));
-                Log.d("debugs", "" + mCrossAreaPadding);
                 mCrossLB.set((int)(getWidth() - getHeight() + mCrossAreaPadding),
                         (int)(getHeight() - mCrossAreaPadding));
                 mCrossRT.set((int)(getWidth() - mCrossAreaPadding), (int)(mCrossAreaPadding));
                 mCrossRB.set((int)(getWidth() - mCrossAreaPadding),
                         (int)(getHeight() - mCrossAreaPadding));
+                Log.d("debugs", "getWidth() = " + getWidth() + ", getHeight()=" + getHeight()
+                        + ", mCrossAreaPadding=" +mCrossAreaPadding + ", mCrossLT.x=" + mCrossLT.x);
             }
             canvas.drawText(mAbstractText,
                     (isEnableCross() ? getWidth() - getHeight() : getWidth()) / 2 - fontW / 2,

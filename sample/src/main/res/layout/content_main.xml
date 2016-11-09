@@ -41,7 +41,6 @@
                 app:tag_theme="pure_teal"
                 app:vertical_interval="10dp"
                 app:tag_enable_cross="true"
-                app:tag_cross_area_padding="25dp"
                 app:tag_cross_width="40dp"/>
 
             <LinearLayout
