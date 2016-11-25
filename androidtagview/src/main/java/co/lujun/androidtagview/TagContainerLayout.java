@@ -223,6 +223,10 @@ public class TagContainerLayout extends ViewGroup {
         setTagMaxLength(mTagMaxLength);
         setTagHorizontalPadding(mTagHorizontalPadding);
         setTagVerticalPadding(mTagVerticalPadding);
+
+        if (isInEditMode()) {
+            addTag("sample tag");
+        }
     }
 
     @Override
