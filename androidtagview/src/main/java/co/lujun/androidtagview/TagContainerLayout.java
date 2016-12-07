@@ -18,6 +18,9 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import static co.lujun.androidtagview.Utils.dp2px;
+import static co.lujun.androidtagview.Utils.sp2px;
+
 /**
  * Author: lujun(http://blog.lujun.co)
  * Date: 2015-12-30 17:14
@@ -1184,15 +1187,5 @@ public class TagContainerLayout extends ViewGroup {
      */
     public void setCrossLineWidth(float mCrossLineWidth) {
         this.mCrossLineWidth = mCrossLineWidth;
-    }
-
-    public float dp2px(Context context, float dp) {
-        final float scale = context.getResources().getDisplayMetrics().density;
-        return dp * scale + 0.5f;
-    }
-
-    public float sp2px(Context context, float sp) {
-        final float scale = context.getResources().getDisplayMetrics().scaledDensity;
-        return sp * scale;
     }
 }

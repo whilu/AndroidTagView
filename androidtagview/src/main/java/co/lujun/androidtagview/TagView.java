@@ -15,6 +15,9 @@ import android.text.TextUtils;
 import android.view.MotionEvent;
 import android.view.View;
 
+import static co.lujun.androidtagview.Utils.dp2px;
+import static co.lujun.androidtagview.Utils.sp2px;
+
 /**
  * Author: lujun(http://blog.lujun.co)
  * Date: 2015-12-31 11:47
@@ -54,10 +57,10 @@ public class TagView extends View {
     /** OnTagClickListener for click action*/
     private OnTagClickListener mOnTagClickListener;
 
-    /** Move slop(default 20px)*/
-    private int mMoveSlop = 20;
+    /** Move slop(default 5dp)*/
+    private int mMoveSlop = 5;
 
-    /** Scroll slop threshold*/
+    /** Scroll slop threshold 4dp*/
     private int mSlopThreshold = 4;
 
     /** How long trigger long click callback(default 500ms)*/
@@ -123,16 +126,18 @@ public class TagView extends View {
 
     public TagView(Context context, String text){
         super(context);
-        init(text);
+        init(context, text);
     }
 
-    private void init(String text){
+    private void init(Context context, String text){
         mPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
         mRipplePaint = new Paint(Paint.ANTI_ALIAS_FLAG);
         mRipplePaint.setStyle(Paint.Style.FILL);
         mRectF = new RectF();
         mPath = new Path();
         mOriginText = text == null ? "" : text;
+        mMoveSlop = (int) dp2px(context, mMoveSlop);
+        mSlopThreshold = (int) dp2px(context, mSlopThreshold);
     }
 
     private void onDealText(){
@@ -217,7 +222,9 @@ public class TagView extends View {
             int action = event.getAction();
             switch (action){
                 case MotionEvent.ACTION_DOWN:
-                    getParent().requestDisallowInterceptTouchEvent(true);
+                    if (getParent() != null) {
+                        getParent().requestDisallowInterceptTouchEvent(true);
+                    }
                     mLastY = y;
                     mLastX = x;
                     break;
@@ -225,7 +232,9 @@ public class TagView extends View {
                 case MotionEvent.ACTION_MOVE:
                     if (Math.abs(mLastY - y) > mSlopThreshold
                             || Math.abs(mLastX - x) > mSlopThreshold){
-                        getParent().requestDisallowInterceptTouchEvent(false);
+                        if (getParent() != null) {
+                            getParent().requestDisallowInterceptTouchEvent(false);
+                        }
                         isMoved = true;
                         return false;
                     }
