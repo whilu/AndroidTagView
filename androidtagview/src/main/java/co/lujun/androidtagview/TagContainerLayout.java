@@ -72,11 +72,11 @@ public class TagContainerLayout extends ViewGroup {
     /** Text direction(support:TEXT_DIRECTION_RTL & TEXT_DIRECTION_LTR, default TEXT_DIRECTION_LTR)*/
     private int mTagTextDirection = View.TEXT_DIRECTION_LTR;
 
-    /** Horizontal padding for TagView, include left & right padding(left & right padding are equal, default 20px)*/
-    private int mTagHorizontalPadding = 20;
+    /** Horizontal padding for TagView, include left & right padding(left & right padding are equal, default 10dp)*/
+    private int mTagHorizontalPadding = 10;
 
-    /** Vertical padding for TagView, include top & bottom padding(top & bottom padding are equal, default 17px)*/
-    private int mTagVerticalPadding = 17;
+    /** Vertical padding for TagView, include top & bottom padding(top & bottom padding are equal, default 8dp)*/
+    private int mTagVerticalPadding = 8;
 
     /** TagView border color(default #88F44336)*/
     private int mTagBorderColor = Color.parseColor("#88F44336");
@@ -102,8 +102,8 @@ public class TagContainerLayout extends ViewGroup {
     /** TagView drag state(default STATE_IDLE)*/
     private int mTagViewState = ViewDragHelper.STATE_IDLE;
 
-    /** The distance between baseline and descent(default 5.5px)*/
-    private float mTagBdDistance = 5.5f;
+    /** The distance between baseline and descent(default 2.75dp)*/
+    private float mTagBdDistance = 2.75f;
 
     /** OnTagClickListener for TagView*/
     private TagView.OnTagClickListener mOnTagClickListener;
@@ -176,7 +176,7 @@ public class TagContainerLayout extends ViewGroup {
         mBorderRadius = attributes.getDimension(R.styleable.AndroidTagView_container_border_radius,
                 dp2px(context, mBorderRadius));
         mTagBdDistance = attributes.getDimension(R.styleable.AndroidTagView_tag_bd_distance,
-                mTagBdDistance);
+                dp2px(context, mTagBdDistance));
         mBorderColor = attributes.getColor(R.styleable.AndroidTagView_container_border_color,
                 mBorderColor);
         mBackgroundColor = attributes.getColor(R.styleable.AndroidTagView_container_background_color,
@@ -193,9 +193,10 @@ public class TagContainerLayout extends ViewGroup {
         mTagBorderRadius = attributes.getDimension(
                 R.styleable.AndroidTagView_tag_corner_radius, dp2px(context, mTagBorderRadius));
         mTagHorizontalPadding = (int) attributes.getDimension(
-                R.styleable.AndroidTagView_tag_horizontal_padding, mTagHorizontalPadding);
+                R.styleable.AndroidTagView_tag_horizontal_padding,
+                dp2px(context, mTagHorizontalPadding));
         mTagVerticalPadding = (int) attributes.getDimension(
-                R.styleable.AndroidTagView_tag_vertical_padding, mTagVerticalPadding);
+                R.styleable.AndroidTagView_tag_vertical_padding, dp2px(context, mTagVerticalPadding));
         mTagTextSize = attributes.getDimension(R.styleable.AndroidTagView_tag_text_size,
                 sp2px(context, mTagTextSize));
         mTagBorderColor = attributes.getColor(R.styleable.AndroidTagView_tag_border_color,
