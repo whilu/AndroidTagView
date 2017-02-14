@@ -16,7 +16,7 @@ Add below dependency in your **build.gradle** file.
 
 ```groovy
 dependencies {
-    compile 'co.lujun:androidtagview:1.0.5'
+    compile 'co.lujun:androidtagview:1.0.6'
 }
 ```
 
@@ -192,6 +192,9 @@ mTagContainerLayout.removeAllTags();
 ```
 
 ## Change logs
+###1.0.6(2017-2-14)
+- fix bugs
+
 ###1.0.5(2016-11-9)
 - Add cross view for TagView
 
