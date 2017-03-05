@@ -16,7 +16,6 @@ import android.view.MotionEvent;
 import android.view.View;
 
 import static co.lujun.androidtagview.Utils.dp2px;
-import static co.lujun.androidtagview.Utils.sp2px;
 
 /**
  * Author: lujun(http://blog.lujun.co)
@@ -83,7 +82,7 @@ public class TagView extends View {
     private int mLastX, mLastY;
 
     private float fontH, fontW;
-    
+
     private float mTouchX, mTouchY;
 
     /** The ripple effect duration(default 1000ms)*/
@@ -197,14 +196,11 @@ public class TagView extends View {
         mPaint.setStyle(Paint.Style.FILL);
         mPaint.setColor(mTextColor);
 
-        if (mTextDirection == View.TEXT_DIRECTION_RTL){
-            float tmpX = (isEnableCross() ? getWidth() + getHeight() : getWidth()) / 2 + fontW / 2;
-            for (char c : mAbstractText.toCharArray()) {
-                String sc = String.valueOf(c);
-                tmpX -= mPaint.measureText(sc);
-                canvas.drawText(sc, tmpX, getHeight() / 2 + fontH / 2 - bdDistance, mPaint);
-            }
-        }else {
+        if (mTextDirection == View.TEXT_DIRECTION_RTL) {
+            canvas.drawText(mAbstractText,
+                    (isEnableCross() ? getWidth() + fontW : getWidth()) / 2 - fontW / 2,
+                    getHeight() / 2 + fontH / 2 - bdDistance, mPaint);
+        } else {
             canvas.drawText(mAbstractText,
                     (isEnableCross() ? getWidth() - getHeight() : getWidth()) / 2 - fontW / 2,
                     getHeight() / 2 + fontH / 2 - bdDistance, mPaint);
