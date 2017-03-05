@@ -16,7 +16,7 @@ Add below dependency in your **build.gradle** file.
 
 ```groovy
 dependencies {
-    compile 'co.lujun:androidtagview:1.0.6'
+    compile 'co.lujun:androidtagview:1.1.0'
 }
 ```
 
@@ -193,29 +193,33 @@ mTagContainerLayout.removeAllTags();
 ```
 
 ## Change logs
+###1.1.0(2017-3-5)
+- Fixed issue [#1](https://github.com/whilu/AndroidTagView/issues/45)
+- Support 'letters show with RTL(eg: Android -> diordnA)' style
+
 ###1.0.6(2017-2-14)
-- fix bugs
+- Fix bugs
 
 ###1.0.5(2016-11-9)
 - Add cross view for TagView
 
 ###1.0.4(2016-10-30)
 - Support ripple effect(Call requires API level 11), like [Android CustomButton](https://github.com/whilu/AndroidSample/tree/master/CustomButton)
-- fix bugs
+- Fix bugs
 
 ###1.0.3(2016-4-3)
-- add ```getTags()``` method to get the list for all tags
-- fixed bugs in ListView/RecyclerView
+- Add ```getTags()``` method to get the list for all tags
+- Fixed bugs in ListView/RecyclerView
 
 ###1.0.2(2016-1-18)
-- support [gravity](#gravity) for ```TagContainerLayout```
-- support set typeface
+- Support [gravity](#gravity) for ```TagContainerLayout```
+- Support set typeface
 
 ###1.0.1(2016-1-14)
-- support text [direction](#directions)
-- add ```removeAllTags()``` method for remove all TagViews
-- fixed issue [#1](https://github.com/whilu/AndroidTagView/issues/1)
-- fixed other bugs
+- Support text [direction](#directions)
+- Add ```removeAllTags()``` method for remove all TagViews
+- Fixed issue [#1](https://github.com/whilu/AndroidTagView/issues/1)
+- Fixed other bugs
 
 ###1.0.0(2016-1-6)
 - First release
