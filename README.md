@@ -194,7 +194,7 @@ mTagContainerLayout.removeAllTags();
 
 ## Change logs
 ###1.1.0(2017-3-5)
-- Fixed issue [#1](https://github.com/whilu/AndroidTagView/issues/45)
+- Fixed issue [#45](https://github.com/whilu/AndroidTagView/issues/45)
 - Support 'letters show with RTL(eg: Android -> diordnA)' style
 
 ###1.0.6(2017-2-14)
