@@ -71,6 +71,9 @@ public class TagView extends View {
     /** The distance between baseline and descent*/
     private float bdDistance;
 
+    /** Whether to support 'letters show with RTL(eg: Android -> diordnA)' style(default false)*/
+    private boolean mTagSupportLettersRTL = false;
+
     private Paint mPaint, mRipplePaint;
 
     private RectF mRectF;
@@ -197,9 +200,19 @@ public class TagView extends View {
         mPaint.setColor(mTextColor);
 
         if (mTextDirection == View.TEXT_DIRECTION_RTL) {
-            canvas.drawText(mAbstractText,
-                    (isEnableCross() ? getWidth() + fontW : getWidth()) / 2 - fontW / 2,
-                    getHeight() / 2 + fontH / 2 - bdDistance, mPaint);
+            if (mTagSupportLettersRTL){
+                float tmpX = (isEnableCross() ? getWidth() + getHeight() : getWidth()) / 2
+                        + fontW / 2;
+                for (char c : mAbstractText.toCharArray()) {
+                    String sc = String.valueOf(c);
+                    tmpX -= mPaint.measureText(sc);
+                    canvas.drawText(sc, tmpX, getHeight() / 2 + fontH / 2 - bdDistance, mPaint);
+                }
+            }else {
+                canvas.drawText(mAbstractText,
+                        (isEnableCross() ? getWidth() + fontW : getWidth()) / 2 - fontW / 2,
+                        getHeight() / 2 + fontH / 2 - bdDistance, mPaint);
+            }
         } else {
             canvas.drawText(mAbstractText,
                     (isEnableCross() ? getWidth() - getHeight() : getWidth()) / 2 - fontW / 2,
@@ -488,5 +501,13 @@ public class TagView extends View {
 
     public void setCrossColor(int mCrossColor) {
         this.mCrossColor = mCrossColor;
+    }
+
+    public boolean isTagSupportLettersRTL() {
+        return mTagSupportLettersRTL;
+    }
+
+    public void setTagSupportLettersRTL(boolean mTagSupportLettersRTL) {
+        this.mTagSupportLettersRTL = mTagSupportLettersRTL;
     }
 }

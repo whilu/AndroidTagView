@@ -108,6 +108,9 @@ public class TagContainerLayout extends ViewGroup {
     /** OnTagClickListener for TagView*/
     private TagView.OnTagClickListener mOnTagClickListener;
 
+    /** Whether to support 'letters show with RTL(eg: Android -> diordnA)' style(default false)*/
+    private boolean mTagSupportLettersRTL = false;
+
     private Paint mPaint;
 
     private RectF mRectF;
@@ -217,6 +220,8 @@ public class TagContainerLayout extends ViewGroup {
         mCrossColor = attributes.getColor(R.styleable.AndroidTagView_tag_cross_color, mCrossColor);
         mCrossLineWidth = attributes.getDimension(R.styleable.AndroidTagView_tag_cross_line_width,
                 dp2px(context, mCrossLineWidth));
+        mTagSupportLettersRTL = attributes.getBoolean(R.styleable.AndroidTagView_tag_support_letters_rlt,
+                mTagSupportLettersRTL);
         attributes.recycle();
 
         mPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
@@ -450,6 +455,7 @@ public class TagContainerLayout extends ViewGroup {
         tagView.setCrossAreaPadding(mCrossAreaPadding);
         tagView.setCrossColor(mCrossColor);
         tagView.setCrossLineWidth(mCrossLineWidth);
+        tagView.setTagSupportLettersRTL(mTagSupportLettersRTL);
     }
 
     private void invalidateTags(){
@@ -1188,5 +1194,21 @@ public class TagContainerLayout extends ViewGroup {
      */
     public void setCrossLineWidth(float mCrossLineWidth) {
         this.mCrossLineWidth = mCrossLineWidth;
+    }
+
+    /**
+     * Get the 'letters show with RTL(like: Android -> diordnA)' style if it's enabled
+     * @return
+     */
+    public boolean isTagSupportLettersRTL() {
+        return mTagSupportLettersRTL;
+    }
+
+    /**
+     *  Set whether the 'support letters show with RTL(like: Android -> diordnA)' style is enabled
+     * @param mTagSupportLettersRTL
+     */
+    public void setTagSupportLettersRTL(boolean mTagSupportLettersRTL) {
+        this.mTagSupportLettersRTL = mTagSupportLettersRTL;
     }
 }

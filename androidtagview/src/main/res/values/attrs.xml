@@ -48,5 +48,6 @@
         <attr name="tag_cross_color" format="color" />
         <attr name="tag_cross_line_width" format="dimension" />
         <attr name="tag_cross_area_padding" format="dimension" />
+        <attr name="tag_support_letters_rlt" format="boolean" />
     </declare-styleable>
 </resources>
