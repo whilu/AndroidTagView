@@ -108,7 +108,7 @@ public class TagContainerLayout extends ViewGroup {
     /** OnTagClickListener for TagView*/
     private TagView.OnTagClickListener mOnTagClickListener;
 
-    /** Whether to support 'letters show with RTL(eg: Android -> diordnA)' style(default false)*/
+    /** Whether to support 'letters show with RTL(eg: Android to diordnA)' style(default false)*/
     private boolean mTagSupportLettersRTL = false;
 
     private Paint mPaint;
@@ -1197,7 +1197,7 @@ public class TagContainerLayout extends ViewGroup {
     }
 
     /**
-     * Get the 'letters show with RTL(like: Android -> diordnA)' style if it's enabled
+     * Get the 'letters show with RTL(like: Android to diordnA)' style if it's enabled
      * @return
      */
     public boolean isTagSupportLettersRTL() {
@@ -1205,7 +1205,7 @@ public class TagContainerLayout extends ViewGroup {
     }
 
     /**
-     *  Set whether the 'support letters show with RTL(like: Android -> diordnA)' style is enabled
+     *  Set whether the 'support letters show with RTL(like: Android to diordnA)' style is enabled
      * @param mTagSupportLettersRTL
      */
     public void setTagSupportLettersRTL(boolean mTagSupportLettersRTL) {

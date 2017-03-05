@@ -71,7 +71,7 @@ public class TagView extends View {
     /** The distance between baseline and descent*/
     private float bdDistance;
 
-    /** Whether to support 'letters show with RTL(eg: Android -> diordnA)' style(default false)*/
+    /** Whether to support 'letters show with RTL(eg: Android to diordnA)' style(default false)*/
     private boolean mTagSupportLettersRTL = false;
 
     private Paint mPaint, mRipplePaint;
