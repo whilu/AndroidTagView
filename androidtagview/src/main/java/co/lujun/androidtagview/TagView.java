@@ -340,7 +340,7 @@ public class TagView extends View {
 
     @TargetApi(Build.VERSION_CODES.HONEYCOMB)
     private void drawRipple(Canvas canvas){
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB && canvas != null){
+        if (isViewClickable && Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB && canvas != null){
             canvas.save();
             mPath.reset();
 
