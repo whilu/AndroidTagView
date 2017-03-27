@@ -263,7 +263,7 @@ public class TagView extends View {
             splashRipple();
         }
         if (isEnableCross() && isClickCrossArea(event) && mOnTagClickListener != null){
-            if (action == MotionEvent.ACTION_DOWN) {
+            if (action == MotionEvent.ACTION_UP) {
                 mOnTagClickListener.onTagCrossClick((int) getTag());
             }
             return true;
