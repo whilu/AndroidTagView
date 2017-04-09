@@ -341,6 +341,12 @@ public class TagView extends View {
     @TargetApi(Build.VERSION_CODES.HONEYCOMB)
     private void drawRipple(Canvas canvas){
         if (isViewClickable && Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB && canvas != null){
+
+            // Disable hardware acceleration for 'Canvas.clipPath()' when running on API from 11 to 17
+            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN_MR2){
+                setLayerType(LAYER_TYPE_SOFTWARE, null);
+            }
+
             canvas.save();
             mPath.reset();
 
