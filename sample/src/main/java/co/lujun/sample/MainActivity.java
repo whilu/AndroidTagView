@@ -3,6 +3,7 @@ package co.lujun.sample;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
@@ -22,7 +23,8 @@ import co.lujun.androidtagview.TagView;
 
 public class MainActivity extends AppCompatActivity {
 
-    private TagContainerLayout mTagContainerLayout1, mTagContainerLayout2, mTagContainerLayout3, mTagContainerLayout4;
+    private TagContainerLayout mTagContainerLayout1, mTagContainerLayout2,
+            mTagContainerLayout3, mTagContainerLayout4, mTagcontainerLayout5;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,10 +62,16 @@ public class MainActivity extends AppCompatActivity {
         String[] list3 = new String[]{"Persian", "波斯语", "فارسی", "Hello", "你好", "سلام"};
         String[] list4 = new String[]{"Adele", "Whitney Houston"};
 
+        List<String> list5 = new ArrayList<String>();
+        list5.add("Custom Red Color");
+        list5.add("Custom Blue Color");
+
+
         mTagContainerLayout1 = (TagContainerLayout) findViewById(R.id.tagcontainerLayout1);
         mTagContainerLayout2 = (TagContainerLayout) findViewById(R.id.tagcontainerLayout2);
         mTagContainerLayout3 = (TagContainerLayout) findViewById(R.id.tagcontainerLayout3);
         mTagContainerLayout4 = (TagContainerLayout) findViewById(R.id.tagcontainerLayout4);
+        mTagcontainerLayout5 = (TagContainerLayout) findViewById(R.id.tagcontainerLayout5);
 
         // Set custom click listener
         mTagContainerLayout1.setOnTagClickListener(new TagView.OnTagClickListener() {
@@ -126,6 +134,15 @@ public class MainActivity extends AppCompatActivity {
         mTagContainerLayout3.setTags(list3);
         mTagContainerLayout4.setTags(list4);
 
+        ArrayList<int[]> colors = new ArrayList<int[]>();
+        //int[]color = {backgroundColor, tagBorderColor, tagTextColor}
+        int[] col1 = {Color.parseColor("#ff0000"), Color.parseColor("#000000"), Color.parseColor("#ffffff")};
+        int[] col2 = {Color.parseColor("#0000ff"), Color.parseColor("#000000"), Color.parseColor("#ffffff")};
+
+        colors.add(col1);
+        colors.add(col2);
+
+        mTagcontainerLayout5.setTags(list5,colors);
         final EditText text = (EditText) findViewById(R.id.text_tag);
         Button btnAddTag = (Button) findViewById(R.id.btn_add_tag);
         btnAddTag.setOnClickListener(new View.OnClickListener() {
@@ -154,13 +171,13 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public class TagRecyclerViewAdapter
-            extends RecyclerView.Adapter<TagRecyclerViewAdapter.TagViewHolder>{
+            extends RecyclerView.Adapter<TagRecyclerViewAdapter.TagViewHolder> {
 
         private Context mContext;
         private String[] mData;
         private View.OnClickListener mOnClickListener;
 
-        public TagRecyclerViewAdapter(Context context, String[] data){
+        public TagRecyclerViewAdapter(Context context, String[] data) {
             this.mContext = context;
             this.mData = data;
         }
@@ -182,17 +199,17 @@ public class MainActivity extends AppCompatActivity {
             holder.button.setOnClickListener(mOnClickListener);
         }
 
-        public void setOnClickListener(View.OnClickListener listener){
+        public void setOnClickListener(View.OnClickListener listener) {
             this.mOnClickListener = listener;
         }
 
-        class TagViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
+        class TagViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
             TagContainerLayout tagContainerLayout;
             View.OnClickListener clickListener;
             Button button;
 
-            public TagViewHolder(View v, View.OnClickListener listener){
+            public TagViewHolder(View v, View.OnClickListener listener) {
                 super(v);
                 this.clickListener = listener;
                 tagContainerLayout = (TagContainerLayout) v.findViewById(R.id.tagcontainerLayout);
@@ -202,7 +219,7 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onClick(View v) {
-                if (clickListener != null){
+                if (clickListener != null) {
                     clickListener.onClick(v);
                 }
             }

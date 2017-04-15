@@ -119,6 +119,21 @@
                 app:tag_theme="pure_teal"
                 app:vertical_interval="10dp" />
 
+
+
+
+            <co.lujun.androidtagview.TagContainerLayout
+                android:id="@+id/tagcontainerLayout5"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="10dp"
+                app:container_border_radius="0dp"
+                app:container_border_width="4dp"
+                app:container_enable_drag="false"
+                app:horizontal_interval="10dp"
+                app:tag_clickable="false"
+                app:tag_theme="random"
+                app:vertical_interval="10dp" />
         </LinearLayout>
 
     </ScrollView>
