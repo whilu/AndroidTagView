@@ -236,7 +236,7 @@ mTagcontainerLayout.setTags(tags, colors);
 - Fixed issue [#1](https://github.com/whilu/AndroidTagView/issues/1)
 - Fixed other bugs
 
-###1.0.0(2016-1-6)
+### 1.0.0(2016-1-6)
 - First release
 
 ## Sample App
