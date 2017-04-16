@@ -33,7 +33,7 @@ public class TagContainerLayout extends ViewGroup {
     private int mVerticalInterval;
 
     /**
-     * Support multiple colors in tags
+     * The list to store the tags color info
      */
     private ArrayList<int[]> mColorArrayList;
 
@@ -515,18 +515,17 @@ public class TagContainerLayout extends ViewGroup {
     }
 
     private void initTagView(TagView tagView, int position) {
-        int[] colors = onUpdateColorFactory();
-
+        int[] colors;
         if (mColorArrayList != null && mColorArrayList.size() > 0) {
-            if (mColorArrayList.size() == mTags.size())
+            if (mColorArrayList.size() == mTags.size() &&
+                    mColorArrayList.get(position).length >= 3) {
                 colors = mColorArrayList.get(position);
-            else
-                throw new RuntimeException("Color list is not equal to Tags List!");
-
+            } else {
+                throw new RuntimeException("Illegal color list!");
+            }
         } else {
             colors = onUpdateColorFactory();
         }
-
 
         tagView.setTagBackgroundColor(colors[0]);
         tagView.setTagBorderColor(colors[1]);
@@ -715,11 +714,15 @@ public class TagContainerLayout extends ViewGroup {
         onSetTag();
     }
 
-
-    //For tags with custom color
-    public void setTags(List<String> tags, ArrayList<int[]> mColorArrayList) {
+    /**
+     * Set tags with own color
+     *
+     * @param tags
+     * @param colorArrayList
+     */
+    public void setTags(List<String> tags, ArrayList<int[]> colorArrayList) {
         mTags = tags;
-        this.mColorArrayList = mColorArrayList;
+        mColorArrayList = colorArrayList;
         onSetTag();
     }
 

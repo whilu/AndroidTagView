@@ -38,9 +38,9 @@
                 app:container_enable_drag="true"
                 app:horizontal_interval="10dp"
                 app:tag_clickable="true"
+                app:tag_enable_cross="true"
                 app:tag_theme="pure_teal"
-                app:vertical_interval="10dp"
-                app:tag_enable_cross="true"/>
+                app:vertical_interval="10dp" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -93,6 +93,7 @@
                 app:tag_border_width="1dp"
                 app:tag_clickable="false"
                 app:tag_corner_radius="1dp"
+                app:tag_enable_cross="true"
                 app:tag_horizontal_padding="15dp"
                 app:tag_max_length="18"
                 app:tag_text_color="#ff666666"
@@ -100,8 +101,7 @@
                 app:tag_text_size="14sp"
                 app:tag_theme="none"
                 app:tag_vertical_padding="10dp"
-                app:vertical_interval="10dp"
-                app:tag_enable_cross="true" />
+                app:vertical_interval="10dp" />
 
             <co.lujun.androidtagview.TagContainerLayout
                 android:id="@+id/tagcontainerLayout4"
@@ -118,9 +118,6 @@
                 app:tag_ripple_duration="2000"
                 app:tag_theme="pure_teal"
                 app:vertical_interval="10dp" />
-
-
-
 
             <co.lujun.androidtagview.TagContainerLayout
                 android:id="@+id/tagcontainerLayout5"

@@ -16,7 +16,7 @@ Add below dependency in your **build.gradle** file.
 
 ```groovy
 dependencies {
-    compile 'co.lujun:androidtagview:1.1.0'
+    compile 'co.lujun:androidtagview:1.1.1'
 }
 ```
 
@@ -191,31 +191,46 @@ mTagContainerLayout.removeTag(int position);
 ```java
 mTagContainerLayout.removeAllTags();
 ```
+* Set color for each TagView.
+```java
+List<int[]> colors = new ArrayList<int[]>();
+//int[] color = {TagBackgroundColor, TabBorderColor, TagTextColor}
+int[] color1 = {Color.RED, Color.BLACK, Color.WHITE};
+int[] color2 = {Color.BLUE, Color.BLACK, Color.WHITE};
+colors.add(color1);
+colors.add(color2);
+mTagcontainerLayout.setTags(tags, colors);
+```
 
 ## Change logs
-###1.1.0(2017-3-5)
+
+### 1.1.1(2017-4-16)
+- Customize the color of the TagView, see [#51](https://github.com/whilu/AndroidTagView/pull/51)
+- Fixed issue [#50](https://github.com/whilu/AndroidTagView/issues/50), [#49](https://github.com/whilu/AndroidTagView/issues/49)
+
+### 1.1.0(2017-3-5)
 - Fixed issue [#45](https://github.com/whilu/AndroidTagView/issues/45)
 - Support 'letters show with RTL(eg: Android -> diordnA)' style
 
-###1.0.6(2017-2-14)
+### 1.0.6(2017-2-14)
 - Fix bugs
 
-###1.0.5(2016-11-9)
+### 1.0.5(2016-11-9)
 - Add cross view for TagView
 
-###1.0.4(2016-10-30)
+### 1.0.4(2016-10-30)
 - Support ripple effect(Call requires API level 11), like [Android CustomButton](https://github.com/whilu/AndroidSample/tree/master/CustomButton)
 - Fix bugs
 
-###1.0.3(2016-4-3)
+### 1.0.3(2016-4-3)
 - Add ```getTags()``` method to get the list for all tags
 - Fixed bugs in ListView/RecyclerView
 
-###1.0.2(2016-1-18)
+### 1.0.2(2016-1-18)
 - Support [gravity](#gravity) for ```TagContainerLayout```
 - Support set typeface
 
-###1.0.1(2016-1-14)
+### 1.0.1(2016-1-14)
 - Support text [direction](#directions)
 - Add ```removeAllTags()``` method for remove all TagViews
 - Fixed issue [#1](https://github.com/whilu/AndroidTagView/issues/1)
