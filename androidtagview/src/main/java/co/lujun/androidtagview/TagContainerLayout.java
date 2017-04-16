@@ -27,88 +27,149 @@ import static co.lujun.androidtagview.Utils.sp2px;
  */
 public class TagContainerLayout extends ViewGroup {
 
-    /** Vertical interval, default 5(dp)*/
+    /**
+     * Vertical interval, default 5(dp)
+     */
     private int mVerticalInterval;
 
-    /** Horizontal interval, default 5(dp)*/
+    /**
+     * Support multiple colors in tags
+     */
+    private ArrayList<int[]> mColorArrayList;
+
+    /**
+     * Horizontal interval, default 5(dp)
+     */
     private int mHorizontalInterval;
 
-    /** TagContainerLayout border width(default 0.5dp)*/
+    /**
+     * TagContainerLayout border width(default 0.5dp)
+     */
     private float mBorderWidth = 0.5f;
 
-    /** TagContainerLayout border radius(default 10.0dp)*/
+    /**
+     * TagContainerLayout border radius(default 10.0dp)
+     */
     private float mBorderRadius = 10.0f;
 
-    /** The sensitive of the ViewDragHelper(default 1.0f, normal)*/
+    /**
+     * The sensitive of the ViewDragHelper(default 1.0f, normal)
+     */
     private float mSensitivity = 1.0f;
 
-    /** TagView average height*/
+    /**
+     * TagView average height
+     */
     private int mChildHeight;
 
-    /** TagContainerLayout border color(default #22FF0000)*/
+    /**
+     * TagContainerLayout border color(default #22FF0000)
+     */
     private int mBorderColor = Color.parseColor("#22FF0000");
 
-    /** TagContainerLayout background color(default #11FF0000)*/
+    /**
+     * TagContainerLayout background color(default #11FF0000)
+     */
     private int mBackgroundColor = Color.parseColor("#11FF0000");
 
-    /** The container layout gravity(default left)*/
+    /**
+     * The container layout gravity(default left)
+     */
     private int mGravity = Gravity.LEFT;
 
-    /** The max line count of TagContainerLayout */
+    /**
+     * The max line count of TagContainerLayout
+     */
     private int mMaxLines = 0;
 
-    /** The max length for TagView(default max length 23)*/
+    /**
+     * The max length for TagView(default max length 23)
+     */
     private int mTagMaxLength = 23;
 
-    /** TagView Border width(default 0.5dp)*/
+    /**
+     * TagView Border width(default 0.5dp)
+     */
     private float mTagBorderWidth = 0.5f;
 
-    /** TagView Border radius(default 15.0dp)*/
+    /**
+     * TagView Border radius(default 15.0dp)
+     */
     private float mTagBorderRadius = 15.0f;
 
-    /** TagView Text size(default 14sp)*/
+    /**
+     * TagView Text size(default 14sp)
+     */
     private float mTagTextSize = 14;
 
-    /** Text direction(support:TEXT_DIRECTION_RTL & TEXT_DIRECTION_LTR, default TEXT_DIRECTION_LTR)*/
+    /**
+     * Text direction(support:TEXT_DIRECTION_RTL & TEXT_DIRECTION_LTR, default TEXT_DIRECTION_LTR)
+     */
     private int mTagTextDirection = View.TEXT_DIRECTION_LTR;
 
-    /** Horizontal padding for TagView, include left & right padding(left & right padding are equal, default 10dp)*/
+    /**
+     * Horizontal padding for TagView, include left & right padding(left & right padding are equal, default 10dp)
+     */
     private int mTagHorizontalPadding = 10;
 
-    /** Vertical padding for TagView, include top & bottom padding(top & bottom padding are equal, default 8dp)*/
+    /**
+     * Vertical padding for TagView, include top & bottom padding(top & bottom padding are equal, default 8dp)
+     */
     private int mTagVerticalPadding = 8;
 
-    /** TagView border color(default #88F44336)*/
+    /**
+     * TagView border color(default #88F44336)
+     */
     private int mTagBorderColor = Color.parseColor("#88F44336");
 
-    /** TagView background color(default #33F44336)*/
+    /**
+     * TagView background color(default #33F44336)
+     */
     private int mTagBackgroundColor = Color.parseColor("#33F44336");
 
-    /** TagView text color(default #FF666666)*/
+    /**
+     * TagView text color(default #FF666666)
+     */
     private int mTagTextColor = Color.parseColor("#FF666666");
 
-    /** TagView typeface*/
+    /**
+     * TagView typeface
+     */
     private Typeface mTagTypeface = Typeface.DEFAULT;
 
-    /** Whether TagView can clickable(default unclickable)*/
+    /**
+     * Whether TagView can clickable(default unclickable)
+     */
     private boolean isTagViewClickable;
 
-    /** Tags*/
+    /**
+     * Tags
+     */
     private List<String> mTags;
 
-    /** Can drag TagView(default false)*/
+    /**
+     * Can drag TagView(default false)
+     */
     private boolean mDragEnable;
 
-    /** TagView drag state(default STATE_IDLE)*/
+    /**
+     * TagView drag state(default STATE_IDLE)
+     */
     private int mTagViewState = ViewDragHelper.STATE_IDLE;
 
-    /** The distance between baseline and descent(default 2.75dp)*/
+    /**
+     * The distance between baseline and descent(default 2.75dp)
+     */
     private float mTagBdDistance = 2.75f;
 
-    /** OnTagClickListener for TagView*/
+    /**
+     * OnTagClickListener for TagView
+     */
     private TagView.OnTagClickListener mOnTagClickListener;
 
-    /** Whether to support 'letters show with RTL(eg: Android to diordnA)' style(default false)*/
+    /**
+     * Whether to support 'letters show with RTL(eg: Android to diordnA)' style(default false)
+     */
     private boolean mTagSupportLettersRTL = false;
 
     private Paint mPaint;
@@ -121,37 +182,59 @@ public class TagContainerLayout extends ViewGroup {
 
     private int[] mViewPos;
 
-    /** View theme(default PURE_CYAN)*/
+    /**
+     * View theme(default PURE_CYAN)
+     */
     private int mTheme = ColorFactory.PURE_CYAN;
 
-    /** Default interval(dp)*/
+    /**
+     * Default interval(dp)
+     */
     private static final float DEFAULT_INTERVAL = 5;
 
-    /** Default tag min length*/
+    /**
+     * Default tag min length
+     */
     private static final int TAG_MIN_LENGTH = 3;
 
-    /** The ripple effect duration(In milliseconds, default 1000ms)*/
+    /**
+     * The ripple effect duration(In milliseconds, default 1000ms)
+     */
     private int mRippleDuration = 1000;
 
-    /** The ripple effect color(default #EEEEEE)*/
+    /**
+     * The ripple effect color(default #EEEEEE)
+     */
     private int mRippleColor;
 
-    /** The ripple effect color alpha(the value may between 0 - 255, default 128)*/
+    /**
+     * The ripple effect color alpha(the value may between 0 - 255, default 128)
+     */
     private int mRippleAlpha = 128;
 
-    /** Enable draw cross icon(default false) */
+    /**
+     * Enable draw cross icon(default false)
+     */
     private boolean mEnableCross = false;
 
-    /** The cross area width(your cross click area, default equal to the TagView's height) */
+    /**
+     * The cross area width(your cross click area, default equal to the TagView's height)
+     */
     private float mCrossAreaWidth = 0.0f;
 
-    /** The padding of the cross area(default 10dp)*/
+    /**
+     * The padding of the cross area(default 10dp)
+     */
     private float mCrossAreaPadding = 10.0f;
 
-    /** The cross icon color(default Color.BLACK)*/
+    /**
+     * The cross icon color(default Color.BLACK)
+     */
     private int mCrossColor = Color.BLACK;
 
-    /** The cross line width(default 1dp)*/
+    /**
+     * The cross line width(default 1dp)
+     */
     private float mCrossLineWidth = 1.0f;
 
     public TagContainerLayout(Context context) {
@@ -162,17 +245,17 @@ public class TagContainerLayout extends ViewGroup {
         this(context, attrs, 0);
     }
 
-    public TagContainerLayout(Context context, AttributeSet attrs, int defStyleAttr){
+    public TagContainerLayout(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         init(context, attrs, defStyleAttr);
     }
 
-    private void init(Context context, AttributeSet attrs, int defStyleAttr){
+    private void init(Context context, AttributeSet attrs, int defStyleAttr) {
         TypedArray attributes = context.obtainStyledAttributes(attrs, R.styleable.AndroidTagView,
                 defStyleAttr, 0);
-        mVerticalInterval = (int)attributes.getDimension(R.styleable.AndroidTagView_vertical_interval,
+        mVerticalInterval = (int) attributes.getDimension(R.styleable.AndroidTagView_vertical_interval,
                 dp2px(context, DEFAULT_INTERVAL));
-        mHorizontalInterval = (int)attributes.getDimension(R.styleable.AndroidTagView_horizontal_interval,
+        mHorizontalInterval = (int) attributes.getDimension(R.styleable.AndroidTagView_horizontal_interval,
                 dp2px(context, DEFAULT_INTERVAL));
         mBorderWidth = attributes.getDimension(R.styleable.AndroidTagView_container_border_width,
                 dp2px(context, mBorderWidth));
@@ -250,13 +333,13 @@ public class TagContainerLayout extends ViewGroup {
         int heightSpecSize = MeasureSpec.getSize(heightMeasureSpec);
         int heightSpecMode = MeasureSpec.getMode(heightMeasureSpec);
 
-        if (childCount == 0){
+        if (childCount == 0) {
             setMeasuredDimension(0, 0);
-        }else if (heightSpecMode == MeasureSpec.AT_MOST
+        } else if (heightSpecMode == MeasureSpec.AT_MOST
                 || heightSpecMode == MeasureSpec.UNSPECIFIED) {
             setMeasuredDimension(widthSpecSize, (mVerticalInterval + mChildHeight) * lines
                     - mVerticalInterval + getPaddingTop() + getPaddingBottom());
-        }else {
+        } else {
             setMeasuredDimension(widthSpecSize, heightSpecSize);
         }
     }
@@ -270,7 +353,7 @@ public class TagContainerLayout extends ViewGroup {
     @Override
     protected void onLayout(boolean changed, int l, int t, int r, int b) {
         int childCount;
-        if ((childCount = getChildCount()) <= 0){
+        if ((childCount = getChildCount()) <= 0) {
             return;
         }
         int availableW = getMeasuredWidth() - getPaddingLeft() - getPaddingRight();
@@ -284,16 +367,16 @@ public class TagContainerLayout extends ViewGroup {
             final View childView = getChildAt(i);
             if (childView.getVisibility() != GONE) {
                 int width = childView.getMeasuredWidth();
-                if (mGravity == Gravity.RIGHT){
-                    if (curRight - width < getPaddingLeft()){
+                if (mGravity == Gravity.RIGHT) {
+                    if (curRight - width < getPaddingLeft()) {
                         curRight = getMeasuredWidth() - getPaddingRight();
                         curTop += mChildHeight + mVerticalInterval;
                     }
                     mViewPos[i * 2] = curRight - width;
                     mViewPos[i * 2 + 1] = curTop;
                     curRight -= width + mHorizontalInterval;
-                }else if (mGravity == Gravity.CENTER){
-                    if (curLeft + width - getPaddingLeft() > availableW){
+                } else if (mGravity == Gravity.CENTER) {
+                    if (curLeft + width - getPaddingLeft() > availableW) {
                         int leftW = getMeasuredWidth() - mViewPos[(i - 1) * 2]
                                 - getChildAt(i - 1).getMeasuredWidth() - getPaddingRight();
                         for (int j = sPos; j < i; j++) {
@@ -307,15 +390,15 @@ public class TagContainerLayout extends ViewGroup {
                     mViewPos[i * 2 + 1] = curTop;
                     curLeft += width + mHorizontalInterval;
 
-                    if (i == childCount - 1){
+                    if (i == childCount - 1) {
                         int leftW = getMeasuredWidth() - mViewPos[i * 2]
                                 - childView.getMeasuredWidth() - getPaddingRight();
                         for (int j = sPos; j < childCount; j++) {
                             mViewPos[j * 2] = mViewPos[j * 2] + leftW / 2;
                         }
                     }
-                }else {
-                    if (curLeft + width - getPaddingLeft() > availableW){
+                } else {
+                    if (curLeft + width - getPaddingLeft() > availableW) {
                         curLeft = getPaddingLeft();
                         curTop += mChildHeight + mVerticalInterval;
                     }
@@ -363,12 +446,12 @@ public class TagContainerLayout extends ViewGroup {
     @Override
     public void computeScroll() {
         super.computeScroll();
-        if (mViewDragHelper.continueSettling(true)){
+        if (mViewDragHelper.continueSettling(true)) {
             requestLayout();
         }
     }
 
-    private int getChildLines(int childCount){
+    private int getChildLines(int childCount) {
         int availableW = getMeasuredWidth() - getPaddingLeft() - getPaddingRight();
         int lines = 1;
         for (int i = 0, curLineW = 0; i < childCount; i++) {
@@ -377,7 +460,7 @@ public class TagContainerLayout extends ViewGroup {
             int height = childView.getMeasuredHeight();
             mChildHeight = i == 0 ? height : Math.min(mChildHeight, height);
             curLineW += dis;
-            if (curLineW - mHorizontalInterval > availableW){
+            if (curLineW - mHorizontalInterval > availableW) {
                 lines++;
                 curLineW = dis;
             }
@@ -386,26 +469,26 @@ public class TagContainerLayout extends ViewGroup {
         return mMaxLines <= 0 ? lines : mMaxLines;
     }
 
-    private int[] onUpdateColorFactory(){
+    private int[] onUpdateColorFactory() {
         int[] colors;
-        if (mTheme == ColorFactory.RANDOM){
+        if (mTheme == ColorFactory.RANDOM) {
             colors = ColorFactory.onRandomBuild();
-        }else if (mTheme == ColorFactory.PURE_TEAL){
+        } else if (mTheme == ColorFactory.PURE_TEAL) {
             colors = ColorFactory.onPureBuild(ColorFactory.PURE_COLOR.TEAL);
-        }else if (mTheme == ColorFactory.PURE_CYAN){
+        } else if (mTheme == ColorFactory.PURE_CYAN) {
             colors = ColorFactory.onPureBuild(ColorFactory.PURE_COLOR.CYAN);
-        }else {
+        } else {
             colors = new int[]{mTagBackgroundColor, mTagBorderColor, mTagTextColor};
         }
         return colors;
     }
 
-    private void onSetTag(){
-        if (mTags == null){
+    private void onSetTag() {
+        if (mTags == null) {
             throw new RuntimeException("NullPointer exception!");
         }
         removeAllTags();
-        if (mTags.size() == 0){
+        if (mTags.size() == 0) {
             return;
         }
         for (int i = 0; i < mTags.size(); i++) {
@@ -415,24 +498,36 @@ public class TagContainerLayout extends ViewGroup {
     }
 
     private void onAddTag(String text, int position) {
-        if (position < 0 || position > mChildViews.size()){
+        if (position < 0 || position > mChildViews.size()) {
             throw new RuntimeException("Illegal position!");
         }
         TagView tagView = new TagView(getContext(), text);
-        initTagView(tagView);
+        initTagView(tagView, position);
         mChildViews.add(position, tagView);
-        if (position < mChildViews.size()){
+        if (position < mChildViews.size()) {
             for (int i = position; i < mChildViews.size(); i++) {
                 mChildViews.get(i).setTag(i);
             }
-        }else {
+        } else {
             tagView.setTag(position);
         }
         addView(tagView, position);
     }
 
-    private void initTagView(TagView tagView){
+    private void initTagView(TagView tagView, int position) {
         int[] colors = onUpdateColorFactory();
+
+        if (mColorArrayList != null && mColorArrayList.size() > 0) {
+            if (mColorArrayList.size() == mTags.size())
+                colors = mColorArrayList.get(position);
+            else
+                throw new RuntimeException("Color list is not equal to Tags List!");
+
+        } else {
+            colors = onUpdateColorFactory();
+        }
+
+
         tagView.setTagBackgroundColor(colors[0]);
         tagView.setTagBorderColor(colors[1]);
         tagView.setTagTextColor(colors[2]);
@@ -458,15 +553,15 @@ public class TagContainerLayout extends ViewGroup {
         tagView.setTagSupportLettersRTL(mTagSupportLettersRTL);
     }
 
-    private void invalidateTags(){
+    private void invalidateTags() {
         for (View view : mChildViews) {
             final TagView tagView = (TagView) view;
             tagView.setOnTagClickListener(mOnTagClickListener);
         }
     }
 
-    private void onRemoveTag(int position){
-        if (position < 0 || position >= mChildViews.size()){
+    private void onRemoveTag(int position) {
+        if (position < 0 || position >= mChildViews.size()) {
             throw new RuntimeException("Illegal position!");
         }
         mChildViews.remove(position);
@@ -477,27 +572,27 @@ public class TagContainerLayout extends ViewGroup {
         // TODO, make removed view null?
     }
 
-    private int[] onGetNewPosition(View view){
+    private int[] onGetNewPosition(View view) {
         int left = view.getLeft();
         int top = view.getTop();
-        int bestMatchLeft = mViewPos[(int)view.getTag() * 2];
-        int bestMatchTop = mViewPos[(int)view.getTag() * 2 + 1];
+        int bestMatchLeft = mViewPos[(int) view.getTag() * 2];
+        int bestMatchTop = mViewPos[(int) view.getTag() * 2 + 1];
         int tmpTopDis = Math.abs(top - bestMatchTop);
         for (int i = 0; i < mViewPos.length / 2; i++) {
-            if (Math.abs(top - mViewPos[i * 2 +1]) < tmpTopDis){
-                bestMatchTop = mViewPos[i * 2 +1];
-                tmpTopDis = Math.abs(top - mViewPos[i * 2 +1]);
+            if (Math.abs(top - mViewPos[i * 2 + 1]) < tmpTopDis) {
+                bestMatchTop = mViewPos[i * 2 + 1];
+                tmpTopDis = Math.abs(top - mViewPos[i * 2 + 1]);
             }
         }
         int rowChildCount = 0;
         int tmpLeftDis = 0;
         for (int i = 0; i < mViewPos.length / 2; i++) {
-            if (mViewPos[i * 2 + 1] == bestMatchTop){
-                if (rowChildCount == 0){
+            if (mViewPos[i * 2 + 1] == bestMatchTop) {
+                if (rowChildCount == 0) {
                     bestMatchLeft = mViewPos[i * 2];
                     tmpLeftDis = Math.abs(left - bestMatchLeft);
-                }else {
-                    if (Math.abs(left - mViewPos[i * 2]) < tmpLeftDis){
+                } else {
+                    if (Math.abs(left - mViewPos[i * 2]) < tmpLeftDis) {
                         bestMatchLeft = mViewPos[i * 2];
                         tmpLeftDis = Math.abs(left - bestMatchLeft);
                     }
@@ -508,17 +603,17 @@ public class TagContainerLayout extends ViewGroup {
         return new int[]{bestMatchLeft, bestMatchTop};
     }
 
-    private int onGetCoordinateReferPos(int left, int top){
-        int  pos = 0;
+    private int onGetCoordinateReferPos(int left, int top) {
+        int pos = 0;
         for (int i = 0; i < mViewPos.length / 2; i++) {
-            if (left == mViewPos[i * 2] && top == mViewPos[i * 2 + 1]){
+            if (left == mViewPos[i * 2] && top == mViewPos[i * 2 + 1]) {
                 pos = i;
             }
         }
         return pos;
     }
 
-    private void onChangeView(View view, int newPos, int originPos){
+    private void onChangeView(View view, int newPos, int originPos) {
         mChildViews.remove(originPos);
         mChildViews.add(newPos, view);
         for (View child : mChildViews) {
@@ -529,11 +624,11 @@ public class TagContainerLayout extends ViewGroup {
         addView(view, newPos);
     }
 
-    private int ceilTagBorderWidth(){
-        return (int)Math.ceil(mTagBorderWidth);
+    private int ceilTagBorderWidth() {
+        return (int) Math.ceil(mTagBorderWidth);
     }
 
-    private class DragHelperCallBack extends ViewDragHelper.Callback{
+    private class DragHelperCallBack extends ViewDragHelper.Callback {
 
         @Override
         public void onViewDragStateChanged(int state) {
@@ -585,14 +680,16 @@ public class TagContainerLayout extends ViewGroup {
 
     /**
      * Get current drag view state.
+     *
      * @return
      */
-    public int getTagViewState(){
+    public int getTagViewState() {
         return mTagViewState;
     }
 
     /**
      * Get TagView text baseline and descent distance.
+     *
      * @return
      */
     public float getTagBdDistance() {
@@ -601,6 +698,7 @@ public class TagContainerLayout extends ViewGroup {
 
     /**
      * Set TagView text baseline and descent distance.
+     *
      * @param tagBdDistance
      */
     public void setTagBdDistance(float tagBdDistance) {
@@ -609,46 +707,59 @@ public class TagContainerLayout extends ViewGroup {
 
     /**
      * Set tags
+     *
      * @param tags
      */
-    public void setTags(List<String> tags){
+    public void setTags(List<String> tags) {
         mTags = tags;
+        onSetTag();
+    }
+
+
+    //For tags with custom color
+    public void setTags(List<String> tags, ArrayList<int[]> mColorArrayList) {
+        mTags = tags;
+        this.mColorArrayList = mColorArrayList;
         onSetTag();
     }
 
     /**
      * Set tags
+     *
      * @param tags
      */
-    public void setTags(String... tags){
+    public void setTags(String... tags) {
         mTags = Arrays.asList(tags);
         onSetTag();
     }
 
     /**
      * Inserts the specified TagView into this ContainerLayout at the end.
+     *
      * @param text
      */
-    public void addTag(String text){
+    public void addTag(String text) {
         addTag(text, mChildViews.size());
     }
 
     /**
      * Inserts the specified TagView into this ContainerLayout at the specified location.
      * The TagView is inserted before the current element at the specified location.
+     *
      * @param text
      * @param position
      */
-    public void addTag(String text, int position){
+    public void addTag(String text, int position) {
         onAddTag(text, position);
         postInvalidate();
     }
 
     /**
      * Remove a TagView in specified position.
+     *
      * @param position
      */
-    public void removeTag(int position){
+    public void removeTag(int position) {
         onRemoveTag(position);
         postInvalidate();
     }
@@ -656,7 +767,7 @@ public class TagContainerLayout extends ViewGroup {
     /**
      * Remove all TagViews.
      */
-    public void removeAllTags(){
+    public void removeAllTags() {
         mChildViews.clear();
         removeAllViews();
         postInvalidate();
@@ -664,30 +775,33 @@ public class TagContainerLayout extends ViewGroup {
 
     /**
      * Set OnTagClickListener for TagView.
+     *
      * @param listener
      */
-    public void setOnTagClickListener(TagView.OnTagClickListener listener){
+    public void setOnTagClickListener(TagView.OnTagClickListener listener) {
         mOnTagClickListener = listener;
         invalidateTags();
     }
 
     /**
      * Get TagView text.
+     *
      * @param position
      * @return
      */
-    public String getTagText(int position){
-        return ((TagView)mChildViews.get(position)).getText();
+    public String getTagText(int position) {
+        return ((TagView) mChildViews.get(position)).getText();
     }
 
     /**
      * Get a string list for all tags in TagContainerLayout.
+     *
      * @return
      */
-    public List<String> getTags(){
+    public List<String> getTags() {
         List<String> tmpList = new ArrayList<String>();
-        for (View view : mChildViews){
-            if (view instanceof TagView){
+        for (View view : mChildViews) {
+            if (view instanceof TagView) {
                 tmpList.add(((TagView) view).getText());
             }
         }
@@ -696,56 +810,63 @@ public class TagContainerLayout extends ViewGroup {
 
     /**
      * Set whether the child view can be dragged.
+     *
      * @param enable
      */
-    public void setDragEnable(boolean enable){
+    public void setDragEnable(boolean enable) {
         this.mDragEnable = enable;
     }
 
     /**
      * Get current view is drag enable attribute.
+     *
      * @return
      */
-    public boolean getDragEnable(){
+    public boolean getDragEnable() {
         return mDragEnable;
     }
 
     /**
      * Set vertical interval
+     *
      * @param interval
      */
-    public void setVerticalInterval(float interval){
+    public void setVerticalInterval(float interval) {
         mVerticalInterval = (int) dp2px(getContext(), interval);
         postInvalidate();
     }
 
     /**
      * Get vertical interval in this view.
+     *
      * @return
      */
-    public int getVerticalInterval(){
+    public int getVerticalInterval() {
         return mVerticalInterval;
     }
 
     /**
      * Set horizontal interval.
+     *
      * @param interval
      */
-    public void setHorizontalInterval(float interval){
-        mHorizontalInterval = (int)dp2px(getContext(), interval);
+    public void setHorizontalInterval(float interval) {
+        mHorizontalInterval = (int) dp2px(getContext(), interval);
         postInvalidate();
     }
 
     /**
      * Get horizontal interval in this view.
+     *
      * @return
      */
-    public int getHorizontalInterval(){
+    public int getHorizontalInterval() {
         return mHorizontalInterval;
     }
 
     /**
      * Get TagContainerLayout border width.
+     *
      * @return
      */
     public float getBorderWidth() {
@@ -754,6 +875,7 @@ public class TagContainerLayout extends ViewGroup {
 
     /**
      * Set TagContainerLayout border width.
+     *
      * @param width
      */
     public void setBorderWidth(float width) {
@@ -762,6 +884,7 @@ public class TagContainerLayout extends ViewGroup {
 
     /**
      * Get TagContainerLayout border radius.
+     *
      * @return
      */
     public float getBorderRadius() {
@@ -770,6 +893,7 @@ public class TagContainerLayout extends ViewGroup {
 
     /**
      * Set TagContainerLayout border radius.
+     *
      * @param radius
      */
     public void setBorderRadius(float radius) {
@@ -778,6 +902,7 @@ public class TagContainerLayout extends ViewGroup {
 
     /**
      * Get TagContainerLayout border color.
+     *
      * @return
      */
     public int getBorderColor() {
@@ -786,6 +911,7 @@ public class TagContainerLayout extends ViewGroup {
 
     /**
      * Set TagContainerLayout border color.
+     *
      * @param color
      */
     public void setBorderColor(int color) {
@@ -794,6 +920,7 @@ public class TagContainerLayout extends ViewGroup {
 
     /**
      * Get TagContainerLayout background color.
+     *
      * @return
      */
     public int getBackgroundColor() {
@@ -802,6 +929,7 @@ public class TagContainerLayout extends ViewGroup {
 
     /**
      * Set TagContainerLayout background color.
+     *
      * @param color
      */
     public void setBackgroundColor(int color) {
@@ -810,6 +938,7 @@ public class TagContainerLayout extends ViewGroup {
 
     /**
      * Get container layout gravity.
+     *
      * @return
      */
     public int getGravity() {
@@ -818,6 +947,7 @@ public class TagContainerLayout extends ViewGroup {
 
     /**
      * Set container layout gravity.
+     *
      * @param gravity
      */
     public void setGravity(int gravity) {
@@ -826,6 +956,7 @@ public class TagContainerLayout extends ViewGroup {
 
     /**
      * Get TagContainerLayout ViewDragHelper sensitivity.
+     *
      * @return
      */
     public float getSensitivity() {
@@ -834,6 +965,7 @@ public class TagContainerLayout extends ViewGroup {
 
     /**
      * Set TagContainerLayout ViewDragHelper sensitivity.
+     *
      * @param sensitivity
      */
     public void setSensitivity(float sensitivity) {
@@ -842,6 +974,7 @@ public class TagContainerLayout extends ViewGroup {
 
     /**
      * Set max line count for TagContainerLayout
+     *
      * @param maxLines max line count
      */
     public void setMaxLines(int maxLines) {
@@ -851,46 +984,52 @@ public class TagContainerLayout extends ViewGroup {
 
     /**
      * Get TagContainerLayout's max lines
+     *
      * @return maxLines
      */
-    public int getMaxLines(){
+    public int getMaxLines() {
         return mMaxLines;
     }
 
     /**
      * Set the TagView text max length(must greater or equal to 3).
+     *
      * @param maxLength
      */
-    public void setTagMaxLength(int maxLength){
+    public void setTagMaxLength(int maxLength) {
         mTagMaxLength = maxLength < TAG_MIN_LENGTH ? TAG_MIN_LENGTH : maxLength;
     }
 
     /**
      * Get TagView max length.
+     *
      * @return
      */
-    public int getTagMaxLength(){
+    public int getTagMaxLength() {
         return mTagMaxLength;
     }
 
     /**
      * Set TagView theme.
+     *
      * @param theme
      */
-    public void setTheme(int theme){
+    public void setTheme(int theme) {
         mTheme = theme;
     }
 
     /**
      * Get TagView theme.
+     *
      * @return
      */
-    public int getTheme(){
+    public int getTheme() {
         return mTheme;
     }
 
     /**
      * Get TagView is clickable.
+     *
      * @return
      */
     public boolean getIsTagViewClickable() {
@@ -899,6 +1038,7 @@ public class TagContainerLayout extends ViewGroup {
 
     /**
      * Set TagView is clickable
+     *
      * @param clickable
      */
     public void setIsTagViewClickable(boolean clickable) {
@@ -907,6 +1047,7 @@ public class TagContainerLayout extends ViewGroup {
 
     /**
      * Get TagView border width.
+     *
      * @return
      */
     public float getTagBorderWidth() {
@@ -915,6 +1056,7 @@ public class TagContainerLayout extends ViewGroup {
 
     /**
      * Set TagView border width.
+     *
      * @param width
      */
     public void setTagBorderWidth(float width) {
@@ -923,6 +1065,7 @@ public class TagContainerLayout extends ViewGroup {
 
     /**
      * Get TagView border radius.
+     *
      * @return
      */
     public float getTagBorderRadius() {
@@ -931,6 +1074,7 @@ public class TagContainerLayout extends ViewGroup {
 
     /**
      * Set TagView border radius.
+     *
      * @param radius
      */
     public void setTagBorderRadius(float radius) {
@@ -939,6 +1083,7 @@ public class TagContainerLayout extends ViewGroup {
 
     /**
      * Get TagView text size.
+     *
      * @return
      */
     public float getTagTextSize() {
@@ -947,6 +1092,7 @@ public class TagContainerLayout extends ViewGroup {
 
     /**
      * Set TagView text size.
+     *
      * @param size
      */
     public void setTagTextSize(float size) {
@@ -955,6 +1101,7 @@ public class TagContainerLayout extends ViewGroup {
 
     /**
      * Get TagView horizontal padding.
+     *
      * @return
      */
     public int getTagHorizontalPadding() {
@@ -963,6 +1110,7 @@ public class TagContainerLayout extends ViewGroup {
 
     /**
      * Set TagView horizontal padding.
+     *
      * @param padding
      */
     public void setTagHorizontalPadding(int padding) {
@@ -972,6 +1120,7 @@ public class TagContainerLayout extends ViewGroup {
 
     /**
      * Get TagView vertical padding.
+     *
      * @return
      */
     public int getTagVerticalPadding() {
@@ -980,6 +1129,7 @@ public class TagContainerLayout extends ViewGroup {
 
     /**
      * Set TagView vertical padding.
+     *
      * @param padding
      */
     public void setTagVerticalPadding(int padding) {
@@ -989,6 +1139,7 @@ public class TagContainerLayout extends ViewGroup {
 
     /**
      * Get TagView border color.
+     *
      * @return
      */
     public int getTagBorderColor() {
@@ -997,6 +1148,7 @@ public class TagContainerLayout extends ViewGroup {
 
     /**
      * Set TagView border color.
+     *
      * @param color
      */
     public void setTagBorderColor(int color) {
@@ -1005,6 +1157,7 @@ public class TagContainerLayout extends ViewGroup {
 
     /**
      * Get TagView background color.
+     *
      * @return
      */
     public int getTagBackgroundColor() {
@@ -1013,6 +1166,7 @@ public class TagContainerLayout extends ViewGroup {
 
     /**
      * Set TagView background color.
+     *
      * @param color
      */
     public void setTagBackgroundColor(int color) {
@@ -1021,6 +1175,7 @@ public class TagContainerLayout extends ViewGroup {
 
     /**
      * Get TagView text color.
+     *
      * @return
      */
     public int getTagTextColor() {
@@ -1030,6 +1185,7 @@ public class TagContainerLayout extends ViewGroup {
     /**
      * Set tag text direction, support:View.TEXT_DIRECTION_RTL and View.TEXT_DIRECTION_LTR,
      * default View.TEXT_DIRECTION_LTR
+     *
      * @param textDirection
      */
     public void setTagTextDirection(int textDirection) {
@@ -1038,6 +1194,7 @@ public class TagContainerLayout extends ViewGroup {
 
     /**
      * Get TagView typeface.
+     *
      * @return
      */
     public Typeface getTagTypeface() {
@@ -1046,6 +1203,7 @@ public class TagContainerLayout extends ViewGroup {
 
     /**
      * Set TagView typeface.
+     *
      * @param typeface
      */
     public void setTagTypeface(Typeface typeface) {
@@ -1054,6 +1212,7 @@ public class TagContainerLayout extends ViewGroup {
 
     /**
      * Get tag text direction
+     *
      * @return
      */
     public int getTagTextDirection() {
@@ -1062,6 +1221,7 @@ public class TagContainerLayout extends ViewGroup {
 
     /**
      * Set TagView text color.
+     *
      * @param color
      */
     public void setTagTextColor(int color) {
@@ -1070,6 +1230,7 @@ public class TagContainerLayout extends ViewGroup {
 
     /**
      * Get the ripple effect color's alpha.
+     *
      * @return
      */
     public int getRippleAlpha() {
@@ -1078,6 +1239,7 @@ public class TagContainerLayout extends ViewGroup {
 
     /**
      * Set TagView ripple effect alpha, the value may between 0 to 255, default is 128.
+     *
      * @param mRippleAlpha
      */
     public void setRippleAlpha(int mRippleAlpha) {
@@ -1086,6 +1248,7 @@ public class TagContainerLayout extends ViewGroup {
 
     /**
      * Get the ripple effect color.
+     *
      * @return
      */
     public int getRippleColor() {
@@ -1094,6 +1257,7 @@ public class TagContainerLayout extends ViewGroup {
 
     /**
      * Set TagView ripple effect color.
+     *
      * @param mRippleColor
      */
     public void setRippleColor(int mRippleColor) {
@@ -1102,6 +1266,7 @@ public class TagContainerLayout extends ViewGroup {
 
     /**
      * Get the ripple effect duration.
+     *
      * @return
      */
     public int getRippleDuration() {
@@ -1110,6 +1275,7 @@ public class TagContainerLayout extends ViewGroup {
 
     /**
      * Set TagView ripple effect duration, default is 1000ms.
+     *
      * @param mRippleDuration
      */
     public void setRippleDuration(int mRippleDuration) {
@@ -1118,6 +1284,7 @@ public class TagContainerLayout extends ViewGroup {
 
     /**
      * Set TagView cross color.
+     *
      * @return
      */
     public int getCrossColor() {
@@ -1126,6 +1293,7 @@ public class TagContainerLayout extends ViewGroup {
 
     /**
      * Set TagView cross color, default Color.BLACK.
+     *
      * @param mCrossColor
      */
     public void setCrossColor(int mCrossColor) {
@@ -1134,6 +1302,7 @@ public class TagContainerLayout extends ViewGroup {
 
     /**
      * Get agView cross area's padding.
+     *
      * @return
      */
     public float getCrossAreaPadding() {
@@ -1142,6 +1311,7 @@ public class TagContainerLayout extends ViewGroup {
 
     /**
      * Set TagView cross area padding, default 10dp.
+     *
      * @param mCrossAreaPadding
      */
     public void setCrossAreaPadding(float mCrossAreaPadding) {
@@ -1150,6 +1320,7 @@ public class TagContainerLayout extends ViewGroup {
 
     /**
      * Get is the TagView's cross enable, default false.
+     *
      * @return
      */
     public boolean isEnableCross() {
@@ -1158,6 +1329,7 @@ public class TagContainerLayout extends ViewGroup {
 
     /**
      * Enable or disable the TagView's cross.
+     *
      * @param mEnableCross
      */
     public void setEnableCross(boolean mEnableCross) {
@@ -1166,6 +1338,7 @@ public class TagContainerLayout extends ViewGroup {
 
     /**
      * Get TagView cross area width.
+     *
      * @return
      */
     public float getCrossAreaWidth() {
@@ -1174,6 +1347,7 @@ public class TagContainerLayout extends ViewGroup {
 
     /**
      * Set TagView area width.
+     *
      * @param mCrossAreaWidth
      */
     public void setCrossAreaWidth(float mCrossAreaWidth) {
@@ -1182,6 +1356,7 @@ public class TagContainerLayout extends ViewGroup {
 
     /**
      * Get TagView cross line width.
+     *
      * @return
      */
     public float getCrossLineWidth() {
@@ -1190,6 +1365,7 @@ public class TagContainerLayout extends ViewGroup {
 
     /**
      * Set TagView cross line width, default 1dp.
+     *
      * @param mCrossLineWidth
      */
     public void setCrossLineWidth(float mCrossLineWidth) {
@@ -1198,6 +1374,7 @@ public class TagContainerLayout extends ViewGroup {
 
     /**
      * Get the 'letters show with RTL(like: Android to diordnA)' style if it's enabled
+     *
      * @return
      */
     public boolean isTagSupportLettersRTL() {
@@ -1205,7 +1382,8 @@ public class TagContainerLayout extends ViewGroup {
     }
 
     /**
-     *  Set whether the 'support letters show with RTL(like: Android to diordnA)' style is enabled
+     * Set whether the 'support letters show with RTL(like: Android to diordnA)' style is enabled
+     *
      * @param mTagSupportLettersRTL
      */
     public void setTagSupportLettersRTL(boolean mTagSupportLettersRTL) {
