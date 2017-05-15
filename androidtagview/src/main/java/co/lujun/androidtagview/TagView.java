@@ -113,6 +113,8 @@ public class TagView extends View {
 
     private float mCrossLineWidth;
 
+    private boolean unSupportedClipPath = false;
+
     private Runnable mLongClickHandle = new Runnable() {
         @Override
         public void run() {
@@ -340,22 +342,26 @@ public class TagView extends View {
 
     @TargetApi(Build.VERSION_CODES.HONEYCOMB)
     private void drawRipple(Canvas canvas){
-        if (isViewClickable && Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB && canvas != null){
+        if (isViewClickable && Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB &&
+                canvas != null && !unSupportedClipPath){
 
             // Disable hardware acceleration for 'Canvas.clipPath()' when running on API from 11 to 17
             if (Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN_MR2){
                 setLayerType(LAYER_TYPE_SOFTWARE, null);
             }
+            try {
+                canvas.save();
+                mPath.reset();
 
-            canvas.save();
-            mPath.reset();
+                canvas.clipPath(mPath);
+                mPath.addRoundRect(mRectF, mBorderRadius, mBorderRadius, Path.Direction.CCW);
 
-            canvas.clipPath(mPath);
-            mPath.addRoundRect(mRectF, mBorderRadius, mBorderRadius, Path.Direction.CCW);
-
-            canvas.clipPath(mPath, Region.Op.REPLACE);
-            canvas.drawCircle(mTouchX, mTouchY, mRippleRadius, mRipplePaint);
-            canvas.restore();
+                canvas.clipPath(mPath, Region.Op.REPLACE);
+                canvas.drawCircle(mTouchX, mTouchY, mRippleRadius, mRipplePaint);
+                canvas.restore();
+            }catch (UnsupportedOperationException e){
+                unSupportedClipPath = true;
+            }
         }
     }
 
