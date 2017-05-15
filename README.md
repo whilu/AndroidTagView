@@ -204,6 +204,9 @@ mTagcontainerLayout.setTags(tags, colors);
 
 ## Change logs
 
+### 1.1.2(2017-5-16)
+- Fix bugs
+
 ### 1.1.1(2017-4-16)
 - Customize the color of the TagView, see [#51](https://github.com/whilu/AndroidTagView/pull/51)
 - Fixed issue [#50](https://github.com/whilu/AndroidTagView/issues/50), [#49](https://github.com/whilu/AndroidTagView/issues/49)
