@@ -16,7 +16,7 @@ Add below dependency in your **build.gradle** file.
 
 ```groovy
 dependencies {
-    compile 'co.lujun:androidtagview:1.1.2'
+    compile 'co.lujun:androidtagview:1.1.3'
 }
 ```
 
@@ -183,13 +183,17 @@ mTagContainerLayout.addTag(String text);
 ```java
 mTagContainerLayout.addTag(String text, int position);
 ```
-* Remove TagView on particular position, require the position of the TagView
+* Remove TagView on particular position, require the position of the TagView.
 ```java
 mTagContainerLayout.removeTag(int position);
 ```
 * Remove all TagViews.
 ```java
 mTagContainerLayout.removeAllTags();
+```
+* Get a TagView in specified position.
+```java
+mTagContainerLayout.getTagView(int position);
 ```
 * Set color for each TagView.
 ```java
@@ -203,6 +207,9 @@ mTagcontainerLayout.setTags(tags, colors);
 ```
 
 ## Change logs
+
+### 1.1.3(2017-5-17)
+- Add ```getTagView(int position)``` method to get TagView in specified position.
 
 ### 1.1.2(2017-5-16)
 - Fix bugs

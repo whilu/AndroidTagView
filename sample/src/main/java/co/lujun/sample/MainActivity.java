@@ -134,7 +134,7 @@ public class MainActivity extends AppCompatActivity {
         mTagContainerLayout3.setTags(list3);
         mTagContainerLayout4.setTags(list4);
 
-        ArrayList<int[]> colors = new ArrayList<int[]>();
+        List<int[]> colors = new ArrayList<int[]>();
         //int[]color = {backgroundColor, tagBorderColor, tagTextColor}
         int[] col1 = {Color.parseColor("#ff0000"), Color.parseColor("#000000"), Color.parseColor("#ffffff")};
         int[] col2 = {Color.parseColor("#0000ff"), Color.parseColor("#000000"), Color.parseColor("#ffffff")};
@@ -142,7 +142,7 @@ public class MainActivity extends AppCompatActivity {
         colors.add(col1);
         colors.add(col2);
 
-        mTagcontainerLayout5.setTags(list5,colors);
+        mTagcontainerLayout5.setTags(list5, colors);
         final EditText text = (EditText) findViewById(R.id.text_tag);
         Button btnAddTag = (Button) findViewById(R.id.btn_add_tag);
         btnAddTag.setOnClickListener(new View.OnClickListener() {

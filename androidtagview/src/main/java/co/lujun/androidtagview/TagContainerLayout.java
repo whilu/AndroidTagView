@@ -35,7 +35,7 @@ public class TagContainerLayout extends ViewGroup {
     /**
      * The list to store the tags color info
      */
-    private ArrayList<int[]> mColorArrayList;
+    private List<int[]> mColorArrayList;
 
     /**
      * Horizontal interval, default 5(dp)
@@ -720,7 +720,7 @@ public class TagContainerLayout extends ViewGroup {
      * @param tags
      * @param colorArrayList
      */
-    public void setTags(List<String> tags, ArrayList<int[]> colorArrayList) {
+    public void setTags(List<String> tags, List<int[]> colorArrayList) {
         mTags = tags;
         mColorArrayList = colorArrayList;
         onSetTag();
@@ -1385,11 +1385,24 @@ public class TagContainerLayout extends ViewGroup {
     }
 
     /**
-     * Set whether the 'support letters show with RTL(like: Android to diordnA)' style is enabled
+     * Set whether the 'support letters show with RTL(like: Android to diordnA)' style is enabled.
      *
      * @param mTagSupportLettersRTL
      */
     public void setTagSupportLettersRTL(boolean mTagSupportLettersRTL) {
         this.mTagSupportLettersRTL = mTagSupportLettersRTL;
+    }
+
+    /**
+     * Get TagView in specified position.
+     *
+     * @param position the position of the TagView
+     * @return
+     */
+    public TagView getTagView(int position){
+        if (position < 0 || position >= mChildViews.size()) {
+            throw new RuntimeException("Illegal position!");
+        }
+        return (TagView) mChildViews.get(position);
     }
 }
