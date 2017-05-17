@@ -89,7 +89,9 @@ public class MainActivity extends AppCompatActivity {
                         .setPositiveButton("Delete", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
-                                mTagContainerLayout1.removeTag(position);
+                                if (position < mTagContainerLayout1.getChildCount()) {
+                                    mTagContainerLayout1.removeTag(position);
+                                }
                             }
                         })
                         .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
