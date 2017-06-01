@@ -7,6 +7,7 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.RectF;
 import android.graphics.Typeface;
+import android.support.annotation.DrawableRes;
 import android.support.v4.widget.ViewDragHelper;
 import android.util.AttributeSet;
 import android.view.Gravity;
@@ -237,6 +238,11 @@ public class TagContainerLayout extends ViewGroup {
      */
     private float mCrossLineWidth = 1.0f;
 
+    /**
+     * TagView background resource
+     */
+    private int mTagBackgroundResource;
+
     public TagContainerLayout(Context context) {
         this(context, null);
     }
@@ -305,6 +311,8 @@ public class TagContainerLayout extends ViewGroup {
                 dp2px(context, mCrossLineWidth));
         mTagSupportLettersRTL = attributes.getBoolean(R.styleable.AndroidTagView_tag_support_letters_rlt,
                 mTagSupportLettersRTL);
+        mTagBackgroundResource = attributes.getResourceId(R.styleable.AndroidTagView_tag_background,
+                mTagBackgroundResource);
         attributes.recycle();
 
         mPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
@@ -550,6 +558,7 @@ public class TagContainerLayout extends ViewGroup {
         tagView.setCrossColor(mCrossColor);
         tagView.setCrossLineWidth(mCrossLineWidth);
         tagView.setTagSupportLettersRTL(mTagSupportLettersRTL);
+        tagView.setBackgroundResource(mTagBackgroundResource);
     }
 
     private void invalidateTags() {
@@ -1404,5 +1413,21 @@ public class TagContainerLayout extends ViewGroup {
             throw new RuntimeException("Illegal position!");
         }
         return (TagView) mChildViews.get(position);
+    }
+
+    /**
+     * Get TagView background resource
+     * @return
+     */
+    public int getTagBackgroundResource() {
+        return mTagBackgroundResource;
+    }
+
+    /**
+     * Set TagView background resource
+     * @param tagBackgroundResource
+     */
+    public void setTagBackgroundResource(@DrawableRes int tagBackgroundResource) {
+        this.mTagBackgroundResource = tagBackgroundResource;
     }
 }
