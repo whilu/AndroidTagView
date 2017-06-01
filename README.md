@@ -16,7 +16,7 @@ Add below dependency in your **build.gradle** file.
 
 ```groovy
 dependencies {
-    compile 'co.lujun:androidtagview:1.1.3'
+    compile 'co.lujun:androidtagview:1.1.4'
 }
 ```
 
@@ -84,6 +84,7 @@ Now, you have successfully created some TagViews. The following will show some m
 | tag_cross_line_width | dimension | The cross line width(default 1dp)
 | tag_cross_area_padding | dimension | The padding of the cross area(default 10dp)
 | tag_support_letters_rlt | boolean | Whether to support 'letters show with RTL(eg: Android -> diordnA)' style(default false)
+| tag_background | reference | TagView background resource(default none background)
 
 **You can set these attributes in layout file, or use setters(each attribute has get and set method) to set them.**
 
@@ -207,6 +208,9 @@ mTagcontainerLayout.setTags(tags, colors);
 ```
 
 ## Change logs
+
+### 1.1.4(2017-6-1)
+- Add attribute for TagView background.
 
 ### 1.1.3(2017-5-17)
 - Add ```getTagView(int position)``` method to get TagView in specified position.
