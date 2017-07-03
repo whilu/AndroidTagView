@@ -92,7 +92,7 @@ Now, you have successfully created some TagViews. The following will show some m
 
 |theme|code|value|description
 |:---:|:---:|:---:|:---:|
-| none | ColorFactory.NONE | -1 | If you customize TagView with your way, set this theme
+| none | ColorFactory.NONE | -1 | **If you customize TagView with your way, set this theme**
 | random | ColorFactory.RANDOM | 0 | Create each TagView using random color
 | pure_cyan | ColorFactory.PURE_CYAN | 1 | All TagView created by pure cyan color
 | pure_teal | ColorFactory.PURE_TEAL | 2 | All TagView created by pure teal color
