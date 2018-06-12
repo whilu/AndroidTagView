@@ -85,37 +85,25 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onTagLongClick(final int position, String text) {
-//                AlertDialog dialog = new AlertDialog.Builder(MainActivity.this)
-//                        .setTitle("long click")
-//                        .setMessage("You will delete this tag!")
-//                        .setPositiveButton("Delete", new DialogInterface.OnClickListener() {
-//                            @Override
-//                            public void onClick(DialogInterface dialog, int which) {
-//                                if (position < mTagContainerLayout1.getChildCount()) {
-//                                    mTagContainerLayout1.removeTag(position);
-//                                }
-//                            }
-//                        })
-//                        .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-//                            @Override
-//                            public void onClick(DialogInterface dialog, int which) {
-//                                dialog.dismiss();
-//                            }
-//                        })
-//                        .create();
-//                dialog.show();
-                mTagContainerLayout1.setTagViewSelectedState(true, position);
-
-                TagView tagView = (TagView)mTagContainerLayout1.getChildAt(position);
-                int color = tagView.getTagBackgroundColor();
-                color = manipulateColor(color,0.3f);
-                //tagView.getBackground().setColorFilter(Color.parseColor("#00ff00"), PorterDuff.Mode.DARKEN);
-                tagView.setTagBackgroundColor(color);
-                tagView.invalidate();
-
-                List<Integer> selectedPositions = mTagContainerLayout1.getSelectedTagViewPositions();
-                Toast.makeText(MainActivity.this, "selected-positions:" + selectedPositions.toString(),
-                        Toast.LENGTH_SHORT).show();
+                AlertDialog dialog = new AlertDialog.Builder(MainActivity.this)
+                        .setTitle("long click")
+                        .setMessage("You will delete this tag!")
+                        .setPositiveButton("Delete", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                if (position < mTagContainerLayout1.getChildCount()) {
+                                    mTagContainerLayout1.removeTag(position);
+                                }
+                            }
+                        })
+                        .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
+                            }
+                        })
+                        .create();
+                dialog.show();
             }
 
             @Override
@@ -133,25 +121,6 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onTagLongClick(final int position, String text) {
-//                AlertDialog dialog = new AlertDialog.Builder(MainActivity.this)
-//                        .setTitle("long click")
-//                        .setMessage("You will delete this tag!")
-//                        .setPositiveButton("Delete", new DialogInterface.OnClickListener() {
-//                            @Override
-//                            public void onClick(DialogInterface dialog, int which) {
-//                                if (position < mTagContainerLayout1.getChildCount()) {
-//                                    mTagContainerLayout1.removeTag(position);
-//                                }
-//                            }
-//                        })
-//                        .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-//                            @Override
-//                            public void onClick(DialogInterface dialog, int which) {
-//                                dialog.dismiss();
-//                            }
-//                        })
-//                        .create();
-//                dialog.show();
                 mTagContainerLayout3.setTagViewSelectedState(true, position);
 
                 TagView tagView = (TagView)mTagContainerLayout3.getChildAt(position);
