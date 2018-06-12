@@ -66,6 +66,12 @@ public class TagView extends View {
     /** Whether this view clickable*/
     private boolean isViewClickable;
 
+    /** Whether this view selectable*/
+    private boolean isViewSelectable;
+
+    /** Whether this view selected*/
+    private boolean isViewSelected;
+
     /** The max length for this tag view*/
     private int mTagMaxLength;
 
@@ -410,6 +416,10 @@ public class TagView extends View {
         return isViewClickable;
     }
 
+    public boolean getIsViewSelected(){
+        return isViewSelected;
+    }
+
     public void setTagMaxLength(int maxLength){
         this.mTagMaxLength = maxLength;
         onDealText();
@@ -417,6 +427,10 @@ public class TagView extends View {
 
     public void setOnTagClickListener(OnTagClickListener listener){
         this.mOnTagClickListener = listener;
+    }
+
+    public int getTagBackgroundColor(){
+        return mBackgroundColor;
     }
 
     public void setTagBackgroundColor(int color){
@@ -454,6 +468,15 @@ public class TagView extends View {
 
     public void setIsViewClickable(boolean clickable) {
         this.isViewClickable = clickable;
+    }
+
+    public void setIsViewSelectable(boolean viewSelectable) {
+        isViewSelectable = viewSelectable;
+    }
+
+    public void setIsViewSelected(boolean isSelected) {
+        if (isViewSelectable)
+            this.isViewSelected = isSelected;
     }
 
     public interface OnTagClickListener{

@@ -160,6 +160,11 @@ public class TagContainerLayout extends ViewGroup {
     private boolean isTagViewClickable;
 
     /**
+     * Whether TagView can selectable(default unselectable)
+     */
+    private boolean isTagViewSelectable;
+
+    /**
      * Tags
      */
     private List<String> mTags;
@@ -314,6 +319,7 @@ public class TagContainerLayout extends ViewGroup {
         mTagTextColor = attributes.getColor(R.styleable.AndroidTagView_tag_text_color, mTagTextColor);
         mTagTextDirection = attributes.getInt(R.styleable.AndroidTagView_tag_text_direction, mTagTextDirection);
         isTagViewClickable = attributes.getBoolean(R.styleable.AndroidTagView_tag_clickable, false);
+        isTagViewSelectable = attributes.getBoolean(R.styleable.AndroidTagView_tag_selectable, false);
         mRippleColor = attributes.getColor(R.styleable.AndroidTagView_tag_ripple_color, Color.parseColor("#EEEEEE"));
         mRippleAlpha = attributes.getInteger(R.styleable.AndroidTagView_tag_ripple_alpha, mRippleAlpha);
         mRippleDuration = attributes.getInteger(R.styleable.AndroidTagView_tag_ripple_duration, mRippleDuration);
@@ -563,6 +569,7 @@ public class TagContainerLayout extends ViewGroup {
         tagView.setHorizontalPadding(mTagHorizontalPadding);
         tagView.setVerticalPadding(mTagVerticalPadding);
         tagView.setIsViewClickable(isTagViewClickable);
+        tagView.setIsViewSelectable(isTagViewSelectable);
         tagView.setBdDistance(mTagBdDistance);
         tagView.setOnTagClickListener(mOnTagClickListener);
         tagView.setRippleAlpha(mRippleAlpha);
@@ -809,6 +816,31 @@ public class TagContainerLayout extends ViewGroup {
     public void setOnTagClickListener(TagView.OnTagClickListener listener) {
         mOnTagClickListener = listener;
         invalidateTags();
+    }
+
+    /**
+     * Toggle TagView's selected state.
+     *
+     * @param isSelected, position
+     */
+    public void setTagViewSelectedState(boolean isSelected, int position) {
+        if (isTagViewSelectable)
+            ((TagView)mChildViews.get(position)).setIsViewSelected(isSelected);
+    }
+
+    /**
+     * Return selected TagView
+     *
+     * @return list of selected positions
+     */
+    public List<Integer> getSelectedTagViewPositions() {
+        List<Integer> selectedPositions = new ArrayList<>();
+        for (int i = 0; i < mChildViews.size(); i++){
+            if (((TagView)mChildViews.get(i)).getIsViewSelected()){
+                selectedPositions.add(i);
+            }
+        }
+        return selectedPositions;
     }
 
     /**
@@ -1071,6 +1103,24 @@ public class TagContainerLayout extends ViewGroup {
      */
     public void setIsTagViewClickable(boolean clickable) {
         this.isTagViewClickable = clickable;
+    }
+
+    /**
+     * Get TagView is selectable.
+     *
+     * @return
+     */
+    public boolean getIsTagViewSelectable() {
+        return isTagViewSelectable;
+    }
+
+    /**
+     * Set TagView is selectable
+     *
+     * @param selectable
+     */
+    public void setIsTagViewSelectable(boolean selectable) {
+        this.isTagViewSelectable= selectable;
     }
 
     /**
