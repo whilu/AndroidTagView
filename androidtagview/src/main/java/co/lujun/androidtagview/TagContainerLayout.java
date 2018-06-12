@@ -857,7 +857,7 @@ public class TagContainerLayout extends ViewGroup {
     }
 
     /**
-     * Return selected TagView
+     * Return selected TagView positions
      *
      * @return list of selected positions
      */
@@ -869,6 +869,22 @@ public class TagContainerLayout extends ViewGroup {
             }
         }
         return selectedPositions;
+    }
+
+    /**
+     * Return selected TagView text
+     *
+     * @return list of selected tag text
+     */
+    public List<String> getSelectedTagViewText() {
+        List<String> selectedTagText = new ArrayList<>();
+        for (int i = 0; i < mChildViews.size(); i++){
+            TagView tagView = (TagView)mChildViews.get(i);
+            if ((tagView.getIsViewSelected())){
+                selectedTagText.add(tagView.getText());
+            }
+        }
+        return selectedTagText;
     }
 
     /**
