@@ -829,9 +829,9 @@ public class TagContainerLayout extends ViewGroup {
         if (isTagViewSelectable){
             TagView tagView = ((TagView)mChildViews.get(position));
             if (tagView.getIsViewSelected()){
-                unselectTagView(position);
+                tagView.deselectView();
             } else {
-                selectTagView(position);
+                tagView.selectView();
             }
         }
     }
@@ -847,13 +847,13 @@ public class TagContainerLayout extends ViewGroup {
     }
 
     /**
-     * Unselect a tag
+     * Deselect a tag
      *
      * @param position
      */
-    public void unselectTagView(int position) {
+    public void deselectTagView(int position) {
         if (isTagViewSelectable)
-            ((TagView)mChildViews.get(position)).unselectView();
+            ((TagView)mChildViews.get(position)).deselectView();
     }
 
     /**
