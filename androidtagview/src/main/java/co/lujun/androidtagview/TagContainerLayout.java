@@ -821,6 +821,22 @@ public class TagContainerLayout extends ViewGroup {
     }
 
     /**
+     * Toggle select a tag
+     *
+     * @param position
+     */
+    public void toggleSelectTagView(int position) {
+        if (isTagViewSelectable){
+            TagView tagView = ((TagView)mChildViews.get(position));
+            if (tagView.getIsViewSelected()){
+                unselectTagView(position);
+            } else {
+                selectTagView(position);
+            }
+        }
+    }
+
+    /**
      * Select a tag
      *
      * @param position

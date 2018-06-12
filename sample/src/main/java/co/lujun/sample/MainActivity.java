@@ -121,7 +121,7 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onTagLongClick(final int position, String text) {
-                mTagContainerLayout3.selectTagView(position);
+                mTagContainerLayout3.toggleSelectTagView(position);
 
                 List<Integer> selectedPositions = mTagContainerLayout3.getSelectedTagViewPositions();
                 Toast.makeText(MainActivity.this, "selected-positions:" + selectedPositions.toString(),
