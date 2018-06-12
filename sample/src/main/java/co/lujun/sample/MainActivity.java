@@ -117,6 +117,18 @@ public class MainActivity extends AppCompatActivity {
         mTagContainerLayout3.setOnTagClickListener(new TagView.OnTagClickListener() {
             @Override
             public void onTagClick(int position, String text) {
+                List<Integer> selectedPositions = mTagContainerLayout3.getSelectedTagViewPositions();
+                //deselect all tags when click on an unselected tag. Otherwise show toast.
+                if (selectedPositions.isEmpty() || selectedPositions.contains(position)){
+                    Toast.makeText(MainActivity.this, "click-position:" + position + ", text:" + text,
+                            Toast.LENGTH_SHORT).show();
+                } else {
+                    //deselect all tags
+                    for (int i : selectedPositions){
+                        mTagContainerLayout3.deselectTagView(i);
+                    }
+                }
+
             }
 
             @Override
