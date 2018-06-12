@@ -4,6 +4,8 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.graphics.Color;
+import android.graphics.PorterDuff;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
@@ -83,25 +85,37 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onTagLongClick(final int position, String text) {
-                AlertDialog dialog = new AlertDialog.Builder(MainActivity.this)
-                        .setTitle("long click")
-                        .setMessage("You will delete this tag!")
-                        .setPositiveButton("Delete", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                if (position < mTagContainerLayout1.getChildCount()) {
-                                    mTagContainerLayout1.removeTag(position);
-                                }
-                            }
-                        })
-                        .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                dialog.dismiss();
-                            }
-                        })
-                        .create();
-                dialog.show();
+//                AlertDialog dialog = new AlertDialog.Builder(MainActivity.this)
+//                        .setTitle("long click")
+//                        .setMessage("You will delete this tag!")
+//                        .setPositiveButton("Delete", new DialogInterface.OnClickListener() {
+//                            @Override
+//                            public void onClick(DialogInterface dialog, int which) {
+//                                if (position < mTagContainerLayout1.getChildCount()) {
+//                                    mTagContainerLayout1.removeTag(position);
+//                                }
+//                            }
+//                        })
+//                        .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+//                            @Override
+//                            public void onClick(DialogInterface dialog, int which) {
+//                                dialog.dismiss();
+//                            }
+//                        })
+//                        .create();
+//                dialog.show();
+                mTagContainerLayout1.setTagViewSelectedState(true, position);
+
+                TagView tagView = (TagView)mTagContainerLayout1.getChildAt(position);
+                int color = tagView.getTagBackgroundColor();
+                color = manipulateColor(color,0.3f);
+                //tagView.getBackground().setColorFilter(Color.parseColor("#00ff00"), PorterDuff.Mode.DARKEN);
+                tagView.setTagBackgroundColor(color);
+                tagView.invalidate();
+
+                List<Integer> selectedPositions = mTagContainerLayout1.getSelectedTagViewPositions();
+                Toast.makeText(MainActivity.this, "selected-positions:" + selectedPositions.toString(),
+                        Toast.LENGTH_SHORT).show();
             }
 
             @Override
@@ -109,6 +123,50 @@ public class MainActivity extends AppCompatActivity {
 //                mTagContainerLayout1.removeTag(position);
                 Toast.makeText(MainActivity.this, "Click TagView cross! position = " + position,
                         Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        mTagContainerLayout3.setOnTagClickListener(new TagView.OnTagClickListener() {
+            @Override
+            public void onTagClick(int position, String text) {
+            }
+
+            @Override
+            public void onTagLongClick(final int position, String text) {
+//                AlertDialog dialog = new AlertDialog.Builder(MainActivity.this)
+//                        .setTitle("long click")
+//                        .setMessage("You will delete this tag!")
+//                        .setPositiveButton("Delete", new DialogInterface.OnClickListener() {
+//                            @Override
+//                            public void onClick(DialogInterface dialog, int which) {
+//                                if (position < mTagContainerLayout1.getChildCount()) {
+//                                    mTagContainerLayout1.removeTag(position);
+//                                }
+//                            }
+//                        })
+//                        .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+//                            @Override
+//                            public void onClick(DialogInterface dialog, int which) {
+//                                dialog.dismiss();
+//                            }
+//                        })
+//                        .create();
+//                dialog.show();
+                mTagContainerLayout3.setTagViewSelectedState(true, position);
+
+                TagView tagView = (TagView)mTagContainerLayout3.getChildAt(position);
+                int color = tagView.getTagBackgroundColor();
+                color = manipulateColor(color,0.3f);
+                tagView.setTagBackgroundColor(color);
+                tagView.invalidate();
+
+                List<Integer> selectedPositions = mTagContainerLayout3.getSelectedTagViewPositions();
+                Toast.makeText(MainActivity.this, "selected-positions:" + selectedPositions.toString(),
+                        Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onTagCrossClick(int position) {
             }
         });
 
@@ -170,6 +228,17 @@ public class MainActivity extends AppCompatActivity {
 //            }
 //        });
 //        recyclerView.setAdapter(adapter);
+    }
+
+    public int manipulateColor(int color, float factor) {
+        int a = Color.alpha(color);
+        int r = Math.round(Color.red(color) * factor);
+        int g = Math.round(Color.green(color) * factor);
+        int b = Math.round(Color.blue(color) * factor);
+        return Color.argb(a,
+                Math.min(r,255),
+                Math.min(g,255),
+                Math.min(b,255));
     }
 
     public class TagRecyclerViewAdapter
