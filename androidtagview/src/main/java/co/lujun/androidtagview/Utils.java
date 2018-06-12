@@ -39,7 +39,7 @@ public class Utils {
     /**
      *Manipulate Birghtness of color
      *
-     * @params color in int, brightness factor
+     * @param color in int, brightness factor
      *
      * @return int
      */
