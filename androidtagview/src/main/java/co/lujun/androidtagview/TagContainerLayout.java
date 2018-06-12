@@ -558,6 +558,8 @@ public class TagContainerLayout extends ViewGroup {
         }
 
         tagView.setTagBackgroundColor(colors[0]);
+        //TODO make selectedBackgroundColorSelectable configurable
+        tagView.setTagSelectedBackgroundColor(Utils.manipulateColorBrigthness(colors[0], 0.5f));
         tagView.setTagBorderColor(colors[1]);
         tagView.setTagTextColor(colors[2]);
         tagView.setTagMaxLength(mTagMaxLength);
@@ -819,13 +821,23 @@ public class TagContainerLayout extends ViewGroup {
     }
 
     /**
-     * Toggle TagView's selected state.
+     * Select a tag
      *
-     * @param isSelected, position
+     * @param position
      */
-    public void setTagViewSelectedState(boolean isSelected, int position) {
+    public void selectTagView(int position) {
         if (isTagViewSelectable)
-            ((TagView)mChildViews.get(position)).setIsViewSelected(isSelected);
+            ((TagView)mChildViews.get(position)).selectView();
+    }
+
+    /**
+     * Unselect a tag
+     *
+     * @param position
+     */
+    public void unselectTagView(int position) {
+        if (isTagViewSelectable)
+            ((TagView)mChildViews.get(position)).unselectView();
     }
 
     /**

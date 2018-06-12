@@ -60,6 +60,9 @@ public class TagView extends View {
     /** TagView background color*/
     private int mBackgroundColor;
 
+    /** TagView background color*/
+    private int mSelectedBackgroundColor;
+
     /** TagView text color*/
     private int mTextColor;
 
@@ -207,7 +210,7 @@ public class TagView extends View {
     protected void onDraw(Canvas canvas) {
         // draw background
         mPaint.setStyle(Paint.Style.FILL);
-        mPaint.setColor(mBackgroundColor);
+        mPaint.setColor(getIsViewSelected() ? mSelectedBackgroundColor : mBackgroundColor);
         canvas.drawRoundRect(mRectF, mBorderRadius, mBorderRadius, mPaint);
 
         // draw border
@@ -433,8 +436,16 @@ public class TagView extends View {
         return mBackgroundColor;
     }
 
+    public int getTagSelectedBackgroundColor(){
+        return mSelectedBackgroundColor;
+    }
+
     public void setTagBackgroundColor(int color){
         this.mBackgroundColor = color;
+    }
+
+    public void setTagSelectedBackgroundColor(int color){
+        this.mSelectedBackgroundColor = color;
     }
 
     public void setTagBorderColor(int color){
@@ -474,9 +485,19 @@ public class TagView extends View {
         isViewSelectable = viewSelectable;
     }
 
-    public void setIsViewSelected(boolean isSelected) {
-        if (isViewSelectable)
-            this.isViewSelected = isSelected;
+    //TODO change background color
+    public void selectView() {
+        if (isViewSelectable && !getIsViewSelected()) {
+            this.isViewSelected = true;
+            postInvalidate();
+        }
+    }
+
+    public void unselectView() {
+        if (isViewSelectable && getIsViewSelected()) {
+            this.isViewSelected = false;
+            postInvalidate();
+        }
     }
 
     public interface OnTagClickListener{

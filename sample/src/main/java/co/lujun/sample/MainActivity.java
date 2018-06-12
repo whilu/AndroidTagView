@@ -121,13 +121,7 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onTagLongClick(final int position, String text) {
-                mTagContainerLayout3.setTagViewSelectedState(true, position);
-
-                TagView tagView = (TagView)mTagContainerLayout3.getChildAt(position);
-                int color = tagView.getTagBackgroundColor();
-                color = manipulateColor(color,0.3f);
-                tagView.setTagBackgroundColor(color);
-                tagView.invalidate();
+                mTagContainerLayout3.selectTagView(position);
 
                 List<Integer> selectedPositions = mTagContainerLayout3.getSelectedTagViewPositions();
                 Toast.makeText(MainActivity.this, "selected-positions:" + selectedPositions.toString(),
@@ -199,16 +193,6 @@ public class MainActivity extends AppCompatActivity {
 //        recyclerView.setAdapter(adapter);
     }
 
-    public int manipulateColor(int color, float factor) {
-        int a = Color.alpha(color);
-        int r = Math.round(Color.red(color) * factor);
-        int g = Math.round(Color.green(color) * factor);
-        int b = Math.round(Color.blue(color) * factor);
-        return Color.argb(a,
-                Math.min(r,255),
-                Math.min(g,255),
-                Math.min(b,255));
-    }
 
     public class TagRecyclerViewAdapter
             extends RecyclerView.Adapter<TagRecyclerViewAdapter.TagViewHolder> {

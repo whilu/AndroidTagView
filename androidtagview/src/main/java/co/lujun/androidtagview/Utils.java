@@ -17,6 +17,7 @@
 package co.lujun.androidtagview;
 
 import android.content.Context;
+import android.graphics.Color;
 
 /**
  * Author: lujun(http://blog.lujun.co)
@@ -33,5 +34,23 @@ public class Utils {
     public static float sp2px(Context context, float sp) {
         final float scale = context.getResources().getDisplayMetrics().scaledDensity;
         return sp * scale;
+    }
+
+    /**
+     *Manipulate Birghtness of color
+     *
+     * @params color in int, brightness factor
+     *
+     * @return int
+     */
+    public static int manipulateColorBrigthness(int color, float factor) {
+        int a = Color.alpha(color);
+        int r = Math.round(Color.red(color) * factor);
+        int g = Math.round(Color.green(color) * factor);
+        int b = Math.round(Color.blue(color) * factor);
+        return Color.argb(a,
+                Math.min(r,255),
+                Math.min(g,255),
+                Math.min(b,255));
     }
 }
