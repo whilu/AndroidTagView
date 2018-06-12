@@ -559,7 +559,7 @@ public class TagContainerLayout extends ViewGroup {
 
         tagView.setTagBackgroundColor(colors[0]);
         //TODO make selectedBackgroundColorSelectable configurable
-        tagView.setTagSelectedBackgroundColor(Utils.manipulateColorBrigthness(colors[0], 0.5f));
+        tagView.setTagSelectedBackgroundColor(Utils.manipulateColorBrigthness(colors[0], 0.7f));
         tagView.setTagBorderColor(colors[1]);
         tagView.setTagTextColor(colors[2]);
         tagView.setTagMaxLength(mTagMaxLength);
