@@ -888,6 +888,15 @@ public class TagContainerLayout extends ViewGroup {
     }
 
     /**
+     * Return number of child tags
+     *
+     * @return size
+     */
+    public int size() {
+        return mChildViews.size();
+    }
+
+    /**
      * Get TagView text.
      *
      * @param position
