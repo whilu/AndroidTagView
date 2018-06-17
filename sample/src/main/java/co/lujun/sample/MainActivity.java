@@ -1,11 +1,10 @@
 package co.lujun.sample;
 
 import android.app.AlertDialog;
+import android.content.ClipData;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.graphics.Color;
-import android.graphics.PorterDuff;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
@@ -107,6 +106,10 @@ public class MainActivity extends AppCompatActivity {
             }
 
             @Override
+            public void onSelectedTagDrag(int position, String text) {
+            }
+
+            @Override
             public void onTagCrossClick(int position) {
 //                mTagContainerLayout1.removeTag(position);
                 Toast.makeText(MainActivity.this, "Click TagView cross! position = " + position,
@@ -119,12 +122,12 @@ public class MainActivity extends AppCompatActivity {
             public void onTagClick(int position, String text) {
                 List<Integer> selectedPositions = mTagContainerLayout3.getSelectedTagViewPositions();
                 //deselect all tags when click on an unselected tag. Otherwise show toast.
-                if (selectedPositions.isEmpty() || selectedPositions.contains(position)){
+                if (selectedPositions.isEmpty() || selectedPositions.contains(position)) {
                     Toast.makeText(MainActivity.this, "click-position:" + position + ", text:" + text,
                             Toast.LENGTH_SHORT).show();
                 } else {
                     //deselect all tags
-                    for (int i : selectedPositions){
+                    for (int i : selectedPositions) {
                         mTagContainerLayout3.deselectTagView(i);
                     }
                 }
@@ -138,6 +141,14 @@ public class MainActivity extends AppCompatActivity {
                 List<Integer> selectedPositions = mTagContainerLayout3.getSelectedTagViewPositions();
                 Toast.makeText(MainActivity.this, "selected-positions:" + selectedPositions.toString(),
                         Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onSelectedTagDrag(int position, String text) {
+                ClipData clip = ClipData.newPlainText("Text", text);
+                View view = mTagContainerLayout3.getTagView(position);
+                View.DragShadowBuilder shadow = new View.DragShadowBuilder(view);
+                view.startDrag(clip, shadow, Boolean.TRUE, 0);
             }
 
             @Override
