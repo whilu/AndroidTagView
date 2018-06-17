@@ -266,8 +266,8 @@ public class TagView extends View {
                     break;
 
                 case MotionEvent.ACTION_MOVE:
-                    if (Math.abs(mLastY - y) > mSlopThreshold
-                            || Math.abs(mLastX - x) > mSlopThreshold){
+                    if (!isViewSelected && (Math.abs(mLastY - y) > mSlopThreshold
+                            || Math.abs(mLastX - x) > mSlopThreshold)){
                         if (getParent() != null) {
                             getParent().requestDisallowInterceptTouchEvent(false);
                         }
@@ -313,6 +313,9 @@ public class TagView extends View {
                     }
                     if (Math.abs(mLastX - x) > mMoveSlop || Math.abs(mLastY - y) > mMoveSlop){
                         isMoved = true;
+                        if (isViewSelected){
+                            mOnTagClickListener.onSelectedTagDrag((int) getTag(), getText());
+                        }
                     }
                     break;
 
@@ -503,6 +506,7 @@ public class TagView extends View {
     public interface OnTagClickListener{
         void onTagClick(int position, String text);
         void onTagLongClick(int position, String text);
+        void onSelectedTagDrag(int position, String text);
         void onTagCrossClick(int position);
     }
 
