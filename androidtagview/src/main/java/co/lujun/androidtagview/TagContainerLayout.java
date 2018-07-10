@@ -33,6 +33,7 @@ import android.view.ViewGroup;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import static co.lujun.androidtagview.Utils.dp2px;
@@ -605,6 +606,21 @@ public class TagContainerLayout extends ViewGroup {
         // TODO, make removed view null?
     }
 
+    private void onRemoveConsecutiveTags(List<Integer> positions) {
+        int smallestPosition = Collections.min(positions);
+        for (int position : positions) {
+            if (position < 0 || position >= mChildViews.size()) {
+                throw new RuntimeException("Illegal position!");
+            }
+            mChildViews.remove(smallestPosition);
+            removeViewAt(smallestPosition);
+        }
+        for (int i = smallestPosition; i < mChildViews.size(); i++) {
+            mChildViews.get(i).setTag(i);
+        }
+        // TODO, make removed view null?
+    }
+
     private int[] onGetNewPosition(View view) {
         int left = view.getLeft();
         int top = view.getTop();
@@ -798,6 +814,16 @@ public class TagContainerLayout extends ViewGroup {
      */
     public void removeTag(int position) {
         onRemoveTag(position);
+        postInvalidate();
+    }
+
+    /**
+     * Remove TagView in multiple consecutive positions.
+     *
+     *
+     */
+    public void removeConsecutiveTags(List<Integer> positions) {
+        onRemoveConsecutiveTags(positions);
         postInvalidate();
     }
 
