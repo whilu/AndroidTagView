@@ -165,6 +165,11 @@ public class TagContainerLayout extends ViewGroup {
     private List<String> mTags;
 
     /**
+     * Default image for new tags
+     */
+    private int mDefaultImageDrawableID = -1;
+
+    /**
      * Can drag TagView(default false)
      */
     private boolean mDragEnable;
@@ -525,7 +530,12 @@ public class TagContainerLayout extends ViewGroup {
         if (position < 0 || position > mChildViews.size()) {
             throw new RuntimeException("Illegal position!");
         }
-        TagView tagView = new TagView(getContext(), text);
+        TagView tagView;
+        if (mDefaultImageDrawableID != -1) {
+            tagView = new TagView(getContext(), text, mDefaultImageDrawableID);
+        } else {
+            tagView = new TagView(getContext(), text);
+        }
         initTagView(tagView, position);
         mChildViews.add(position, tagView);
         if (position < mChildViews.size()) {
@@ -998,6 +1008,24 @@ public class TagContainerLayout extends ViewGroup {
      */
     public void setSensitivity(float sensitivity) {
         this.mSensitivity = sensitivity;
+    }
+
+    /**
+     * Get default tag image
+     *
+     * @return
+     */
+    public int getDefaultImageDrawableID() {
+        return mDefaultImageDrawableID;
+    }
+
+    /**
+     * Set default image for tags.
+     *
+     * @param imageID
+     */
+    public void setDefaultImageDrawableID(int imageID) {
+        this.mDefaultImageDrawableID = imageID;
     }
 
     /**
