@@ -198,7 +198,6 @@ public class TagView extends View {
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
         int height = mVerticalPadding * 2 + (int) fontH;
-        int width = mHorizontalPadding * 2 + (int) fontW + (isEnableCross() ? height : 0);
         mCrossAreaWidth = Math.min(Math.max(mCrossAreaWidth, height), width);
         setMeasuredDimension(width, height);
     }
@@ -245,7 +244,7 @@ public class TagView extends View {
             }
         } else {
             canvas.drawText(mAbstractText,
-                    (isEnableCross() ? getWidth() - getHeight() : getWidth()) / 2 - fontW / 2,
+                    (isEnableCross() ? getWidth() - getHeight() : getWidth()) / 2 - fontW / 2 + (isEnableImage() ? getHeight() / 2 : 0),
                     getHeight() / 2 + fontH / 2 - bdDistance, mPaint);
         }
 
