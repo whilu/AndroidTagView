@@ -198,6 +198,7 @@ public class TagView extends View {
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
         int height = mVerticalPadding * 2 + (int) fontH;
+        int width = mHorizontalPadding * 2 + (int) fontW + (isEnableCross() ? height : 0) + (isEnableImage() ? height : 0);
         mCrossAreaWidth = Math.min(Math.max(mCrossAreaWidth, height), width);
         setMeasuredDimension(width, height);
     }
@@ -522,7 +523,7 @@ public class TagView extends View {
         this.bdDistance = bdDistance;
     }
 
-    public boolean isEnableImage() { return mBitmapImage != null; }
+    public boolean isEnableImage() { return mBitmapImage != null && mTextDirection != View.TEXT_DIRECTION_RTL; }
 
     public boolean isEnableCross() {
         return mEnableCross;
