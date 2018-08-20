@@ -19,11 +19,15 @@ package co.lujun.androidtagview;
 import android.animation.ValueAnimator;
 import android.annotation.TargetApi;
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapShader;
+import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Path;
 import android.graphics.RectF;
 import android.graphics.Region;
+import android.graphics.Shader;
 import android.graphics.Typeface;
 import android.os.Build;
 import android.support.v4.widget.ViewDragHelper;
@@ -119,6 +123,8 @@ public class TagView extends View {
 
     private ValueAnimator mRippleValueAnimator;
 
+    private Bitmap mBitmapImage;
+
     private boolean mEnableCross;
 
     private float mCrossAreaWidth;
@@ -147,6 +153,12 @@ public class TagView extends View {
     public TagView(Context context, String text){
         super(context);
         init(context, text);
+    }
+
+    public TagView(Context context, String text, int defaultImageID){
+        super(context);
+        init(context, text);
+        mBitmapImage = BitmapFactory.decodeResource(getResources(), defaultImageID);
     }
 
     private void init(Context context, String text){
@@ -186,7 +198,7 @@ public class TagView extends View {
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
         int height = mVerticalPadding * 2 + (int) fontH;
-        int width = mHorizontalPadding * 2 + (int) fontW + (isEnableCross() ? height : 0);
+        int width = mHorizontalPadding * 2 + (int) fontW + (isEnableCross() ? height : 0) + (isEnableImage() ? height : 0);
         mCrossAreaWidth = Math.min(Math.max(mCrossAreaWidth, height), width);
         setMeasuredDimension(width, height);
     }
@@ -233,12 +245,15 @@ public class TagView extends View {
             }
         } else {
             canvas.drawText(mAbstractText,
-                    (isEnableCross() ? getWidth() - getHeight() : getWidth()) / 2 - fontW / 2,
+                    (isEnableCross() ? getWidth() - getHeight() : getWidth()) / 2 - fontW / 2 + (isEnableImage() ? getHeight() / 2 : 0),
                     getHeight() / 2 + fontH / 2 - bdDistance, mPaint);
         }
 
         // draw cross
         drawCross(canvas);
+
+        // draw image
+        drawImage(canvas);
     }
 
     @Override
@@ -324,6 +339,18 @@ public class TagView extends View {
             return event.getX() <= mCrossAreaWidth;
         }
         return event.getX() >= getWidth() - mCrossAreaWidth;
+    }
+
+    private void drawImage(Canvas canvas){
+        if (isEnableImage()) {
+            Bitmap scaledImageBitmap = Bitmap.createScaledBitmap(mBitmapImage, Math.round(getHeight() - mBorderWidth), Math.round(getHeight() - mBorderWidth), false);
+
+            Paint paint = new Paint();
+            paint.setAntiAlias(true);
+            paint.setShader(new BitmapShader(scaledImageBitmap, Shader.TileMode.CLAMP, Shader.TileMode.CLAMP));
+            RectF rect = new RectF(mBorderWidth, mBorderWidth, getHeight() - mBorderWidth, getHeight() - mBorderWidth);
+            canvas.drawRoundRect(rect, rect.height()/2, rect.height()/2, paint);
+        }
     }
 
     private void drawCross(Canvas canvas){
@@ -456,6 +483,11 @@ public class TagView extends View {
         this.isViewClickable = clickable;
     }
 
+    public void setImage(Bitmap newImage) {
+        this.mBitmapImage = newImage;
+        this.invalidate();
+    }
+
     public interface OnTagClickListener{
         void onTagClick(int position, String text);
         void onTagLongClick(int position, String text);
@@ -490,6 +522,8 @@ public class TagView extends View {
     public void setBdDistance(float bdDistance) {
         this.bdDistance = bdDistance;
     }
+
+    public boolean isEnableImage() { return mBitmapImage != null && mTextDirection != View.TEXT_DIRECTION_RTL; }
 
     public boolean isEnableCross() {
         return mEnableCross;
