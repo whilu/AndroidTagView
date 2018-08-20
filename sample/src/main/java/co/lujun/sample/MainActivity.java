@@ -3,6 +3,7 @@ package co.lujun.sample;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -20,6 +21,11 @@ import java.util.List;
 
 import co.lujun.androidtagview.TagContainerLayout;
 import co.lujun.androidtagview.TagView;
+
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
+import com.bumptech.glide.request.transition.Transition;
+import com.bumptech.glide.request.target.SimpleTarget;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -72,6 +78,8 @@ public class MainActivity extends AppCompatActivity {
         mTagContainerLayout3 = (TagContainerLayout) findViewById(R.id.tagcontainerLayout3);
         mTagContainerLayout4 = (TagContainerLayout) findViewById(R.id.tagcontainerLayout4);
         mTagcontainerLayout5 = (TagContainerLayout) findViewById(R.id.tagcontainerLayout5);
+
+        mTagContainerLayout1.setDefaultImageDrawableID(R.drawable.yellow_avatar);
 
         // Set custom click listener
         mTagContainerLayout1.setOnTagClickListener(new TagView.OnTagClickListener() {
@@ -132,6 +140,7 @@ public class MainActivity extends AppCompatActivity {
 
         // After you set your own attributes for TagView, then set tag(s) or add tag(s)
         mTagContainerLayout1.setTags(list1);
+        loadImages(list1);
         mTagContainerLayout2.setTags(list2);
         mTagContainerLayout3.setTags(list3);
         mTagContainerLayout4.setTags(list4);
@@ -170,6 +179,31 @@ public class MainActivity extends AppCompatActivity {
 //            }
 //        });
 //        recyclerView.setAdapter(adapter);
+    }
+
+    private void loadImages(List<String> list) {
+        String[] avatars = new String[]{"https://forums.oneplus.com/data/avatars/m/231/231279.jpg",
+                "https://d1marr3m5x4iac.cloudfront.net/images/block/movies/17214/17214_aa.jpg",
+                "https://lh3.googleusercontent.com/-KSI1bJ1aVS4/AAAAAAAAAAI/AAAAAAAAB9c/Vrgt6WyS5OU/il/photo.jpg"};
+
+        for (int i=0; i<list.size(); i++) {
+            final int index = i;
+            Glide.with(mTagContainerLayout1.getContext())
+                    .asBitmap()
+                    .load(avatars[i % avatars.length])
+                    .apply(new RequestOptions().override(85))
+                    .into(new SimpleTarget<Bitmap>() {
+                        @Override
+                        public void onResourceReady(Bitmap resource, Transition<? super Bitmap> transition) {
+                            mTagContainerLayout1.getTagView(index).setImage(resource);
+                        }
+                    });
+            try {
+                Thread.sleep(50);
+            } catch (InterruptedException e) {
+                System.err.println(e.getMessage());
+            }
+        }
     }
 
     public class TagRecyclerViewAdapter
