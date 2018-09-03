@@ -549,7 +549,7 @@ public class TagContainerLayout extends ViewGroup {
         int[] colors;
         if (mColorArrayList != null && mColorArrayList.size() > 0) {
             if (mColorArrayList.size() == mTags.size() &&
-                    mColorArrayList.get(position).length >= 3) {
+                    mColorArrayList.get(position).length >= 4) {
                 colors = mColorArrayList.get(position);
             } else {
                 throw new RuntimeException("Illegal color list!");
@@ -559,10 +559,9 @@ public class TagContainerLayout extends ViewGroup {
         }
 
         tagView.setTagBackgroundColor(colors[0]);
-        //TODO make selectedBackgroundColorSelectable configurable
-        tagView.setTagSelectedBackgroundColor(Utils.manipulateColorBrigthness(colors[0], 0.7f));
         tagView.setTagBorderColor(colors[1]);
         tagView.setTagTextColor(colors[2]);
+        tagView.setTagSelectedBackgroundColor(colors[3]);
         tagView.setTagMaxLength(mTagMaxLength);
         tagView.setTextDirection(mTagTextDirection);
         tagView.setTypeface(mTagTypeface);

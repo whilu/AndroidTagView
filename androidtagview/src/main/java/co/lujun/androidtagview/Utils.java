@@ -37,20 +37,29 @@ public class Utils {
     }
 
     /**
-     *Manipulate Birghtness of color
+     * If the color is Dark -> make it lighter and vice versa
      *
-     * @param color in int, brightness factor
-     *
+     * @param color in int,
+     * @param factor 0.0 < factor < 1.0
      * @return int
      */
-    public static int manipulateColorBrigthness(int color, float factor) {
+    public static int manipulateColorBrightness(int color, float factor) {
         int a = Color.alpha(color);
-        int r = Math.round(Color.red(color) * factor);
-        int g = Math.round(Color.green(color) * factor);
-        int b = Math.round(Color.blue(color) * factor);
+        int r = Color.red(color);
+        int g = Color.green(color);
+        int b = Color.blue(color);
+//        if (r + b + g < 128 * 3) factor = 1 / factor;// check if the color is bright or dark
+//        r = Math.round(r * factor);
+//        b = Math.round(b * factor);
+//        g = Math.round(g * factor);
+        if (r > 127) r = 255 - Math.round((255 - r) * factor);
+        if (g > 127) g = 255 - Math.round((255 - g) * factor);
+        if (b > 127) b = 255 - Math.round((255 - b) * factor);
+
         return Color.argb(a,
-                Math.min(r,255),
-                Math.min(g,255),
-                Math.min(b,255));
+                Math.min(r, 255),
+                Math.min(g, 255),
+                Math.min(b, 255)
+        );
     }
 }
