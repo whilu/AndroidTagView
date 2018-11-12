@@ -23,8 +23,6 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.RectF;
 import android.graphics.Typeface;
-import android.support.annotation.DrawableRes;
-import android.support.v4.widget.ViewDragHelper;
 import android.util.AttributeSet;
 import android.view.Gravity;
 import android.view.MotionEvent;
@@ -35,6 +33,9 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+
+import androidx.annotation.DrawableRes;
+import androidx.customview.widget.ViewDragHelper;
 
 import static co.lujun.androidtagview.Utils.dp2px;
 import static co.lujun.androidtagview.Utils.sp2px;
@@ -144,6 +145,11 @@ public class TagContainerLayout extends ViewGroup {
      * TagView background color(default #33F44336)
      */
     private int mTagBackgroundColor = Color.parseColor("#33F44336");
+
+    /**
+     * Selected TagView background color(default #33FF7669)
+     */
+    private int mSelectedTagBackgroundColor = Color.parseColor("#33FF7669");
 
     /**
      * TagView text color(default #FF666666)
@@ -509,7 +515,7 @@ public class TagContainerLayout extends ViewGroup {
         } else if (mTheme == ColorFactory.PURE_CYAN) {
             colors = ColorFactory.onPureBuild(ColorFactory.PURE_COLOR.CYAN);
         } else {
-            colors = new int[]{mTagBackgroundColor, mTagBorderColor, mTagTextColor};
+            colors = new int[]{mTagBackgroundColor, mTagBorderColor, mTagTextColor, mSelectedTagBackgroundColor};
         }
         return colors;
     }

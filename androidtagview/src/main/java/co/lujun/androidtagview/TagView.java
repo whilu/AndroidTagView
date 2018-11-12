@@ -26,10 +26,11 @@ import android.graphics.RectF;
 import android.graphics.Region;
 import android.graphics.Typeface;
 import android.os.Build;
-import android.support.v4.widget.ViewDragHelper;
 import android.text.TextUtils;
 import android.view.MotionEvent;
 import android.view.View;
+
+import androidx.customview.widget.ViewDragHelper;
 
 import static co.lujun.androidtagview.Utils.dp2px;
 
