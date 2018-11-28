@@ -16,7 +16,7 @@ Add below dependency in your **build.gradle** file.
 
 ```groovy
 dependencies {
-    compile 'co.lujun:androidtagview:1.1.4'
+    compile 'co.lujun:androidtagview:1.1.5'
 }
 ```
 
@@ -208,6 +208,9 @@ mTagcontainerLayout.setTags(tags, colors);
 ```
 
 ## Change logs
+
+### 1.1.5(2018-8-20)
+- Allow images on tags (in LTR languages).
 
 ### 1.1.4(2017-6-1)
 - Add attribute for TagView background.
