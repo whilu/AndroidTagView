@@ -6,8 +6,8 @@ android {
     defaultConfig {
         minSdkVersion 21
         targetSdkVersion 28
-        versionCode 115
-        versionName "1.1.5"
+        versionCode 116
+        versionName "1.1.6"
     }
     buildTypes {
         release {
@@ -22,6 +22,4 @@ dependencies {
     testImplementation 'junit:junit:4.12'
     implementation 'androidx.appcompat:appcompat:1.0.1'
 }
-//TODO fix bug apply from: 'https://raw.githubusercontent.com/whilu/AndroidPublishLibrary/master/project/library/bintray_publish.gradle'
-//https://github.com/google/ExoPlayer/commit/13592dfb53ec99ce1fdb2744e34717dbdec9dea8
-//https://github.com/davideas/FlexibleAdapter/issues/579
+apply from: 'https://raw.githubusercontent.com/whilu/AndroidPublishLibrary/master/project/library/bintray_publish.gradle'

@@ -16,7 +16,7 @@ Add below dependency in your **build.gradle** file.
 
 ```groovy
 dependencies {
-    compile 'co.lujun:androidtagview:1.1.5'
+    compile 'co.lujun:androidtagview:1.1.6'
 }
 ```
 
@@ -72,7 +72,8 @@ Now, you have successfully created some TagViews. The following will show some m
 | tag_border_color | color | TagView border color(default #88F44336)
 | tag_background_color | color | TagView background color(default #33F44336)
 | tag_max_length | integer | The max length for TagView(default max length 23)
-| tag_clickable | boolean | Whether TagView can clickable(default unclickable)
+| tag_clickable | boolean | Whether TagView can clickable(default false)
+| tag_selectable | boolean | Whether TagView can be selectable(default false)
 | tag_theme | enum | The TagView [theme](#themes)
 | tag_text_direction | enum | The TagView text [direction](#directions)
 | tag_ripple_color | color | The ripple effect color(default #EEEEEE)
@@ -125,6 +126,11 @@ mTagContainerLayout.setOnTagClickListener(new TagView.OnTagClickListener() {
 
     @Override
     public void onTagLongClick(final int position, String text) {
+        // ...
+    }
+
+    @Override
+    public void onSelectedTagDrag(int position, String text){
         // ...
     }
     
@@ -208,6 +214,9 @@ mTagcontainerLayout.setTags(tags, colors);
 ```
 
 ## Change logs
+
+### 1.1.6(2018-12-1)
+- Support tag selectable
 
 ### 1.1.5(2018-8-20)
 - Allow images on tags (in LTR languages).

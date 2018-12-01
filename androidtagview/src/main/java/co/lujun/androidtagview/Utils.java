@@ -37,10 +37,10 @@ public class Utils {
     }
 
     /**
-     * If the color is Dark -> make it lighter and vice versa
+     * If the color is Dark, make it lighter and vice versa
      *
      * @param color in int,
-     * @param factor 0.0 < factor < 1.0
+     * @param factor The factor greater than 0.0 and smaller than 1.0
      * @return int
      */
     public static int manipulateColorBrightness(int color, float factor) {
