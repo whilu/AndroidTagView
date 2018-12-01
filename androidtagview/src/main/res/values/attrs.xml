@@ -28,6 +28,7 @@
         <attr name="tag_background_color" format="color" />
         <attr name="tag_max_length" format="integer" />
         <attr name="tag_clickable" format="boolean" />
+        <attr name="tag_selectable" format="boolean" />
         <attr name="tag_theme" format="enum">
             <enum name="none" value="-1" />
             <enum name="random" value="0" />

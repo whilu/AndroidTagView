@@ -65,7 +65,8 @@ public class ColorFactory {
         int bgColor = Color.parseColor("#" + BG_COLOR_ALPHA + COLORS[random]);
         int bdColor = Color.parseColor("#" + BD_COLOR_ALPHA + COLORS[random]);
         int tColor = SHARP666666;
-        return new int[]{bgColor, bdColor, tColor};
+        int tColor2 = SHARP727272;
+        return new int[]{bgColor, bdColor, tColor, tColor2};
     }
 
     public static int[] onPureBuild(PURE_COLOR type){
@@ -73,7 +74,8 @@ public class ColorFactory {
         int bgColor = Color.parseColor("#" + BG_COLOR_ALPHA + color);
         int bdColor = Color.parseColor("#" + BD_COLOR_ALPHA + color);
         int tColor = SHARP727272;
-        return new int[]{bgColor, bdColor, tColor};
+        int tColor2 = SHARP666666;
+        return new int[]{bgColor, bdColor, tColor, tColor2};
     }
 
 }
