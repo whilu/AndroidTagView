@@ -30,10 +30,11 @@ import android.graphics.Region;
 import android.graphics.Shader;
 import android.graphics.Typeface;
 import android.os.Build;
-import android.support.v4.widget.ViewDragHelper;
 import android.text.TextUtils;
 import android.view.MotionEvent;
 import android.view.View;
+
+import androidx.customview.widget.ViewDragHelper;
 
 import static co.lujun.androidtagview.Utils.dp2px;
 
@@ -64,11 +65,20 @@ public class TagView extends View {
     /** TagView background color*/
     private int mBackgroundColor;
 
+    /** TagView background color*/
+    private int mSelectedBackgroundColor;
+
     /** TagView text color*/
     private int mTextColor;
 
     /** Whether this view clickable*/
     private boolean isViewClickable;
+
+    /** Whether this view selectable*/
+    private boolean isViewSelectable;
+
+    /** Whether this view selected*/
+    private boolean isViewSelected;
 
     /** The max length for this tag view*/
     private int mTagMaxLength;
@@ -213,7 +223,7 @@ public class TagView extends View {
     protected void onDraw(Canvas canvas) {
         // draw background
         mPaint.setStyle(Paint.Style.FILL);
-        mPaint.setColor(mBackgroundColor);
+        mPaint.setColor(getIsViewSelected() ? mSelectedBackgroundColor : mBackgroundColor);
         canvas.drawRoundRect(mRectF, mBorderRadius, mBorderRadius, mPaint);
 
         // draw border
@@ -272,8 +282,8 @@ public class TagView extends View {
                     break;
 
                 case MotionEvent.ACTION_MOVE:
-                    if (Math.abs(mLastY - y) > mSlopThreshold
-                            || Math.abs(mLastX - x) > mSlopThreshold){
+                    if (!isViewSelected && (Math.abs(mLastY - y) > mSlopThreshold
+                            || Math.abs(mLastX - x) > mSlopThreshold)){
                         if (getParent() != null) {
                             getParent().requestDisallowInterceptTouchEvent(false);
                         }
@@ -319,6 +329,9 @@ public class TagView extends View {
                     }
                     if (Math.abs(mLastX - x) > mMoveSlop || Math.abs(mLastY - y) > mMoveSlop){
                         isMoved = true;
+                        if (isViewSelected){
+                            mOnTagClickListener.onSelectedTagDrag((int) getTag(), getText());
+                        }
                     }
                     break;
 
@@ -399,7 +412,13 @@ public class TagView extends View {
                 canvas.clipPath(mPath);
                 mPath.addRoundRect(mRectF, mBorderRadius, mBorderRadius, Path.Direction.CCW);
 
-                canvas.clipPath(mPath, Region.Op.REPLACE);
+//                bug: https://github.com/whilu/AndroidTagView/issues/88
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                    canvas.clipPath(mPath);
+                } else {
+                    canvas.clipPath(mPath, Region.Op.REPLACE);
+                }
+
                 canvas.drawCircle(mTouchX, mTouchY, mRippleRadius, mRipplePaint);
                 canvas.restore();
             }catch (UnsupportedOperationException e){
@@ -437,6 +456,10 @@ public class TagView extends View {
         return isViewClickable;
     }
 
+    public boolean getIsViewSelected(){
+        return isViewSelected;
+    }
+
     public void setTagMaxLength(int maxLength){
         this.mTagMaxLength = maxLength;
         onDealText();
@@ -446,8 +469,20 @@ public class TagView extends View {
         this.mOnTagClickListener = listener;
     }
 
+    public int getTagBackgroundColor(){
+        return mBackgroundColor;
+    }
+
+    public int getTagSelectedBackgroundColor(){
+        return mSelectedBackgroundColor;
+    }
+
     public void setTagBackgroundColor(int color){
         this.mBackgroundColor = color;
+    }
+
+    public void setTagSelectedBackgroundColor(int color){
+        this.mSelectedBackgroundColor = color;
     }
 
     public void setTagBorderColor(int color){
@@ -488,9 +523,29 @@ public class TagView extends View {
         this.invalidate();
     }
 
+    public void setIsViewSelectable(boolean viewSelectable) {
+        isViewSelectable = viewSelectable;
+    }
+
+    //TODO change background color
+    public void selectView() {
+        if (isViewSelectable && !getIsViewSelected()) {
+            this.isViewSelected = true;
+            postInvalidate();
+        }
+    }
+
+    public void deselectView() {
+        if (isViewSelectable && getIsViewSelected()) {
+            this.isViewSelected = false;
+            postInvalidate();
+        }
+    }
+
     public interface OnTagClickListener{
         void onTagClick(int position, String text);
         void onTagLongClick(int position, String text);
+        void onSelectedTagDrag(int position, String text);
         void onTagCrossClick(int position);
     }
 
