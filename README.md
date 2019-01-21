@@ -16,7 +16,7 @@ Add below dependency in your **build.gradle** file.
 
 ```groovy
 dependencies {
-    compile 'co.lujun:androidtagview:1.1.6'
+    compile 'co.lujun:androidtagview:1.1.7'
 }
 ```
 
@@ -214,6 +214,9 @@ mTagcontainerLayout.setTags(tags, colors);
 ```
 
 ## Change logs
+
+### 1.1.7(2019-01-21)
+- Fix bugs
 
 ### 1.1.6(2018-12-1)
 - Support tag selectable
