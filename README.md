@@ -16,7 +16,8 @@ Add below dependency in your **build.gradle** file.
 
 ```groovy
 dependencies {
-    compile 'co.lujun:androidtagview:1.1.7'
+    implementation 'co.lujun:androidtagview:1.1.7'
+    implementation 'androidx.appcompat:appcompat:1.0.1'
 }
 ```
 
