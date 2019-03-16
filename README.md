@@ -206,9 +206,9 @@ mTagContainerLayout.getTagView(int position);
 * Set color for each TagView.
 ```java
 List<int[]> colors = new ArrayList<int[]>();
-//int[] color = {TagBackgroundColor, TabBorderColor, TagTextColor}
-int[] color1 = {Color.RED, Color.BLACK, Color.WHITE};
-int[] color2 = {Color.BLUE, Color.BLACK, Color.WHITE};
+//int[] color = {TagBackgroundColor, TabBorderColor, TagTextColor, TagSelectedBackgroundColor}
+int[] color1 = {Color.RED, Color.BLACK, Color.WHITE, Color.YELLOW};
+int[] color2 = {Color.BLUE, Color.BLACK, Color.WHITE, Color.YELLOW};
 colors.add(color1);
 colors.add(color2);
 mTagcontainerLayout.setTags(tags, colors);

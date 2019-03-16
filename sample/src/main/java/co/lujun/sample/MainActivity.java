@@ -14,6 +14,11 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
+import com.bumptech.glide.request.target.SimpleTarget;
+import com.bumptech.glide.request.transition.Transition;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,11 +27,6 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.RecyclerView;
 import co.lujun.androidtagview.TagContainerLayout;
 import co.lujun.androidtagview.TagView;
-
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.request.RequestOptions;
-import com.bumptech.glide.request.transition.Transition;
-import com.bumptech.glide.request.target.SimpleTarget;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -189,7 +189,7 @@ public class MainActivity extends AppCompatActivity {
         mTagContainerLayout4.setTags(list4);
 
         List<int[]> colors = new ArrayList<int[]>();
-        //int[]color = {backgroundColor, tagBorderColor, tagTextColor}
+        //int[]color = {backgroundColor, tagBorderColor, tagTextColor, tagSelectedBackgroundColor}
         int[] col1 = {Color.parseColor("#ff0000"), Color.parseColor("#000000"), Color.parseColor("#ffffff"), Color.parseColor("#999999")};
         int[] col2 = {Color.parseColor("#0000ff"), Color.parseColor("#000000"), Color.parseColor("#ffffff"), Color.parseColor("#999999")};
 
