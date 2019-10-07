@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package co.lujun.androidtagview;
+package com.crowdswap.androidtagview;
 
 import android.content.Context;
 import android.content.res.TypedArray;
@@ -37,8 +37,8 @@ import java.util.List;
 import androidx.annotation.DrawableRes;
 import androidx.customview.widget.ViewDragHelper;
 
-import static co.lujun.androidtagview.Utils.dp2px;
-import static co.lujun.androidtagview.Utils.sp2px;
+import static com.crowdswap.androidtagview.Utils.dp2px;
+import static com.crowdswap.androidtagview.Utils.sp2px;
 
 /**
  * Author: lujun(http://blog.lujun.co)

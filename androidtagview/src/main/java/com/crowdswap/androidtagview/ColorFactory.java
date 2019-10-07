@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package co.lujun.androidtagview;
+package com.crowdswap.androidtagview;
 
 import android.graphics.Color;
 

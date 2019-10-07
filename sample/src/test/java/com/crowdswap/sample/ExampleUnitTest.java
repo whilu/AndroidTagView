@@ -1,4 +1,4 @@
-package co.lujun.androidtagview;
+package com.crowdswap.sample;
 
 import org.junit.Test;
 

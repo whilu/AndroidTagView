@@ -1,4 +1,4 @@
-package co.lujun.sample;
+package com.crowdswap.sample;
 
 import android.app.AlertDialog;
 import android.content.ClipData;
@@ -25,8 +25,8 @@ import java.util.List;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.RecyclerView;
-import co.lujun.androidtagview.TagContainerLayout;
-import co.lujun.androidtagview.TagView;
+import com.crowdswap.androidtagview.TagContainerLayout;
+import com.crowdswap.androidtagview.TagView;
 
 public class MainActivity extends AppCompatActivity {
 
