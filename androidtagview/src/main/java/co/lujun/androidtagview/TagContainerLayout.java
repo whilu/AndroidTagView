@@ -29,12 +29,15 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
 import androidx.annotation.DrawableRes;
+import androidx.annotation.IntDef;
 import androidx.customview.widget.ViewDragHelper;
 
 import static co.lujun.androidtagview.Utils.dp2px;
@@ -155,6 +158,22 @@ public class TagContainerLayout extends ViewGroup {
      * TagView text color(default #FF666666)
      */
     private int mTagTextColor = Color.parseColor("#FF666666");
+
+    /**
+     * TagView text font family
+     */
+    private String mTagTextFontFamily = null;
+
+
+    /** @hide */
+    @IntDef(value = {Typeface.NORMAL, Typeface.BOLD, Typeface.ITALIC, Typeface.BOLD_ITALIC})
+    @Retention(RetentionPolicy.SOURCE)
+    public @interface Style {}
+
+    /**
+     * TagView text style
+     */
+    private @Style int mTagTextStyle = Typeface.NORMAL;
 
     /**
      * TagView typeface
@@ -329,6 +348,8 @@ public class TagContainerLayout extends ViewGroup {
         mTagBackgroundColor = attributes.getColor(R.styleable.AndroidTagView_tag_background_color,
                 mTagBackgroundColor);
         mTagTextColor = attributes.getColor(R.styleable.AndroidTagView_tag_text_color, mTagTextColor);
+        mTagTextFontFamily = attributes.getString(R.styleable.AndroidTagView_tag_text_font_family);
+        mTagTextStyle = attributes.getInt(R.styleable.AndroidTagView_tag_text_style, mTagTextStyle);
         mTagTextDirection = attributes.getInt(R.styleable.AndroidTagView_tag_text_direction, mTagTextDirection);
         isTagViewClickable = attributes.getBoolean(R.styleable.AndroidTagView_tag_clickable, false);
         isTagViewSelectable = attributes.getBoolean(R.styleable.AndroidTagView_tag_selectable, false);
@@ -561,6 +582,7 @@ public class TagContainerLayout extends ViewGroup {
         addView(tagView, position);
     }
 
+
     private void initTagView(TagView tagView, int position) {
         int[] colors;
         if (mColorArrayList != null && mColorArrayList.size() > 0) {
@@ -581,6 +603,15 @@ public class TagContainerLayout extends ViewGroup {
         tagView.setTagMaxLength(mTagMaxLength);
         tagView.setTextDirection(mTagTextDirection);
         tagView.setTypeface(mTagTypeface);
+
+        if (mTagTextFontFamily == null && mTagTextStyle != Typeface.NORMAL) {
+            tagView.setTypeface(Typeface.defaultFromStyle(mTagTextStyle));
+        } else if (mTagTextFontFamily != null) {
+            tagView.setTypeface(Typeface.create(mTagTextFontFamily, mTagTextStyle));
+        } else {
+            tagView.setTypeface(mTagTypeface);
+        }
+
         tagView.setBorderWidth(mTagBorderWidth);
         tagView.setBorderRadius(mTagBorderRadius);
         tagView.setTextSize(mTagTextSize);
@@ -1381,6 +1412,44 @@ public class TagContainerLayout extends ViewGroup {
     public void setTagTextDirection(int textDirection) {
         this.mTagTextDirection = textDirection;
     }
+
+
+    /**
+     * Get TagView FontFamily
+     *
+     * @return
+     */
+    public String getTagTextFontFamily() {
+        return mTagTextFontFamily;
+    }
+
+    /**
+     * Set TagView FontFamily.
+     *
+     * @param fontFamily
+     */
+    public void setTagTextFontFamily(String fontFamily) {
+        this.mTagTextFontFamily = fontFamily;
+    }
+
+    /**
+     * Get TagView text style.
+     *
+     * @return
+     */
+    public @Style int getTagTextStyle() {
+        return mTagTextStyle;
+    }
+
+    /**
+     * Set TagView text style.
+     *
+     * @param textStyle
+     */
+    public void setTagTextStyle(@Style int textStyle) {
+        this.mTagTextStyle = textStyle;
+    }
+
 
     /**
      * Get TagView typeface.
