@@ -87,6 +87,8 @@ Now, you have successfully created some TagViews. The following will show some m
 | tag_cross_area_padding | dimension | The padding of the cross area(default 10dp)
 | tag_support_letters_rlt | boolean | Whether to support 'letters show with RTL(eg: Android -> diordnA)' style(default false)
 | tag_background | reference | TagView background resource(default none background)
+| tag_text_style | enum | TagView text style. (Like TextView text style)
+| tag_text_font_family | string | TagView font family (ej. san-serif-medium)
 
 **You can set these attributes in layout file, or use setters(each attribute has get and set method) to set them.**
 

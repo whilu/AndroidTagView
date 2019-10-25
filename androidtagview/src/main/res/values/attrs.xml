@@ -24,6 +24,13 @@
         <attr name="tag_text_size" format="dimension" />
         <attr name="tag_bd_distance" format="dimension" />
         <attr name="tag_text_color" format="color" />
+        <attr name="tag_text_font_family" format="string" />
+        <attr name="tag_text_style" format="enum">
+            <enum name="normal" value="0" />
+            <enum name="bold" value="1" />
+            <enum name="italic" value="2" />
+            <enum name="bold_italic" value="3" />
+        </attr>
         <attr name="tag_border_color" format="color" />
         <attr name="tag_background_color" format="color" />
         <attr name="tag_max_length" format="integer" />
@@ -51,5 +58,6 @@
         <attr name="tag_cross_area_padding" format="dimension" />
         <attr name="tag_support_letters_rlt" format="boolean" />
         <attr name="tag_background" format="reference" />
+
     </declare-styleable>
 </resources>

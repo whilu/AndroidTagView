@@ -39,6 +39,7 @@
                 app:tag_clickable="true"
                 app:tag_enable_cross="true"
                 app:tag_theme="pure_teal"
+                app:tag_text_style="italic"
                 app:vertical_interval="10dp" />
 
             <LinearLayout
@@ -74,6 +75,7 @@
                 app:horizontal_interval="10dp"
                 app:tag_clickable="false"
                 app:tag_theme="random"
+                app:tag_text_font_family="sans-serif-black"
                 app:vertical_interval="10dp" />
 
             <co.lujun.androidtagview.TagContainerLayout
