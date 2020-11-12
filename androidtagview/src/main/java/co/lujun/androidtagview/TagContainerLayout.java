@@ -418,7 +418,7 @@ public class TagContainerLayout extends ViewGroup {
                     mViewPos[i * 2 + 1] = curTop;
                     curRight -= width + mHorizontalInterval;
                 } else if (mGravity == Gravity.CENTER) {
-                    if (curLeft + width - getPaddingLeft() > availableW) {
+                    if (curLeft + width - getPaddingLeft() > availableW && i - 1 >= 0) {
                         int leftW = getMeasuredWidth() - mViewPos[(i - 1) * 2]
                                 - getChildAt(i - 1).getMeasuredWidth() - getPaddingRight();
                         for (int j = sPos; j < i; j++) {
